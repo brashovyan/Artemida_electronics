@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href= "{% static 'css/index.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <script src="{% static 'js/vue.js' %}"></script> <!-- Подключаем вью файликом -->
+
+    <title>Artemida Electronics</title>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <a href="/" class="header__menu">Artemida Electronics</a>
+        </div>
+        <div class="header__right">
+            <a href="#" class="header__menu">Меню1</a>
+            <a href="#" class="header__menu">Меню2</a>
+            <a href="#" class="header__menu">Меню3</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="main__left">
+            <p class="main__logo">Комплектующие</p>
+            <div class="products">
+                <ul class="main__ul"><li><p class="main__product__logo">Процессоры</p></li></ul>
+                    {% for processor in processors %}
+                        <div class="product">
+                            <!-- для корректной работы радио name у группы товаров должен быть одинаковый (проказы vue)-->
+                            <input type="radio" name="processor" value="{{processor.title}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}&&{{processor.max_memory}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}{{processor.id}}', '{{processor.id}}')">
+                            <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - {{processor.socket}}</a>
+                            <div class="main__img" id="{{processor.title}}{{processor.id}}">
+                                <div class="img__div">
+                                    {% if processor.image.url != "" or processor.image.url != Null %}
+                                        <a href="/123"> <img src="{{ processor.image.url }}" width="100" height="100" alt="{{processor.title}}"></a>
+                                    {% else %}
+                                        <a href="/123"> <img src="" width="100" height="100" alt="{{processor.title}}"></a>
+                                    {% endif %}
+                                        <a href="/123" class="main__img__href">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                <ul class="main__ul"><li><p class="main__product__logo">Материнские платы</p></li></ul>
+                {% for motherboard in motherboards %}
+                <!-- если сокет проца совпадает с сокетом материнки и т.д. -->
+                    <template v-if="socket == '{{motherboard.socket}}'">
+                        <div class="product">
+                            <input name="motherboard" value="{{motherboard.title}}%%{{motherboard.socket}}%%{{motherboard.chipset}}%%{{motherboard.m_slots}}%%{{motherboard.m_frequency}}%%{{motherboard.max_memory}}%%{{motherboard.type_memory}}%%{{motherboard.price}}" type="radio" @change="select_motherboard('{{motherboard.title}}{{motherboard.id}}', '{{motherboard.id}}')">
+                            <a class="main__img__href" onclick="showImg('{{motherboard.title}}{{motherboard.id}}')">{{motherboard.title}} - {{motherboard.socket}}</a>
+                            <div class="main__img" id="{{motherboard.title}}{{motherboard.id}}">
+                                <div class="img__div">
+                                   {% if motherboard.image.url != "" or motherboard.image.url != Null %}
+                                        <a href="/123"> <img src="{{ motherboard.image.url }}" width="100" height="100" alt="{{motherboard.title}}"></a>
+                                    {% else %}
+                                        <a href="/123"> <img src="" width="100" height="100" alt="{{motherboard.title}}"></a>
+                                    {% endif %}
+                                        <a href="/123" class="main__img__href">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                {% endfor %}
+
+
+               <ul class="main__ul"><li><p class="main__product__logo">Оперативная память</p></li></ul>
+                    <p>Кол-во слотов в материнке: [[m_slots]]</p>
+
+<!--                   <template v-for="n in Number(m_slots)"> &lt;!&ndash; В зависимости сколько слотов в материнке для ОЗУ &ndash;&gt;-->
+                       {% for ram in rams %}
+                           <template v-if="type_memory == '{{ram.type_memory}}'">
+                                <div class="product">
+                                    <input name="RAM" value="{{ram.title}}%%{{ram.price}}" type="checkbox"  @change="select_ram('{{ram.title}}{{ram.id}}', '{{ram.id}}')">
+                                    <input class="quantity" type="number" name="{{ram.title}}{{ram.id}}" value="0" content="0" min="0" step="1" onkeypress="return false" @change="select_ram('{{ram.title}}{{ram.id}}', '{{ram.id}}')">
+                                    <a class="main__img__href" onclick="showImg('{{ram.title}}{{ram.id}}')">{{ram.title}}</a>
+                                    <div class="main__img" id="{{ram.title}}{{ram.id}}">
+                                        <div class="img__div">
+                                            {% if ram.image.url != "" or ram.image.url != Null %}
+                                                <a href="/123"> <img src="{{ ram.image.url }}" width="100" height="100" alt="{{ram.title}}"></a>
+                                            {% else %}
+                                                 <a href="/123"> <img src="" width="100" height="100" alt="{{ram.title}}"></a>
+                                            {% endif %}
+                                            <a href="/123" class="main__img__href">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                                        </div>
+                                    </div>
+                                </div>
+                           </template>
+                       {% endfor %}
+<!--                  </template>-->
+
+
+
+            </div>
+        </div>
+
+        <div class="main__right">
+            <p class="main__logo">Ваш компьютер</p>
+            <div class="result">
+                <p>Процессор: <span class="result__processor"></span></p>
+                <p>Мат. плата: <span class="result__motherboard"></span></p>
+<!--                <template v-for="n in Number(m_slots)">-->
+<!--                    <p>ОЗУ Слот [[n]]: <span class="result__ram[[n]]"></span></p>-->
+<!--                </template>-->
+                <p>Цена: <span class="result__price">0</span></p>
+            </div>
+            <button @click="price">Расчитать сцену</button>
+            <button @click="clear">Сбросить всё</button>
+        </div>
+    </main>
+    <script src="{% static 'js/vue_script.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
