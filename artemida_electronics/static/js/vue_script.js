@@ -9,10 +9,16 @@ var builder = new Vue({
       m_slots: 0, // кол-во слотов для ОЗУ
       slots: 0, // занятые слоты
       type_memory: "", // тип ОЗУ
+      max_memory: 0, // максимальный объём ОЗУ
+      size_memory: 0, // текущий объём ОЗУ
+      m_frequency: 0, // допустимая частота ОЗУ
+      max_memory_proc: 0, // максимальный объём памяти для проца
+      m_frequency_proc: 0, // допустимая частота ОЗУ для проца
 
       //product: document.querySelectorAll(".product"),
       //cost: document.querySelector(".result__cost"),
       //all: document.querySelector(".result__all"),
+
     },
 
     methods: {
@@ -30,6 +36,8 @@ var builder = new Vue({
                     this.socket = str[1];
                     //this.processor = pr.children[0].name.substr(0, pr.children[0].name.length-id.length)
                     this.processor = str[0];
+                    this.max_memory_proc = parseFloat(str[6]);
+                    this.m_frequency_proc = parseFloat(str[4]);
                 }
                 else // иначе я всё сбрасываю кроме процессора
                 {
@@ -37,8 +45,12 @@ var builder = new Vue({
                     this.motherboard = "";
                     this.type_memory = "";
                     this.m_slots = 0;
+                    this.slots = 0;
+                    this.size_memory = 0;
                 }
+                
             }
+            
             this.price();
         },
 
@@ -55,13 +67,67 @@ var builder = new Vue({
                     this.motherboard = str[0];
                     this.m_slots = Number(str[3]);
                     this.type_memory = str[6];
+
+                    if(parseFloat(str[5]) < this.max_memory_proc)
+                    {
+                        this.max_memory = parseFloat(str[5]);
+                    }
+                    else
+                    {
+                        this.max_memory = this.max_memory_proc;
+                    }
+
+                    if(parseFloat(str[4]) < this.m_frequency_proc)
+                    {
+                        this.m_frequency = parseFloat(str[4]);
+                    }
+                    else
+                    {
+                        this.m_frequency = this.m_frequency_proc;
+                    }
                 }
                 else if(pr.children[0].name != 'motherboard' && pr.children[0].name != 'processor') // иначе сбрасываю всё кроме проца и матери
                 {
                     pr.children[0].checked = false;
+                    this.slots = 0;
+                    this.size_memory = 0;
+                    if(pr.children[0].name == 'RAM')
+                    {
+                        pr.children[1].style.display = "none";
+                        pr.children[1].children[0].children[1].value = 0;
+                    }
                 }
             }
             this.price();
+        },
+
+        select_ram_plus(title, id) // инпут кол-ва озу плюс
+        {          
+            product = document.querySelectorAll(".number"); // ищу все инпуты для кол-ва
+            for(let pr of product)
+            {
+                if(pr.children[1].name == title) // если это то, что я нажал
+                {
+                    pr.children[1].value = Number(pr.children[1].value) + Number(1); 
+                    this.select_ram(title, id);
+                }
+            }
+        },
+
+        select_ram_minus(title, id) // инпут кол-ва озу минус
+        {
+            product = document.querySelectorAll(".number"); // ищу все инпуты для кол-ва
+            for(let pr of product)
+            {
+                if(pr.children[1].name == title) // если это то, что я нажал
+                {
+                    if(pr.children[1].value > 0)
+                    {
+                        pr.children[1].value = Number(pr.children[1].value) - Number(1); 
+                        this.select_ram(title, id);
+                    }
+                }
+            }
         },
 
         select_ram(title, id) //выбор оперативки
@@ -69,13 +135,23 @@ var builder = new Vue({
             product = document.querySelectorAll(".product"); // обновляем список продуктов, который сейчас видит пользователь
             title = title.substr(0, title.length - id.length); // нормальное название, на которое я нажал
             this.slots = 0;
+            this.size_memory = 0;
 
             for(let pr of product)
             {
+                let str = pr.children[0].value.split('%%')
+
+                
+
                 if(pr.children[0].name == 'RAM' && pr.children[0].checked == true)
                 {
-                        this.slots = this.slots + Number(pr.children[1].value);
+                        //console.log(pr.children[1].children[0].children[1].value);
+                        this.slots = this.slots + Number(pr.children[1].children[0].children[1].value);
                         // сначала считаем сколько слотов уже занято
+
+                        this.size_memory = this.size_memory + (parseFloat(str[1]) * parseFloat(pr.children[1].children[0].children[1].value));
+                        //console.log(parseFloat(str[1]));
+
                 }
             }
 
@@ -87,37 +163,49 @@ var builder = new Vue({
 
                 if(title == str[0] && pr.children[0].name == 'RAM') // если нашли то, что мы тыкнули
                 {
-                    console.log(this.slots);
+                    //console.log(this.slots);
                     if(pr.children[0].checked == true) // если галочка стоит, то показываем инпут кол-ва
                     {
                         pr.children[1].style.display = "block";
-                        if(pr.children[1].value == "") // если там пустота, то по умолчанию 0
+                        if(pr.children[1].children[0].children[1].value == "") // если там пустота, то по умолчанию 0
                         {
-                            pr.children[1].value = 0;
+                            pr.children[1].children[0].children[1].value = 0;
                         }
 
                         if(this.slots === 0) // если все слоты пустые, то по умолчанию кол-во 1
                         {
-                            pr.children[1].value = 1;
+                            pr.children[1].children[0].children[1].value = 1;
                             this.slots += 1;
+                            this.size_memory += parseFloat(str[1]);
                         }
-
-                        if(Number(this.slots) > this.m_slots) // если мы превысили кол-во слотов
+                        
+                        if(Number(this.slots) > this.m_slots) // если мы превысили кол-во слотов 
                         {
-                            pr.children[1].value = 0; // сбрасываем до нуля
+                            console.log("Слоты");
+                            pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);  // 
                             // по хорошему можно просто минус 1, но я могу инпут зажать и ввести например сто
                             // можно инпуту указать возможный максимум, но пока не могу этого сделать
                             this.slots = this.m_slots;
+                            this.size_memory = this.size_memory - parseFloat(str[1]);
+                        }
+
+                        if(parseFloat(this.max_memory) < parseFloat(this.size_memory)) // если мы превысили допустимый объём памяти
+                        {
+                            console.log("Объём");
+                            pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);
+                            this.slots = parseFloat(this.slots) - Number(1);
+                            this.size_memory = this.size_memory - parseFloat(str[1]);
                         }
                     }
                     else
                     {
                         pr.children[1].style.display = "none"; // если галочка убрана, убираем инпут кол-ва
+                        pr.children[1].children[0].children[1].value = 0;
                     }
                 }
 
             }
-
+            //console.log(this.size_memory);
             this.price();
         },
 
@@ -146,7 +234,7 @@ var builder = new Vue({
                     }
                     else if(pr.children[0].name == 'RAM') // если это оперативка
                     {
-                        this.sum = this.sum + (parseFloat(str[str.length - 1])*parseFloat(pr.children[1].value)); // тут цену умножаем на кол-во
+                        this.sum = this.sum + (parseFloat(str[str.length - 1])*parseFloat(pr.children[1].children[0].children[1].value)); // тут цену умножаем на кол-во
                     }
                 }
             }
@@ -168,6 +256,12 @@ var builder = new Vue({
             this.socket= "";
             this.type_memory = "";
             this.m_slots = 0;
+            this.slots = 0;
+            this.max_memory = 0;
+            this.size_memory = 0;
+            this.m_frequency = 0;
+            this.max_memory_proc = 0;
+            this.m_frequency_proc = 0;
             document.querySelector(".result__price").textContent = this.sum;
             document.querySelector(".result__processor").textContent = this.processor;
             document.querySelector(".result__motherboard").textContent = this.motherboard;

@@ -1,8 +1,8 @@
-product = document.querySelectorAll(".product");
-cost = document.querySelector(".result__cost");
-all = document.querySelector(".result__all");
-let sum = 0;
-let computer = [];
+//product = document.querySelectorAll(".product");
+//cost = document.querySelector(".result__cost");
+//all = document.querySelector(".result__all");
+//let sum = 0;
+//let computer = [];
 
 /*product.forEach(element => { element.addEventListener("change", function(){ // при выборе любого чекбокса запускается калькулятор
         sum = 0;
