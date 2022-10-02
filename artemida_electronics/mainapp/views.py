@@ -1,4 +1,4 @@
-from .models import Processor, Motherboard, RAM
+from .models import Processor, Motherboard, RAM, Cooler
 import os
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,7 +13,8 @@ def index(request):
     processors = Processor.objects.all()
     motherboards = Motherboard.objects.all()
     rams = RAM.objects.all()
-    return render(request, 'mainapp/index.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams})
+    coolers = Cooler.objects.all()
+    return render(request, 'mainapp/index.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams, 'coolers':coolers})
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

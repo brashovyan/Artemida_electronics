@@ -1,3 +1,5 @@
+from email.policy import default
+from tabnanny import verbose
 from django.db import models
 
 
@@ -9,6 +11,7 @@ class Processor(models.Model):
     m_frequency = models.FloatField(help_text="Введите поддерживаемую частоту ОЗУ", verbose_name="Частота ОЗУ", null=False)
     type_memory = models.CharField(max_length=20, verbose_name="Тип ОЗУ", help_text="Введите тип памяти. Например DDR4", null=False)
     max_memory = models.FloatField(help_text="Введите максимальный объем ОЗУ.", verbose_name="Максимальный объём ОЗУ", null=False)
+    tdp = models.IntegerField(default=0, help_text="Введите тепловыделение процессора (TDP)", verbose_name="Тепловыделение (TDP)", null=False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     image = models.ImageField(upload_to='processors/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
@@ -46,5 +49,15 @@ class RAM(models.Model):
         return f'{self.title}, {self.type_memory}, {self.size}'
 
 
+class Cooler(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название кулера", help_text="Введите полное название кулера", null=False)
+    power = models.IntegerField(verbose_name="Рассеиваемая мощность", help_text="Введите рассеиваемую мощность", null=False)
+    price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    image = models.ImageField(upload_to='Coolers/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.title}'
 
 

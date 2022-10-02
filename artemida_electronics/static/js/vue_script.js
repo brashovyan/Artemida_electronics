@@ -14,11 +14,13 @@ var builder = new Vue({
       m_frequency: 0, // допустимая частота ОЗУ
       max_memory_proc: 0, // максимальный объём памяти для проца
       m_frequency_proc: 0, // допустимая частота ОЗУ для проца
+      tdp: 0,
+      ram: [],
+      cooler: "",
 
       //product: document.querySelectorAll(".product"),
       //cost: document.querySelector(".result__cost"),
       //all: document.querySelector(".result__all"),
-
     },
 
     methods: {
@@ -38,6 +40,7 @@ var builder = new Vue({
                     this.processor = str[0];
                     this.max_memory_proc = parseFloat(str[6]);
                     this.m_frequency_proc = parseFloat(str[4]);
+                    this.tdp = Number(str[7]);
                 }
                 else // иначе я всё сбрасываю кроме процессора
                 {
@@ -47,8 +50,9 @@ var builder = new Vue({
                     this.m_slots = 0;
                     this.slots = 0;
                     this.size_memory = 0;
+                    this.ram = [];
+                    this.cooler = "";
                 }
-                
             }
             
             this.price();
@@ -86,11 +90,12 @@ var builder = new Vue({
                         this.m_frequency = this.m_frequency_proc;
                     }
                 }
-                else if(pr.children[0].name != 'motherboard' && pr.children[0].name != 'processor') // иначе сбрасываю всё кроме проца и матери
+                else if(pr.children[0].name != 'motherboard' && pr.children[0].name != 'processor' && pr.children[0].name != 'cooler') // иначе сбрасываю всё кроме проца и матери
                 {
                     pr.children[0].checked = false;
                     this.slots = 0;
                     this.size_memory = 0;
+                    this.ram = [];
                     if(pr.children[0].name == 'RAM')
                     {
                         pr.children[1].style.display = "none";
@@ -181,7 +186,6 @@ var builder = new Vue({
                         
                         if(Number(this.slots) > this.m_slots) // если мы превысили кол-во слотов 
                         {
-                            console.log("Слоты");
                             pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);  // 
                             // по хорошему можно просто минус 1, но я могу инпут зажать и ввести например сто
                             // можно инпуту указать возможный максимум, но пока не могу этого сделать
@@ -191,7 +195,6 @@ var builder = new Vue({
 
                         if(parseFloat(this.max_memory) < parseFloat(this.size_memory)) // если мы превысили допустимый объём памяти
                         {
-                            console.log("Объём");
                             pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);
                             this.slots = parseFloat(this.slots) - Number(1);
                             this.size_memory = this.size_memory - parseFloat(str[1]);
@@ -209,6 +212,26 @@ var builder = new Vue({
             this.price();
         },
 
+        select_cooler(title, id)
+        {
+            title = title.substr(0, title.length - id.length); // убираем айдишник с названия (он нужен для уникальности, ибо сущности разные, айди повторяются)
+            product = document.querySelectorAll(".product"); // обновляем список продуктов, который сейчас видит пользователь
+            for(let pr of product) // для всех продуктов
+            {
+                let str = pr.children[0].value.split('%%') //берем название (оно есть у всех и оно всегда первое)
+                if(pr.children[0].checked == true && pr.children[0].name == 'cooler' && title == str[0]) // если кнопка выбрана и это то, что я нажал
+                {
+                    this.cooler = str[0];
+                }
+                else // иначе я всё сбрасываю кроме процессора
+                {
+                    
+                }
+            }
+            
+            this.price();
+        },
+
 
 
         price() // расчёт цены
@@ -216,6 +239,7 @@ var builder = new Vue({
             //console.log("Меня вызвали");
             product = document.querySelectorAll(".product"); // обновляем список продуктов, который сейчас видит пользователь
             this.sum = 0;
+            this.ram = [];
             for(let pr of product)
             {
                 if(pr.children[0].checked) // ищем все "галочки"
@@ -235,12 +259,23 @@ var builder = new Vue({
                     else if(pr.children[0].name == 'RAM') // если это оперативка
                     {
                         this.sum = this.sum + (parseFloat(str[str.length - 1])*parseFloat(pr.children[1].children[0].children[1].value)); // тут цену умножаем на кол-во
+                        if(pr.children[1].children[0].children[1].value > 0)
+                        {
+                            this.ram.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
+                        }
+                        
+                    }
+                    else if(pr.children[0].name == 'cooler')
+                    {
+                        this.sum = this.sum + parseFloat(str[str.length - 1]);
+                        this.cooler = str[0];
                     }
                 }
             }
             document.querySelector(".result__price").textContent = this.sum;
             document.querySelector(".result__processor").textContent = this.processor;
             document.querySelector(".result__motherboard").textContent = this.motherboard;
+            document.querySelector(".result__cooler").textContent = this.cooler;
         },
 
         clear() // отчистка. Все сбрасывается, как будто мы перезагрузили страницу
@@ -262,9 +297,13 @@ var builder = new Vue({
             this.m_frequency = 0;
             this.max_memory_proc = 0;
             this.m_frequency_proc = 0;
+            this.ram = [];
+            this.tdp = 0;
+            this.cooler = "";
             document.querySelector(".result__price").textContent = this.sum;
             document.querySelector(".result__processor").textContent = this.processor;
             document.querySelector(".result__motherboard").textContent = this.motherboard;
+            document.querySelector(".result__cooler").textContent = this.cooler;
         },
     }
   })

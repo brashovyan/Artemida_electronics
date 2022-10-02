@@ -35,9 +35,8 @@
                 <ul class="main__ul"><li><p class="main__product__logo">Процессоры</p></li></ul>
                     {% for processor in processors %}
                         <div class="product">
-                            <!-- для корректной работы радио name у группы товаров должен быть одинаковый (проказы vue)-->
-                            <input type="radio" name="processor" value="{{processor.title}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}{{processor.id}}', '{{processor.id}}')">
-                            <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - {{processor.socket}}</a>
+                            <input type="radio" name="processor" value="{{processor.title}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.tdp}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}{{processor.id}}', '{{processor.id}}')">
+                            <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - {{processor.socket}} {{processor.price}} руб</a>
                             <div class="main__img" id="{{processor.title}}{{processor.id}}">
                                 <div class="img__div">
                                     {% if processor.image.url != "" or processor.image.url != Null %}
@@ -55,11 +54,10 @@
 
                 <ul class="main__ul"><li><p class="main__product__logo">Материнские платы</p></li></ul>
                 {% for motherboard in motherboards %}
-                <!-- если сокет проца совпадает с сокетом материнки и т.д. -->
                     <template v-if="socket == '{{motherboard.socket}}'">
                         <div class="product">
                             <input name="motherboard" value="{{motherboard.title}}%%{{motherboard.socket}}%%{{motherboard.chipset}}%%{{motherboard.m_slots}}%%{{motherboard.m_frequency}}%%{{motherboard.max_memory}}%%{{motherboard.type_memory}}%%{{motherboard.price}}" type="radio" @change="select_motherboard('{{motherboard.title}}{{motherboard.id}}', '{{motherboard.id}}')">
-                            <a class="main__img__href" onclick="showImg('{{motherboard.title}}{{motherboard.id}}')">{{motherboard.title}} - {{motherboard.socket}}</a>
+                            <a class="main__img__href" onclick="showImg('{{motherboard.title}}{{motherboard.id}}')">{{motherboard.title}} - {{motherboard.socket}} {{motherboard.price}} руб</a>
                             <div class="main__img" id="{{motherboard.title}}{{motherboard.id}}">
                                 <div class="img__div">
                                    {% if motherboard.image.url != "" or motherboard.image.url != Null %}
@@ -77,12 +75,14 @@
 
 
                <ul class="main__ul"><li><p class="main__product__logo">Оперативная память</p></li></ul>
-                    <p>Кол-во слотов в материнке: [[m_slots]]</p>
-                    <p>Максимальный объём памяти: [[max_memory]]</p>
-                    <p>Максимальная частота памяти: [[m_frequency]]</p>
-                    <p>Занято слотов: [[slots]]</p>
-                    <p>Текущий объём памяти: [[ size_memory ]]</p>
-<!--                   <template v-for="n in Number(m_slots)"> &lt;!&ndash; В зависимости сколько слотов в материнке для ОЗУ &ndash;&gt;-->
+                    <template v-if="motherboard != ''">
+                        <p>Кол-во слотов в материнке: [[m_slots]]</p>
+                        <p>Максимальный объём памяти: [[max_memory]]</p>
+                        <p>Максимальная частота памяти: [[m_frequency]]</p>
+                        <p>Занято слотов: [[slots]]</p>
+                        <p>Текущий объём памяти: [[ size_memory ]]</p>
+                    </template>
+                    
                        {% for ram in rams %}
                            <template v-if="type_memory == '{{ram.type_memory}}' && parseFloat(m_frequency) >= '{{ram.m_frequency|floatformat}}'">
                                 <div class="product" style="display: flex; align-items: center; flex-wrap: wrap;">
@@ -91,13 +91,12 @@
                                     <div class="quantity">
                                         <div class="number">
                                             <button class="number-minus" type="button" @click="select_ram_minus('{{ram.title}}{{ram.id}}', '{{ram.id}}')">-</button>
-                                            <input type="number" min="0" value="0" step="1" readonly name="{{ram.title}}{{ram.id}}">
+                                            <input type="number" min="0" value="0" step="1" v-bind:max="m_slots" readonly name="{{ram.title}}{{ram.id}}">
                                             <button class="number-plus" type="button" @click="select_ram_plus('{{ram.title}}{{ram.id}}', '{{ram.id}}')">+</button>
                                         </div>
                                     </div>
                                     
-                                    <!-- <input class="quantity" type="number" name="{{ram.title}}{{ram.id}}" value="0" content="0" min="0" step="1" onkeypress="return false" @change="select_ram('{{ram.title}}{{ram.id}}', '{{ram.id}}')"> -->
-                                    <a class="main__img__href" onclick="showImg('{{ram.title}}{{ram.id}}')">{{ram.title}} - {{ram.m_frequency}}</a>
+                                    <a class="main__img__href" onclick="showImg('{{ram.title}}{{ram.id}}')">{{ram.title}} - {{ram.m_frequency}} {{ram.price}} руб</a>
                                     <div class="main__img" id="{{ram.title}}{{ram.id}}" style="width: 100%;">
                                         <div class="img__div">
                                             {% if ram.image.url != "" or ram.image.url != Null %}
@@ -111,9 +110,29 @@
                                 </div>
                            </template>
                        {% endfor %}
-<!--                  </template>-->
 
 
+
+
+                <ul class="main__ul"><li><p class="main__product__logo">Кулеры для процессора</p></li></ul>
+                {% for cooler in coolers %}
+                    <template v-if="parseFloat(tdp) <= '{{cooler.power|floatformat}}' && parseFloat(tdp) != 0">
+                        <div class="product">
+                            <input name="cooler" value="{{cooler.title}}%%{{cooler.power}}%%{{cooler.price}}" type="radio" @change="select_cooler('{{cooler.title}}{{cooler.id}}', '{{cooler.id}}')">
+                            <a class="main__img__href" onclick="showImg('{{cooler.title}}{{cooler.id}}')">{{cooler.title}} {{cooler.price}} руб</a>
+                            <div class="main__img" id="{{cooler.title}}{{cooler.id}}">
+                                <div class="img__div">
+                                {% if cooler.image.url != "" or cooler.image.url != Null %}
+                                        <a href="/123"> <img src="{{ cooler.image.url }}" width="100" height="100" alt="{{cooler.title}}"></a>
+                                    {% else %}
+                                        <a href="/123"> <img src="" width="100" height="100" alt="{{cooler.title}}"></a>
+                                    {% endif %}
+                                        <a href="/123" class="main__img__href__block">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                {% endfor %}
 
             </div>
         </div>
@@ -126,6 +145,13 @@
 <!--                <template v-for="n in Number(m_slots)">-->
 <!--                    <p>ОЗУ Слот [[n]]: <span class="result__ram[[n]]"></span></p>-->
 <!--                </template>-->
+                <template v-if="ram == ''">
+                    <p>ОЗУ:</p>
+                </template>
+                <template v-for="r in ram">
+                    <p>ОЗУ: [[r]]</p>
+                </template>
+                <p>Кулер для процессора: <span class="result__cooler"></span></p>
                 <p>Цена: <span class="result__price">0</span></p>
             </div>
             <button @click="price">Расчитать сцену</button>
