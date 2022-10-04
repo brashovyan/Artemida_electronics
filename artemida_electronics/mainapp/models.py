@@ -1,5 +1,6 @@
 from email.policy import default
 from tabnanny import verbose
+from unittest.util import _MAX_LENGTH
 from django.db import models
 
 
@@ -55,6 +56,18 @@ class Cooler(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     image = models.ImageField(upload_to='Coolers/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
 
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class Videocard(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название видеокарты", help_text="Введите полное название видеокарты", null=False)
+    power = models.FloatField(default = 0, help_text="Введите рекомендуемый блок питания", verbose_name="Рекомендуемый блок питания", null=False)
+    memory = models.CharField(max_length=20, help_text="Введите объём и тип памяти. Например 12гб GDDR6", verbose_name="Память", null=True)
+    price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    image = models.ImageField(upload_to='Videocards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
     def __str__(self):

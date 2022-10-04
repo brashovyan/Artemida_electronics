@@ -1,4 +1,4 @@
-from .models import Processor, Motherboard, RAM, Cooler
+from .models import Processor, Motherboard, RAM, Cooler, Videocard
 import os
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -14,7 +14,8 @@ def index(request):
     motherboards = Motherboard.objects.all()
     rams = RAM.objects.all()
     coolers = Cooler.objects.all()
-    return render(request, 'mainapp/index.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams, 'coolers':coolers})
+    videocards = Videocard.objects.all()
+    return render(request, 'mainapp/index.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams, 'coolers':coolers, 'videocards': videocards})
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор
@@ -24,3 +25,41 @@ def delete_article(sender, instance, **kwargs):
         print("Админ удалил процессор")
     except:
         print("Админ удалил процессор, но не удалось удалить картинку")
+
+
+@receiver(post_delete, sender=Motherboard) # админ удалил мать
+def delete_article(sender, instance, **kwargs):
+    try:
+        os.remove(r"./media/"+str(instance.image))
+        print("Админ удалил мать")
+    except:
+        print("Админ удалил мать, но не удалось удалить картинку")
+
+
+@receiver(post_delete, sender=RAM) # админ удалил ОЗУ
+def delete_article(sender, instance, **kwargs):
+    try:
+        os.remove(r"./media/"+str(instance.image))
+        print("Админ удалил ОЗУ")
+    except:
+        print("Админ удалил ОЗУ, но не удалось удалить картинку")
+
+
+@receiver(post_delete, sender=Cooler) # админ удалил кулер
+def delete_article(sender, instance, **kwargs):
+    try:
+        os.remove(r"./media/"+str(instance.image))
+        print("Админ удалил кулер")
+    except:
+        print("Админ удалил кулер, но не удалось удалить картинку")
+
+
+@receiver(post_delete, sender=Videocard) # админ удалил видеокарту
+def delete_article(sender, instance, **kwargs):
+    try:
+        os.remove(r"./media/"+str(instance.image))
+        print("Админ удалил видеокарту")
+    except:
+        print("Админ удалил видеокарту, но не удалось удалить картинку")
+
+

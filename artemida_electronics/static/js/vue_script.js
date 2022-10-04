@@ -17,10 +17,51 @@ var builder = new Vue({
       tdp: 0,
       ram: [],
       cooler: "",
+      videocard: "",
+
+      filter_proc: [],
 
       //product: document.querySelectorAll(".product"),
       //cost: document.querySelector(".result__cost"),
       //all: document.querySelector(".result__all"),
+    },
+
+    watch: {
+        filter_proc: function(){
+            for(let pr of product)
+            {
+                if(pr.children[0].name != 'videocard')
+                {
+                    pr.children[0].checked = false;
+                }
+            }
+
+            this.processor = "";
+            this.motherboard = "";
+            this.sum = 0;
+            this.socket= "";
+            this.type_memory = "";
+            this.m_slots = 0;
+            this.slots = 0;
+            this.max_memory = 0;
+            this.size_memory = 0;
+            this.m_frequency = 0;
+            this.max_memory_proc = 0;
+            this.m_frequency_proc = 0;
+            this.ram = [];
+            this.tdp = 0;
+            this.cooler = "";
+            document.querySelector(".result__price").textContent = this.sum;
+            document.querySelector(".result__processor").textContent = this.processor;
+            document.querySelector(".result__motherboard").textContent = this.motherboard;
+            document.querySelector(".result__cooler").textContent = this.cooler;
+            this.price();
+            //alert('lf');
+        },
+
+        videocard: function(){
+            alert("Бери 1050ti");
+        }
     },
 
     methods: {
@@ -232,6 +273,27 @@ var builder = new Vue({
             this.price();
         },
 
+        select_videocard(title, id)
+        {
+            title = title.substr(0, title.length - id.length);
+            product = document.querySelectorAll(".product");
+            for(let pr of product) // для всех продуктов
+            {
+                let str = pr.children[0].value.split('%%') //берем название (оно есть у всех и оно всегда первое)
+                if(pr.children[0].checked == true && pr.children[0].name == 'videocard' && title == str[0]) // если кнопка выбрана и это то, что я нажал
+                {
+                    this.videocard = str[0];
+                }
+                else
+                {
+                    
+                }
+            }
+            
+            this.price();
+
+        },
+
 
 
         price() // расчёт цены
@@ -270,6 +332,11 @@ var builder = new Vue({
                         this.sum = this.sum + parseFloat(str[str.length - 1]);
                         this.cooler = str[0];
                     }
+                    else if(pr.children[0].name == "videocard")
+                    {
+                        this.sum = this.sum + parseFloat(str[str.length - 1]);
+                        this.videocard = str[0];
+                    }
                 }
             }
             document.querySelector(".result__price").textContent = this.sum;
@@ -300,10 +367,12 @@ var builder = new Vue({
             this.ram = [];
             this.tdp = 0;
             this.cooler = "";
+            this.videocard = "";
             document.querySelector(".result__price").textContent = this.sum;
             document.querySelector(".result__processor").textContent = this.processor;
             document.querySelector(".result__motherboard").textContent = this.motherboard;
             document.querySelector(".result__cooler").textContent = this.cooler;
+            document.querySelector(".result__videocard").textContent = this.videocard;
         },
     }
   })

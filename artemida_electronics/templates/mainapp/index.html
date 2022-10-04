@@ -30,24 +30,53 @@
             <p class="main__logo">Комплектующие</p>
             <div class="products">
 
-
-
                 <ul class="main__ul"><li><p class="main__product__logo">Процессоры</p></li></ul>
+
+                <div class="filter__proc">
+                    <p>Фильтры: </p>
+                    <input type="checkbox" value="amd" v-model="filter_proc">
+                    <label>AMD</label>
+                    <input type="checkbox" value="INTEL" v-model="filter_proc">
+                    <label>Intel</label>
+                </div>
+
                     {% for processor in processors %}
-                        <div class="product">
-                            <input type="radio" name="processor" value="{{processor.title}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.tdp}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}{{processor.id}}', '{{processor.id}}')">
-                            <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - {{processor.socket}} {{processor.price}} руб</a>
-                            <div class="main__img" id="{{processor.title}}{{processor.id}}">
-                                <div class="img__div">
-                                    {% if processor.image.url != "" or processor.image.url != Null %}
-                                        <a href="/123"> <img src="{{ processor.image.url }}" width="100" height="100" alt="{{processor.title}}"></a>
-                                    {% else %}
-                                        <a href="/123"> <img src="" width="100" height="100" alt="{{processor.title}}"></a>
-                                    {% endif %}
-                                        <a href="/123" class="main__img__href__block">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                        <template v-if="filter_proc != ''">
+                            <template v-for="filter in filter_proc">
+                                <template v-if="'{{processor.title}}'.toLowerCase().indexOf(filter.toLowerCase()) != -1">
+                                    <div class="product">
+                                        <input type="radio" name="processor" value="{{processor.title}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.tdp}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}{{processor.id}}', '{{processor.id}}')">
+                                        <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - {{processor.socket}} {{processor.price}} руб</a>
+                                        <div class="main__img" id="{{processor.title}}{{processor.id}}">
+                                            <div class="img__div">
+                                                {% if processor.image.url != "" or processor.image.url != Null %}
+                                                    <a href="/123"> <img src="{{ processor.image.url }}" width="100" height="100" alt="{{processor.title}}"></a>
+                                                {% else %}
+                                                    <a href="/123"> <img src="" width="100" height="100" alt="{{processor.title}}"></a>
+                                                {% endif %}
+                                                    <a href="/123" class="main__img__href__block">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <div class="product">
+                                <input type="radio" name="processor" value="{{processor.title}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.tdp}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}{{processor.id}}', '{{processor.id}}')">
+                                <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - {{processor.socket}} {{processor.price}} руб</a>
+                                <div class="main__img" id="{{processor.title}}{{processor.id}}">
+                                    <div class="img__div">
+                                        {% if processor.image.url != "" or processor.image.url != Null %}
+                                            <a href="/123"> <img src="{{ processor.image.url }}" width="100" height="100" alt="{{processor.title}}"></a>
+                                        {% else %}
+                                            <a href="/123"> <img src="" width="100" height="100" alt="{{processor.title}}"></a>
+                                        {% endif %}
+                                            <a href="/123" class="main__img__href__block">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </template>           
                     {% endfor %}
 
 
@@ -134,6 +163,26 @@
                     </template>
                 {% endfor %}
 
+
+
+                <ul class="main__ul"><li><p class="main__product__logo">Видеокарты</p></li></ul>
+                {% for videocard in videocards %}
+                        <div class="product">
+                            <input name="videocard" value="{{videocard.title}}%%{{videocart.power}}%%{{videocard.price}}" type="radio" @change="select_videocard('{{videocard.title}}{{videocard.id}}', '{{videocard.id}}')">
+                            <a class="main__img__href" onclick="showImg('{{videocard.title}}{{videocard.id}}')">{{videocard.title}} {{videocard.price}} руб</a>
+                            <div class="main__img" id="{{videocard.title}}{{videocard.id}}">
+                                <div class="img__div">
+                                {% if videocard.image.url != "" or videocard.image.url != Null %}
+                                        <a href="/123"> <img src="{{ videocard.image.url }}" width="100" height="100" alt="{{videocard.title}}"></a>
+                                    {% else %}
+                                        <a href="/123"> <img src="" width="100" height="100" alt="{{videocard.title}}"></a>
+                                    {% endif %}
+                                        <a href="/123" class="main__img__href__block">Подробнее (также тут можно разместить краткие хар-ки)</a>
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+
             </div>
         </div>
 
@@ -152,6 +201,7 @@
                     <p>ОЗУ: [[r]]</p>
                 </template>
                 <p>Кулер для процессора: <span class="result__cooler"></span></p>
+                <p>Видеокарта: <span class="result__videocard"></span></p>
                 <p>Цена: <span class="result__price">0</span></p>
             </div>
             <button @click="price">Расчитать сцену</button>
