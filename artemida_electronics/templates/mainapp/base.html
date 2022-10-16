@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href= "{% static 'css/index.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <script src="{% static 'js/vue.js' %}"></script> <!-- Подключаем вью файликом -->
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <a href="/" class="header__menu">Artemida Electronics</a>
+        </div>
+        <div class="header__right">
+            <a href="#" class="header__menu">Меню1</a>
+            <a href="#" class="header__menu">Меню2</a>
+            <a href="#" class="header__menu">Меню3</a>
+        </div>
+    </header>
+
+
+    {% block site_content %}{% endblock %}
+
+
+    <footer class="footer">
+        <div class="footer__top">
+            <a href="#" class="footer__menu">Меню1</a>
+            <a href="#" class="footer__menu">Меню2</a>
+            <a href="#" class="footer__menu">Меню3</a>
+        </div>
+        <hr class="footer__hr">
+        <div class="footer__bot">
+            <a href="/" class="footer__menu">© Artemida Electronics 2022</a>
+        </div>
+    </footer>
+</body>
+</html>

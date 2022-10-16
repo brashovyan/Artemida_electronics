@@ -1,21 +1,26 @@
-from .models import Processor, Motherboard, RAM, Cooler, Videocard
+from .models import Processor, Motherboard, RAM, Cooler, Videocard, Power_block, SSD_M2, HDD, SSD_sata, Corpus
 import os
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
-from django.core.mail import send_mail, send_mass_mail
-import random
 
 
 def index(request):
-    processors = Processor.objects.all()
-    motherboards = Motherboard.objects.all()
-    rams = RAM.objects.all()
-    coolers = Cooler.objects.all()
-    videocards = Videocard.objects.all()
-    return render(request, 'mainapp/index.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams, 'coolers':coolers, 'videocards': videocards})
+    processors = Processor.objects.all().order_by('price')
+    motherboards = Motherboard.objects.all().order_by('price')
+    rams = RAM.objects.all().order_by('price')
+    coolers = Cooler.objects.all().order_by('price')
+    videocards = Videocard.objects.all().order_by('price')
+    power_blocks = Power_block.objects.all().order_by('price')
+    ssd_m2 = SSD_M2.objects.all().order_by('price')
+    hdd = HDD.objects.all().order_by('price')
+    ssd_sata = SSD_sata.objects.all().order_by('price')
+    corpuses = Corpus.objects.all().order_by('price')
+    return render(request, 'mainapp/index.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams, 'corpuses': corpuses,
+     'coolers':coolers, 'videocards': videocards, 'power_blocks':power_blocks, 'ssd_m2': ssd_m2, 'hdd': hdd, 'ssd_sata':ssd_sata})
+    
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

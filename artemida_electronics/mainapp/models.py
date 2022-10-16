@@ -29,6 +29,8 @@ class Motherboard(models.Model):
     m_frequency = models.FloatField(help_text="Введите поддерживаемую частоту ОЗУ", verbose_name="Частота ОЗУ", null=False)
     max_memory = models.FloatField(help_text="Введите максимальный объем ОЗУ.", verbose_name="Максимальный объём ОЗУ", null=False)
     type_memory = models.CharField(max_length=20, verbose_name="Тип ОЗУ", help_text="Введите тип памяти. Например DDR4", null=False)
+    m2_slots =  models.IntegerField(default = 0, help_text="Введите кол-во разьемов М.2", verbose_name="Разьемы М.2", null=False)
+    sata_slots = models.IntegerField(default = 0, help_text="Введите кол-во разьемов SATA", verbose_name="Разьемы SATA", null=False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     image = models.ImageField(upload_to='motherboards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
@@ -72,5 +74,61 @@ class Videocard(models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+
+class Power_block(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название блока питания", help_text="Введите полное название блока питания", null=False)
+    power = models.FloatField(default = 0, help_text="Введите мощность в Вт", verbose_name="Мощность", null=False)
+    price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    image = models.ImageField(upload_to='Power_blocks/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class SSD_M2(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название SSD M.2", help_text="Введите полное название SSD M.2", null=False)
+    capacity = models.FloatField(verbose_name="Объём памяти", help_text="Введите объём памяти в Гб", null = False)
+    price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    image = models.ImageField(upload_to='ssd_m2/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class HDD(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название жесткого диска (HDD)", help_text="Введите полное название жесткого диска (HDD)", null=False)
+    capacity = models.FloatField(verbose_name="Объём памяти", help_text="Введите объём памяти в Гб", null = False)
+    price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    image = models.ImageField(upload_to='hdd/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class SSD_sata(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название SSD Sata", help_text="Введите полное название SSD Sata", null=False)
+    capacity = models.FloatField(verbose_name="Объём памяти", help_text="Введите объём памяти в Гб", null = False)
+    price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    image = models.ImageField(upload_to='ssd_sata/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class Corpus(models.Model):
+    title = models.CharField(max_length=100, verbose_name="Название SSD Sata", help_text="Введите полное название SSD Sata", null=False)
+    form = models.CharField(max_length =25, verbose_name="Форм-фактор", help_text="Введите форм-фактор корпуса", null=True, blank=True)
+    price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    image = models.ImageField(upload_to='corpuses/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.title}'
+
 
 

@@ -5,7 +5,7 @@
 
 body{
     font-family: 'Ubuntu', sans-serif;
-    background-color: #E0FFFF;
+    background-color: white;
 }
 
 .header{
@@ -15,20 +15,52 @@ body{
     width: auto;
     height: auto;
     flex-wrap: wrap;
-    background-image: url(../img/header.jpg);
-    padding: 20px;
+    background-color: #bbccde;
+    padding: 15px;
 }
 
-.header__menu{
-    margin: 20px;
-    font-size: 36px;
-    color: white;
+.footer{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	flex-direction: column;
+    width: auto;
+    height: auto;
+    flex-wrap: wrap;
+    background-color: #bbccde;
+    padding: 5px;
+}
+
+.footer__hr{
+	width: 80%;
+	color: black;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.footer__menu{
+	margin: 20px;
+    font-size: 20px;
+    color: black;
     text-decoration: none;
     text-align: center;
 }
 
+.header__menu{
+    margin: 20px;
+    font-size: 40px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+	-webkit-text-stroke: 1px black;
+}
+
 .header__menu:hover{
-    color: #AFEEEE;
+    color: #94a291;
+}
+
+.footer__menu:hover{
+    color: #94a291;
 }
 
 .main{
@@ -148,6 +180,180 @@ body{
     cursor: pointer;
 }
 
+
+.number_ssd {
+	display: inline-block;
+	position: relative;
+	width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.number_ssd input[type="number"] {
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+	appearance: textfield;
+}
+.number_ssd input[type="number"]::-webkit-outer-spin-button,
+.number_ssd input[type="number"]::-webkit-inner-spin-button {
+	display: none;
+}
+.number_minus_ssd {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	bottom: 1px;
+	width: 20px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-right: 1px solid #ddd;
+	font-size: 16px;
+	font-weight: 600;
+    cursor: pointer;
+}
+.number_plus_ssd {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	bottom: 1px;
+	width: 20px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-left: 1px solid #ddd;
+	font-size: 16px;
+	font-weight: 600;
+    cursor: pointer;
+}
+
+
+.number_hdd {
+	display: inline-block;
+	position: relative;
+	width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.number_hdd input[type="number"] {
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+	appearance: textfield;
+}
+.number_hdd input[type="number"]::-webkit-outer-spin-button,
+.number_hdd input[type="number"]::-webkit-inner-spin-button {
+	display: none;
+}
+.number_minus_hdd {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	bottom: 1px;
+	width: 20px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-right: 1px solid #ddd;
+	font-size: 16px;
+	font-weight: 600;
+    cursor: pointer;
+}
+.number_plus_hdd {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	bottom: 1px;
+	width: 20px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-left: 1px solid #ddd;
+	font-size: 16px;
+	font-weight: 600;
+    cursor: pointer;
+}
+
+
+.number_ssds {
+	display: inline-block;
+	position: relative;
+	width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.number_ssds input[type="number"] {
+	display: block;
+	height: 32px;
+	line-height: 32px;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	text-align: center;
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+	appearance: textfield;
+}
+.number_ssds input[type="number"]::-webkit-outer-spin-button,
+.number_ssds input[type="number"]::-webkit-inner-spin-button {
+	display: none;
+}
+.number_minus_ssds {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	bottom: 1px;
+	width: 20px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-right: 1px solid #ddd;
+	font-size: 16px;
+	font-weight: 600;
+    cursor: pointer;
+}
+.number_plus_ssds {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	bottom: 1px;
+	width: 20px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-left: 1px solid #ddd;
+	font-size: 16px;
+	font-weight: 600;
+    cursor: pointer;
+}
+
+.not__select{
+	color: red;
+}
 
 
 @media (max-width: 600px) {
