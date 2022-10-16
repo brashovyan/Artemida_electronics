@@ -782,5 +782,25 @@ var builder = new Vue({
             this.result = "Сборка не завершена! Выберите недостающие комплектующие.";
             document.querySelector(".result__price").textContent = this.sum;
         },
+
+        order()
+        {
+            $.ajax({
+                type: "GET",
+                url: '/aja',
+                data: {
+                    "test": 'Тестим отправку заказа',
+                },
+                dataType: "json",
+                success: function (data) {
+                    // any process in data
+                    alert("Заказ успешно оформлен! Вы будете перемещены на главную страницу.")
+                    window.location.href = `/`;
+                },
+                failure: function () {
+                    alert("Во время обработки заказа произошла ошибка!");
+                }
+            });
+        },
     }
   })

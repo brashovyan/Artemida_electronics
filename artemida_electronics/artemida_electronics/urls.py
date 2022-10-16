@@ -8,6 +8,7 @@ from mainapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('aja/', views.aja, name='aja'),
 ]
 
 
