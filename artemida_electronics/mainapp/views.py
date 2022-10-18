@@ -23,15 +23,41 @@ def index(request):
     
 
 def aja(request):
-    test = request.GET.get('test')
-    if(True):
-        print(test)
+    processor_id = request.GET.get('processor')
+    cooler_id = request.GET.get('cooler')
+    motherboard_id = request.GET.get('motherboard')
+    ram = request.GET.get('ram')
+    ssd_m2 = request.GET.get('ssd_m2')
+    hdd = request.GET.get('hdd')
+    ssd_sata = request.GET.get('ssd_sata')
+    videocard_id = request.GET.get('videocard')
+    power_block_id = request.GET.get('power_block')
+    corpus_id = request.GET.get('corpus')
+
+    print(f'processor {processor_id}')
+    """print(f'cooler {cooler}')
+    print(f'mother {motherboard}')
+    print(f'ram {ram}')
+    print(f'ssd_m2 {ssd_m2}')
+    print(f'hdd {hdd}')
+    print(f'ssd_sata {ssd_sata}')
+    print(f'videocard {videocard}')
+    print(f'powerblock {power_block}')
+    print(f'corpus {corpus}')"""
+
+    processor = Processor.objects.get(id=processor_id)
+
+
+    if(processor_id != "" and cooler_id != "" and motherboard_id != "" and ram != "" and videocard_id != "" and power_block_id != "" and (hdd != "" or ssd_sata != "" or ssd_m2 != "")):
         data = {
             "success": "success",
         }
         return JsonResponse(data)
     else:
-        return HttpResponseRedirect("/")
+        data = {
+            "success": "fail",
+        }
+        return JsonResponse(data)
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

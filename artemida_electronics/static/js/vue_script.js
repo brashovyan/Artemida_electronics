@@ -30,7 +30,19 @@ var builder = new Vue({
       corpus: "", // выбранный корпус
 
       filter_proc: [], // фильтры для процессоров
-      filter_ram: [],
+      filter_ram: [], // фильтр для озу
+
+      processor_id: "",
+      cooler_id: "",
+      motherboard_id: "",
+      ram_id: [],
+      ssd_m2_id: [],
+      hdd_id: [],
+      ssd_sata_id: [],
+      videocard_id: "",
+      power_block_id: "",
+      corpus_id: "",
+
 
       result: "Сборка не завершена! Выберите недостающие комплектующие.",
     },
@@ -667,6 +679,18 @@ var builder = new Vue({
             this.ssd_m2 = [];
             this.hdd = [];
             this.ssd_sata = [];
+
+            this.processor_id= "";
+            this.cooler_id= "";
+            this.motherboard_id = "";
+            this.ram_id = [];
+            this.ssd_m2_id = [];
+            this.hdd_id = [];
+            this.ssd_sata_id = [];
+            this.videocard_id = "";
+            this.power_block_id = "";
+            this.corpus_id = "";
+
             for(let pr of product)
             {
                 if(pr.children[0].checked) // ищем все "галочки"
@@ -677,11 +701,13 @@ var builder = new Vue({
                     {
                         this.processor = str[0];
                         this.sum = this.sum + parseFloat(str[str.length - 1]); // цена у всех указана последней
+                        this.processor_id = str[1];
                     }
                     else if(pr.children[0].name == 'motherboard') // если это материнка
                     {
                         this.motherboard = str[0];
                         this.sum = this.sum + parseFloat(str[str.length - 1]); // цена у всех указана последней
+                        this.motherboard_id = str[1];
                     }
                     else if(pr.children[0].name == 'RAM') // если это оперативка
                     {
@@ -689,6 +715,7 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.ram.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
+                            this.ram_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
                         }
                         
                     }
@@ -696,16 +723,19 @@ var builder = new Vue({
                     {
                         this.sum = this.sum + parseFloat(str[str.length - 1]);
                         this.cooler = str[0];
+                        this.cooler_id = str[1];
                     }
                     else if(pr.children[0].name == "videocard")
                     {
                         this.sum = this.sum + parseFloat(str[str.length - 1]);
                         this.videocard = str[0];
+                        this.videocard_id = str[1];
                     }
                     else if(pr.children[0].name == "power_block")
                     {
                         this.sum = this.sum + parseFloat(str[str.length - 1]);
                         this.power_block = str[0];
+                        this.power_block_id = str[1];
                     }
                     else if(pr.children[0].name == 'ssd_m2') 
                     {
@@ -713,6 +743,7 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.ssd_m2.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
+                            this.ssd_m2_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
                         }
                     }
                     else if(pr.children[0].name == 'hdd') 
@@ -721,6 +752,7 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.hdd.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
+                            this.hdd_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
                         }
                     }
                     else if(pr.children[0].name == 'ssd_sata') 
@@ -729,12 +761,14 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.ssd_sata.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
+                            this.ssd_sata_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
                         }
                     }
                     else if(pr.children[0].name == "corpus")
                     {
                         this.sum = this.sum + parseFloat(str[str.length - 1]);
                         this.corpus = str[0];
+                        this.corpus_id = str[1];
                     }
                 }
             }
@@ -779,6 +813,18 @@ var builder = new Vue({
             this.v_power = 0;
             this.power_block = "";
             this.corpus = "";
+
+            this.processor_id= "";
+            this.cooler_id= "";
+            this.motherboard_id = "";
+            this.ram_id = [];
+            this.ssd_m2_id = [];
+            this.hdd_id = [];
+            this.ssd_sata_id = [];
+            this.videocard_id = "";
+            this.power_block_id = "";
+            this.corpus_id = "";
+
             this.result = "Сборка не завершена! Выберите недостающие комплектующие.";
             document.querySelector(".result__price").textContent = this.sum;
         },
@@ -789,13 +835,29 @@ var builder = new Vue({
                 type: "GET",
                 url: '/aja',
                 data: {
-                    "test": 'Тестим отправку заказа',
+                    "processor": this.processor_id,
+                    "cooler": this.cooler_id,
+                    "motherboard":this. motherboard_id,
+                    "ram": String(this.ram_id),
+                    "ssd_m2": String(this.ssd_m2_id),
+                    "hdd": String(this.hdd_id),
+                    "ssd_sata": String(this.ssd_sata_id),
+                    "videocard": this.videocard_id,
+                    "power_block": this.power_block_id,
+                    "corpus": this.corpus_id,
                 },
                 dataType: "json",
                 success: function (data) {
                     // any process in data
-                    alert("Заказ успешно оформлен! Вы будете перемещены на главную страницу.")
-                    window.location.href = `/`;
+                    if(data.success == "success")
+                    {
+                        alert("Заказ успешно оформлен! Вы будете перемещены на главную страницу.")
+                        window.location.href = `/`;
+                    }
+                    else
+                    {
+                        alert("Во время обработки заказа произошла ошибка! Возможно вы не завершили сборку.")
+                    }
                 },
                 failure: function () {
                     alert("Во время обработки заказа произошла ошибка!");
