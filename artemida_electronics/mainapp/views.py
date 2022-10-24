@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
+from cart.cart import Cart
 
 
 def index(request):
@@ -34,21 +35,55 @@ def aja(request):
     power_block_id = request.GET.get('power_block')
     corpus_id = request.GET.get('corpus')
 
-    print(f'processor {processor_id}')
-    """print(f'cooler {cooler}')
-    print(f'mother {motherboard}')
-    print(f'ram {ram}')
-    print(f'ssd_m2 {ssd_m2}')
-    print(f'hdd {hdd}')
-    print(f'ssd_sata {ssd_sata}')
-    print(f'videocard {videocard}')
-    print(f'powerblock {power_block}')
-    print(f'corpus {corpus}')"""
-
-    processor = Processor.objects.get(id=processor_id)
-
-
     if(processor_id != "" and cooler_id != "" and motherboard_id != "" and ram != "" and videocard_id != "" and power_block_id != "" and (hdd != "" or ssd_sata != "" or ssd_m2 != "")):
+        cart = Cart(request)
+        
+        product = Processor.objects.get(id = int(processor_id))
+        cart.add(product=product, quantity=1, update_quantity=False)
+
+        product = Motherboard.objects.get(id = int(motherboard_id))
+        cart.add(product=product, quantity=1, update_quantity=False)
+
+        product = Cooler.objects.get(id = int(cooler_id))
+        cart.add(product=product, quantity=1, update_quantity=False)
+
+        product = Videocard.objects.get(id = int(videocard_id))
+        cart.add(product=product, quantity=1, update_quantity=False)
+
+        product = Power_block.objects.get(id = int(power_block_id))
+        cart.add(product=product, quantity=1, update_quantity=False)
+
+        if(corpus_id != ''):
+            product = Corpus.objects.get(id = int(corpus_id))
+            cart.add(product=product, quantity=1, update_quantity=False)
+
+        ram = ram.split(',')
+        for r in ram:
+            r = r.split('%')
+            product = RAM.objects.get(id = int(r[0]))
+            cart.add(product=product, quantity=int(r[1]), update_quantity=False)
+
+        if(ssd_m2 != ''):
+            ssd_m2 = ssd_m2.split(',')
+            for r in ssd_m2:
+                r = r.split('%')
+                product = SSD_M2.objects.get(id = int(r[0]))
+                cart.add(product=product, quantity=int(r[1]), update_quantity=False)
+
+        if(hdd != ''):
+            hdd = hdd.split(',')
+            for r in hdd:
+                r = r.split('%')
+                product = HDD.objects.get(id = int(r[0]))
+                cart.add(product=product, quantity=int(r[1]), update_quantity=False)
+
+        if(ssd_sata != ''):
+            ssd_sata = ssd_sata.split(',')
+            for r in ssd_sata:
+                r = r.split('%')
+                product = SSD_sata.objects.get(id = int(r[0]))
+                cart.add(product=product, quantity=int(r[1]), update_quantity=False)
+        
         data = {
             "success": "success",
         }

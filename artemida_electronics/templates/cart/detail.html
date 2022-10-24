@@ -1,19 +1,19 @@
 {% extends "mainapp/base.html" %}
 {% load static %}
-{% block title %}
-    Your shopping cart
-{% endblock %}
+{% block title %}Корзина{% endblock %}
 {% block site_content %}
-    <h1>Your shopping cart</h1>
+    <link href= "{% static 'css/cart.css' %}" rel="stylesheet">
+    
+    <p class="cart__title">Корзина</p>
     <table class="cart">
         <thead>
         <tr>
-            <th>Image</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-            <th>Unit price</th>
-            <th>Price</th>
+            <th>Картинка</th>
+            <th>Товар</th>
+            <th>Кол-во</th>
+            <th>Удаление</th>
+            <th>Цена за единицу товара</th>
+            <th>Всего</th>
         </tr>
         </thead>
         <tbody>
@@ -30,22 +30,22 @@
                                 {% endif %}" style="width: 100px; height: 100px">
                         </a>
                     </td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td><a href="cart/cart_remove/{{product.id}}">Remove</a></td>
-                    <td class="num">${{ item.price }}</td>
-                    <td class="num">${{ item.total_price }}</td>
+                    <td>{{ product.title }}</td>
+                    <td style="padding-left:30px;">{{ item.quantity }}</td>
+                    <td style="padding-left:13px"><a href="remove/{{product.id}}/{{item}}/">Удалить</a></td>
+                    <td class="num">{{ item.price }} руб.</td>
+                    <td class="num">{{ item.total_price }} руб.</td>
                 </tr>
             {% endwith %}
         {% endfor %}
         <tr class="total">
-            <td>Total</td>
+            <td>Итого</td>
             <td colspan="4"></td>
-            <td class="num">${{ cart.get_total_price }}</td>
+            <td class="num">{{ cart.get_total_price }} руб.</td>
         </tr>
+        
         </tbody>
+       
     </table>
-    <p class="text-right">
-        <a href="#" class="button">Checkout</a>
-    </p>
+    <p>Всего в корзине: {{cart.len}}</p>
 {% endblock %}

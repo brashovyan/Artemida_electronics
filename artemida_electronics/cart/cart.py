@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from mainapp.models import Processor
+from mainapp.models import Processor, Motherboard, Cooler, RAM, HDD, SSD_M2, SSD_sata, Videocard, Power_block, Corpus
 
 
 class Cart(object):
@@ -20,15 +20,18 @@ class Cart(object):
         """
         Добавить продукт в корзину или обновить его количество.
         """
-        product_id = str(product.id)
-        # получается корзина - это просто строка - словарь, где ключ - это айдишник, а его значение - еще один словарик с данными (словарь в словаре)
-        if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0,
+        product_id = str(product.id) # получаем его айдишник
+        product_type = str(product.__class__.__name__) # и его тип (Это видеокарта или процессор и т.д. )
+        product_info = f'{product_type}*{product_id}'
+
+        # получается корзина - это просто строка - словарь, где ключ - это айдишник + тип, а его значение - еще один словарик с данными (словарь в словаре)
+        if product_info not in self.cart:
+            self.cart[product_info] = {'quantity': 0,
                                     'price': str(product.price)} # цена у сущности - price
         if update_quantity:
-            self.cart[product_id]['quantity'] = quantity
+            self.cart[product_info]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] += quantity
+            self.cart[product_info]['quantity'] += quantity
         self.save()
 
 
@@ -43,9 +46,12 @@ class Cart(object):
         """
         Удаление товара из корзины.
         """
-        product_id = str(product.id)
-        if product_id in self.cart:
-            del self.cart[product_id]
+        product_id = str(product.id) # получаем его айдишник
+        product_type = str(product.__class__.__name__) # и его тип (Это видеокарта или процессор и т.д. )
+        product_info = f'{product_type}*{product_id}'
+
+        if product_info in self.cart:
+            del self.cart[product_info]
             self.save()
 
 
@@ -53,11 +59,129 @@ class Cart(object):
         """
         Перебор элементов в корзине и получение продуктов из базы данных.
         """
-        product_ids = self.cart.keys()
-        # получение объектов product и добавление их в корзину
-        products = Processor.objects.filter(id__in=product_ids)
+        products = self.cart.keys()
+
         for product in products:
-            self.cart[str(product.id)]['product'] = product
+
+            product_split = str(product).split('*')
+
+            #Да, костыльно и топорно, но надо так отдельно для каждого типа продукта
+            
+            if(product_split[0] == 'Processor'):
+
+                product2 = Processor.objects.filter(id=product_split[1])
+          
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+               
+                    self.cart[product3_info]['product'] = product3             
+
+            elif(product_split[0] == 'Motherboard'):
+
+                product2 = Motherboard.objects.filter(id=product_split[1])
+    
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+             
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'Cooler'):
+     
+                product2 = Cooler.objects.filter(id=product_split[1])
+         
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+           
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'HDD'):
+        
+                product2 = HDD.objects.filter(id=product_split[1])
+          
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+         
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'SSD_M2'):
+    
+                product2 = SSD_M2.objects.filter(id=product_split[1])
+      
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+          
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'SSD_sata'):
+    
+                product2 = SSD_sata.objects.filter(id=product_split[1])
+         
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+            
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'RAM'):
+   
+                product2 = RAM.objects.filter(id=product_split[1])
+
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+      
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'Videocard'):
+         
+                product2 = Videocard.objects.filter(id=product_split[1])
+         
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+           
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'Power_block'):
+         
+                product2 = Power_block.objects.filter(id=product_split[1])
+          
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+       
+                    self.cart[product3_info]['product'] = product3
+
+            elif(product_split[0] == 'Corpus'):
+    
+                product2 = Corpus.objects.filter(id=product_split[1])
+           
+                for product3 in product2:
+                    product3_id = str(product3.id)
+                    product3_type = str(product3.__class__.__name__)
+                    product3_info = f'{product3_type}*{product3_id}'
+           
+                    self.cart[product3_info]['product'] = product3
+
+
+        # получение объектов product и добавление их в корзину
+        #products = Processor.objects.filter(id__in=product_ids)
+        #for product in products:
+            #self.cart[product]['product'] = product
 
         for item in self.cart.values():
             item['price'] = Decimal(item['price'])
@@ -70,7 +194,7 @@ class Cart(object):
             # максимально просто - это хитровыебанный return перебором циклом for
 
 
-    def __len__(self):
+    def len(self):
         """
         Подсчет всех товаров в корзине.
         """

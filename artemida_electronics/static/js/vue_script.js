@@ -715,7 +715,7 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.ram.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
-                            this.ram_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
+                            this.ram_id.push(str[1] + '%' + pr.children[1].children[0].children[1].value);
                         }
                         
                     }
@@ -743,7 +743,7 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.ssd_m2.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
-                            this.ssd_m2_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
+                            this.ssd_m2_id.push(str[1] + '%' + pr.children[1].children[0].children[1].value);
                         }
                     }
                     else if(pr.children[0].name == 'hdd') 
@@ -752,7 +752,7 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.hdd.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
-                            this.hdd_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
+                            this.hdd_id.push(str[1] + '%' + pr.children[1].children[0].children[1].value);
                         }
                     }
                     else if(pr.children[0].name == 'ssd_sata') 
@@ -761,7 +761,7 @@ var builder = new Vue({
                         if(pr.children[1].children[0].children[1].value > 0)
                         {
                             this.ssd_sata.push(str[0] + ' - ' + pr.children[1].children[0].children[1].value + 'шт');
-                            this.ssd_sata_id.push(str[1] + '**' + pr.children[1].children[0].children[1].value);
+                            this.ssd_sata_id.push(str[1] + '%' + pr.children[1].children[0].children[1].value);
                         }
                     }
                     else if(pr.children[0].name == "corpus")
@@ -851,8 +851,8 @@ var builder = new Vue({
                     // any process in data
                     if(data.success == "success")
                     {
-                        alert("Заказ успешно оформлен! Вы будете перемещены на главную страницу.")
-                        window.location.href = `/`;
+                        alert("Заказ успешно оформлен! Вы будете перемещены на страницу с корзиной для подтверждения и оплаты покупки.")
+                        window.location.href = `/cart`;
                     }
                     else
                     {
