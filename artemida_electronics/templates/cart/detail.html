@@ -10,7 +10,7 @@
         <tr>
             <th>Картинка</th>
             <th>Товар</th>
-            <th>Кол-во</th>
+            <th style="padding-left: 34px;">Кол-во</th>
             <th>Удаление</th>
             <th>Цена за единицу товара</th>
             <th>Всего</th>
@@ -27,25 +27,37 @@
                                     {{ product.image.url }}
                                 {% else %}
                                     {% static 'img/no_image.png' %}
-                                {% endif %}" style="width: 100px; height: 100px">
+                                {% endif %}" style="width: 100px; height: 100px; border-radius: 5px;">
                         </a>
                     </td>
                     <td>{{ product.title }}</td>
-                    <td style="padding-left:30px;">{{ item.quantity }}</td>
+                    <td>
+                        <div class="number_quantity">
+                            <a class="number_minus_quantity" href="quantity_minus/{{product.id}}/{{item}}/">-</a>
+                            <input type="number" min="1" value="{{item.quantity}}" step="1" readonly>
+                            <a class="number_plus_quantity" href="quantity_plus/{{product.id}}/{{item}}/">+</a>
+                        </div>
+                    </td>
                     <td style="padding-left:13px"><a href="remove/{{product.id}}/{{item}}/">Удалить</a></td>
                     <td class="num">{{ item.price }} руб.</td>
                     <td class="num">{{ item.total_price }} руб.</td>
                 </tr>
             {% endwith %}
-        {% endfor %}
-        <tr class="total">
-            <td>Итого</td>
-            <td colspan="4"></td>
-            <td class="num">{{ cart.get_total_price }} руб.</td>
-        </tr>
-        
-        </tbody>
-       
+        {% endfor %}       
+    </tbody>
     </table>
-    <p>Всего в корзине: {{cart.len}}</p>
+    <div class="clear__button">
+        <a class="clear" href="clear/">Очистить корзину</a>
+    </div>
+    <div class="total__price">
+        <p class="total">Итого:</p>
+        <p class="total__result">{{ cart.get_total_price }} руб.</p>
+    </div>
+    <div class="total__price">
+        <p class="total">Всего в корзине:</p>
+        <p class="total__result">{{cart.len}} единиц товара</p>
+    </div>
+    <div class="buy__button">
+        <a class="buy" href="success/">Оплатить</a>
+    </div>
 {% endblock %}

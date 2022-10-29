@@ -16,7 +16,7 @@ class Cart(object):
         self.cart = cart # и сохраняем её в сеттингс (бд)
 
     
-    def add(self, product, quantity=1, update_quantity=False): # product - это какая то сущность в бд
+    def add(self, product, quantity=1, update_quantity='None'): # product - это какая то сущность в бд
         """
         Добавить продукт в корзину или обновить его количество.
         """
@@ -26,12 +26,15 @@ class Cart(object):
 
         # получается корзина - это просто строка - словарь, где ключ - это айдишник + тип, а его значение - еще один словарик с данными (словарь в словаре)
         if product_info not in self.cart:
-            self.cart[product_info] = {'quantity': 0,
-                                    'price': str(product.price)} # цена у сущности - price
-        if update_quantity:
+            self.cart[product_info] = {'quantity': 0, 'price': str(product.price)} # цена у сущности - price
+
+        if update_quantity == 'None':
             self.cart[product_info]['quantity'] = quantity
         else:
-            self.cart[product_info]['quantity'] += quantity
+            if update_quantity == 'Plus':
+                self.cart[product_info]['quantity'] += 1
+            elif self.cart[product_info]['quantity'] > 1:
+                self.cart[product_info]['quantity'] -= 1
         self.save()
 
 

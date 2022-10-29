@@ -1,3 +1,4 @@
+from concurrent.futures import process
 from .models import Processor, Motherboard, RAM, Cooler, Videocard, Power_block, SSD_M2, HDD, SSD_sata, Corpus
 import os
 from django.shortcuts import render
@@ -6,6 +7,9 @@ from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.conf import settings
 from cart.cart import Cart
+from django.contrib.auth import authenticate, login, logout
+from .forms import RegForm
+from django.contrib.auth.models import User, Group
 
 
 def index(request):
@@ -24,75 +28,147 @@ def index(request):
     
 
 def aja(request):
-    processor_id = request.GET.get('processor')
-    cooler_id = request.GET.get('cooler')
-    motherboard_id = request.GET.get('motherboard')
-    ram = request.GET.get('ram')
-    ssd_m2 = request.GET.get('ssd_m2')
-    hdd = request.GET.get('hdd')
-    ssd_sata = request.GET.get('ssd_sata')
-    videocard_id = request.GET.get('videocard')
-    power_block_id = request.GET.get('power_block')
-    corpus_id = request.GET.get('corpus')
+    try:
+        processor_id = request.GET.get('processor')
+        cooler_id = request.GET.get('cooler')
+        motherboard_id = request.GET.get('motherboard')
+        ram = request.GET.get('ram')
+        ssd_m2 = request.GET.get('ssd_m2')
+        hdd = request.GET.get('hdd')
+        ssd_sata = request.GET.get('ssd_sata')
+        videocard_id = request.GET.get('videocard')
+        power_block_id = request.GET.get('power_block')
+        corpus_id = request.GET.get('corpus')
 
-    if(processor_id != "" and cooler_id != "" and motherboard_id != "" and ram != "" and videocard_id != "" and power_block_id != "" and (hdd != "" or ssd_sata != "" or ssd_m2 != "")):
-        cart = Cart(request)
-        
-        product = Processor.objects.get(id = int(processor_id))
-        cart.add(product=product, quantity=1, update_quantity=False)
+        if(processor_id != "" and cooler_id != "" and motherboard_id != "" and ram != "" and videocard_id != "" and power_block_id != "" and (hdd != "" or ssd_sata != "" or ssd_m2 != "")):
+            cart = Cart(request)
+            
+            product = Processor.objects.get(id = int(processor_id))
+            cart.add(product=product, quantity=1)
 
-        product = Motherboard.objects.get(id = int(motherboard_id))
-        cart.add(product=product, quantity=1, update_quantity=False)
+            product = Motherboard.objects.get(id = int(motherboard_id))
+            cart.add(product=product, quantity=1)
 
-        product = Cooler.objects.get(id = int(cooler_id))
-        cart.add(product=product, quantity=1, update_quantity=False)
+            product = Cooler.objects.get(id = int(cooler_id))
+            cart.add(product=product, quantity=1)
 
-        product = Videocard.objects.get(id = int(videocard_id))
-        cart.add(product=product, quantity=1, update_quantity=False)
+            product = Videocard.objects.get(id = int(videocard_id))
+            cart.add(product=product, quantity=1)
 
-        product = Power_block.objects.get(id = int(power_block_id))
-        cart.add(product=product, quantity=1, update_quantity=False)
+            product = Power_block.objects.get(id = int(power_block_id))
+            cart.add(product=product, quantity=1)
 
-        if(corpus_id != ''):
-            product = Corpus.objects.get(id = int(corpus_id))
-            cart.add(product=product, quantity=1, update_quantity=False)
+            if(corpus_id != ''):
+                product = Corpus.objects.get(id = int(corpus_id))
+                cart.add(product=product, quantity=1)
 
-        ram = ram.split(',')
-        for r in ram:
-            r = r.split('%')
-            product = RAM.objects.get(id = int(r[0]))
-            cart.add(product=product, quantity=int(r[1]), update_quantity=False)
-
-        if(ssd_m2 != ''):
-            ssd_m2 = ssd_m2.split(',')
-            for r in ssd_m2:
+            ram = ram.split(',')
+            for r in ram:
                 r = r.split('%')
-                product = SSD_M2.objects.get(id = int(r[0]))
-                cart.add(product=product, quantity=int(r[1]), update_quantity=False)
+                product = RAM.objects.get(id = int(r[0]))
+                cart.add(product=product, quantity=int(r[1]))
 
-        if(hdd != ''):
-            hdd = hdd.split(',')
-            for r in hdd:
-                r = r.split('%')
-                product = HDD.objects.get(id = int(r[0]))
-                cart.add(product=product, quantity=int(r[1]), update_quantity=False)
+            if(ssd_m2 != ''):
+                ssd_m2 = ssd_m2.split(',')
+                for r in ssd_m2:
+                    r = r.split('%')
+                    product = SSD_M2.objects.get(id = int(r[0]))
+                    cart.add(product=product, quantity=int(r[1]))
 
-        if(ssd_sata != ''):
-            ssd_sata = ssd_sata.split(',')
-            for r in ssd_sata:
-                r = r.split('%')
-                product = SSD_sata.objects.get(id = int(r[0]))
-                cart.add(product=product, quantity=int(r[1]), update_quantity=False)
-        
-        data = {
-            "success": "success",
-        }
-        return JsonResponse(data)
+            if(hdd != ''):
+                hdd = hdd.split(',')
+                for r in hdd:
+                    r = r.split('%')
+                    product = HDD.objects.get(id = int(r[0]))
+                    cart.add(product=product, quantity=int(r[1]))
+
+            if(ssd_sata != ''):
+                ssd_sata = ssd_sata.split(',')
+                for r in ssd_sata:
+                    r = r.split('%')
+                    product = SSD_sata.objects.get(id = int(r[0]))
+                    cart.add(product=product, quantity=int(r[1]))
+            
+            data = {
+                "success": "success",
+            }
+            return JsonResponse(data)
+        else:
+            data = {
+                "success": "fail",
+            }
+            return JsonResponse(data)
+    except:
+        return HttpResponseRedirect("/")
+
+
+def info(request, product_id, product):
+    processor = ''
+    cooler = ''
+    motherboard = ''
+    ram = ''
+    ssd_m2 = ''
+    hdd = ''
+    ssd_sata = ''
+    videocard = ''
+    power_block = ''
+    corpus = ''
+
+    if product == 'Processor':
+        processor = Processor.objects.get(id = product_id)
+    elif product == 'Cooler':
+        cooler = Cooler.objects.get(id = product_id)
+    elif product == 'Motherboard':
+        motherboard = Motherboard.objects.get(id = product_id)
+    elif product == 'RAM':
+        ram = RAM.objects.get(id = product_id)
+    elif product == 'ssd_m2':
+        ssd_m2 = SSD_M2.objects.get(id = product_id)
+    elif product == 'HDD':
+        hdd = HDD.objects.get(id = product_id)
+    elif product == 'ssd_sata':
+        ssd_sata = SSD_sata.objects.get(id = product_id)
+    elif product == 'Videocard':
+        videocard = Videocard.objects.get(id = product_id)
+    elif product == 'Power_block':
+        power_block = Power_block.objects.get(id = product_id)
+    elif product == 'Corpus':
+        corpus = Corpus.objects.get(id = product_id)
+
+    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+
+
+def register(request): # регистрация
+    if request.method == "POST":
+        form = RegForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password1 = request.POST.get('password1')
+            password2 = request.POST.get('password2')
+            if password1 == password2:
+                try:
+                    user = User.objects.create_user(username, email, password1)
+                except:
+                    error = "Данный логин уже занят. Попробуйте другой."
+                    form = RegForm()
+                    return render(request, 'mainapp/register.html', {'form': form, 'error': error})
+                if request.user.is_authenticated:
+                    logout(request)
+                login(request, user)
+
+                return HttpResponseRedirect("/")
+            else:
+                error = "Пароли не совпадают!"
+                form = RegForm()
+                return render(request, 'mainapp/register.html', {'form': form, 'error':error})
+
+        else:
+            error = "Вы ввели некорректные данные! Повторите попытку, заполнив все поля по подсказкам."
+            return render(request, 'mainapp/register.html', {'form': form, 'error': error})
     else:
-        data = {
-            "success": "fail",
-        }
-        return JsonResponse(data)
+        form = RegForm()
+        return render(request, 'mainapp/register.html', {'form': form})
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

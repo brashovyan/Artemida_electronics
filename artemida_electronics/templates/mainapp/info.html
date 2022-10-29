@@ -1,0 +1,231 @@
+{% extends 'mainapp/base.html' %}
+{% block title %}{{product.title}}{% endblock %}
+{% block site_content %}
+{% load static %}
+<link href= "{% static 'css/info.css' %}" rel="stylesheet">
+
+{% if processor != ''%}
+    <div class = "card">
+        <div class="card__in">
+            <div class="product__img">
+                {% if processor.image.url != "" or processor.image.url != Null %}
+                    <img src="{{ processor.image.url }}" width="200" height="200" alt="{{processor.title}}">
+                {% else %}
+                    <img src="" width="200" height="200"></a>
+                {% endif %}
+                <p>В налачии: {{processor.stock}} шт.</p>
+            </div>
+            <div class="info">
+                <p class="title">{{processor.title}}</p>
+                <ul class="main__ul">
+                    <li>Сокет: {{processor.socket}}</li>
+                    <li>Ядра/потоки: {{processor.cores}}</li>
+                    <li>Базовая частота: {{processor.frequency}} ГГц</li>
+                    <li>Макс. Частота ОЗУ: {{processor.m_frequency}} МГц</li>
+                    <li>Тип памяти: {{processor.type_memory}}</li>
+                    <li>Максимальный объём ОЗУ: {{processor.max_memory}} Гб</li>
+                    <li>Тепловыделение (TDP): {{processor.tdp}}Вт</li>
+                    <li>Цена: {{processor.price}} руб.</li>
+                </ul>              
+            </div>
+                 
+        </div>
+    </div>
+{% elif cooler != ''%}
+    <div class = "card">
+        <div class="card__in">
+            <div class="product__img">
+                {% if cooler.image.url != "" or cooler.image.url != Null %}
+                    <img src="{{ cooler.image.url }}" width="200" height="200" alt="{{cooler.title}}">
+                {% else %}
+                    <img src="" width="200" height="200"></a>
+                {% endif %}
+                <p>В налачии: {{cooler.stock}} шт.</p>
+            </div>
+            <div class="info">
+                <p class="title">{{cooler.title}}</p>
+                <ul class="main__ul">
+                    <li>Рассеиваемая мощность: {{cooler.power}} Вт</li>
+                    <li>Цена: {{cooler.price}} руб.</li>
+                </ul>              
+            </div>
+                
+        </div>
+    </div>
+{% elif motherboard != ''%}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if motherboard.image.url != "" or motherboard.image.url != Null %}
+                <img src="{{ motherboard.image.url }}" width="200" height="200" alt="{{motherboard.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{motherboard.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{motherboard.title}}</p>
+            <ul class="main__ul">
+                <li>Сокет: {{motherboard.socket}}</li>
+                <li>Чипсет: {{motherboard.chipset}}</li>
+                <li>Кол-во слотов ОЗУ: {{motherboard.m_slots}}</li>
+                <li>Макс. Частота ОЗУ: {{motherboard.m_frequency}} МГц</li>
+                <li>Тип памяти: {{motherboard.type_memory}}</li>
+                <li>Максимальный объём ОЗУ: {{motherboard.max_memory}} Гб</li>
+                <li>Кол-во слотов M2: {{motherboard.m2_slots}}</li>
+                <li>Кол-во слотов SATA: {{motherboard.sata_slots}}</li>
+                <li>Цена: {{motherboard.price}} руб.</li>
+            </ul>              
+        </div>
+             
+    </div>
+</div>
+{% elif ram != '' %}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if ram.image.url != "" or ram.image.url != Null %}
+                <img src="{{ ram.image.url }}" width="200" height="200" alt="{{ram.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{ram.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{ram.title}}</p>
+            <ul class="main__ul">
+                <li>Тип памяти: {{ram.type_memory}}</li>
+                <li>Частота ОЗУ: {{ram.m_frequency}} МГц</li>
+                <li>Объём памяти: {{ram.size}} Гб</li>
+                <li>Тайминги: Вещь важная, но лень в бд заносить</li>
+                <li>Цена: {{ram.price}} руб.</li>
+            </ul>              
+        </div>
+             
+    </div>
+</div>
+{% elif ssd_m2 != ''%}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if ssd_m2.image.url != "" or ssd_m2.image.url != Null %}
+                <img src="{{ ssd_m2.image.url }}" width="200" height="200" alt="{{ssd_m2.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{ssd_m2.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{ssd_m2.title}}</p>
+            <ul class="main__ul">
+                <li>Объём: {{ssd_m2.capacity}} Гб</li>
+                <li>Цена: {{ssd_m2.price}} руб.</li>
+            </ul>              
+        </div>     
+    </div>
+</div>
+{% elif hdd != '' %}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if hdd.image.url != "" or hdd.image.url != Null %}
+                <img src="{{ hdd.image.url }}" width="200" height="200" alt="{{hdd.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{hdd.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{hdd.title}}</p>
+            <ul class="main__ul">
+                <li>Объём: {{hdd.capacity}} Гб</li>
+                <li>Цена: {{hdd.price}} руб.</li>
+            </ul>              
+        </div>     
+    </div>
+</div>
+{% elif ssd_sata != '' %}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if ssd_sata.image.url != "" or ssd_sata.image.url != Null %}
+                <img src="{{ ssd_sata.image.url }}" width="200" height="200" alt="{{ssd_sata.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{ssd_sata.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{ssd_sata.title}}</p>
+            <ul class="main__ul">
+                <li>Объём: {{ssd_sata.capacity}} Гб</li>
+                <li>Цена: {{ssd_sata.price}} руб.</li>
+            </ul>              
+        </div>     
+    </div>
+</div>
+{% elif videocard != '' %}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if videocard.image.url != "" or videocard.image.url != Null %}
+                <img src="{{ videocard.image.url }}" width="200" height="200" alt="{{videocard.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{videocard.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{videocard.title}}</p>
+            <ul class="main__ul">
+                <li>Видеопамять: {{videocard.memory}}</li>
+                <li>Рекоменуемый блок питания: {{videocard.power}} Вт</li>
+                <li>Цена: {{videocard.price}} руб.</li>
+            </ul>              
+        </div>
+             
+    </div>
+</div>
+{% elif power_block != '' %}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if power_block.image.url != "" or power_block.image.url != Null %}
+                <img src="{{ power_block.image.url }}" width="200" height="200" alt="{{power_block.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{power_block.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{power_block.title}}</p>
+            <ul class="main__ul">
+                <li>Мощность: {{power_block.power}} Вт</li>
+                <li>Цена: {{power_block.price}} руб.</li>
+            </ul>              
+        </div>
+    </div>
+</div>
+{% elif corpus != '' %}
+<div class = "card">
+    <div class="card__in">
+        <div class="product__img">
+            {% if corpus.image.url != "" or corpus.image.url != Null %}
+                <img src="{{ corpus.image.url }}" width="200" height="200" alt="{{corpus.title}}">
+            {% else %}
+                <img src="" width="200" height="200"></a>
+            {% endif %}
+            <p>В налачии: {{corpus.stock}} шт.</p>
+        </div>
+        <div class="info">
+            <p class="title">{{corpus.title}}</p>
+            <ul class="main__ul">
+                <li>Форм-фактор: {{corpus.form}} Вт</li>
+                <li>Цена: {{corpus.price}} руб.</li>
+            </ul>              
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

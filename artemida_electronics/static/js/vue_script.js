@@ -293,6 +293,13 @@ var builder = new Vue({
                             this.slots = parseFloat(this.slots) - Number(1);
                             this.size_memory = this.size_memory - parseFloat(str[2]);
                         }
+
+                        if(Number(pr.children[1].children[0].children[1].value) > Number(str[3])) // если мы хотим купить больше, чем есть в наличии
+                        {
+                            pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);
+                            this.slots = parseFloat(this.slots) - Number(1);
+                            this.size_memory = this.size_memory - parseFloat(str[2]);
+                        }
                     }
                     else
                     {
@@ -446,12 +453,11 @@ var builder = new Vue({
                             //this.size_memory = this.size_memory - parseFloat(str[1]);
                         }
 
-                        /*if(parseFloat(this.max_memory) < parseFloat(this.size_memory)) // если мы превысили допустимый объём памяти
+                        if(Number(pr.children[1].children[0].children[1].value) > Number(str[3])) // если мы хотим купить больше, чем есть в наличии
                         {
                             pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);
-                            this.slots = parseFloat(this.slots) - Number(1);
-                            this.size_memory = this.size_memory - parseFloat(str[1]);
-                        }*/
+                            this.m2_slots -= 1;
+                        }
                     }
                     else
                     {
@@ -540,12 +546,11 @@ var builder = new Vue({
                             //this.size_memory = this.size_memory - parseFloat(str[1]);
                         }
 
-                        /*if(parseFloat(this.max_memory) < parseFloat(this.size_memory)) // если мы превысили допустимый объём памяти
+                        if(Number(pr.children[1].children[0].children[1].value) > Number(str[3])) // если мы хотим купить больше, чем есть в наличии
                         {
                             pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);
-                            this.slots = parseFloat(this.slots) - Number(1);
-                            this.size_memory = this.size_memory - parseFloat(str[1]);
-                        }*/
+                            this.sata_slots -= 1;
+                        }
                     }
                     else
                     {
@@ -633,12 +638,11 @@ var builder = new Vue({
                             //this.size_memory = this.size_memory - parseFloat(str[1]);
                         }
 
-                        /*if(parseFloat(this.max_memory) < parseFloat(this.size_memory)) // если мы превысили допустимый объём памяти
+                        if(Number(pr.children[1].children[0].children[1].value) > Number(str[3])) // если мы хотим купить больше, чем есть в наличии
                         {
                             pr.children[1].children[0].children[1].value = Number(pr.children[1].children[0].children[1].value) - Number(1);
-                            this.slots = parseFloat(this.slots) - Number(1);
-                            this.size_memory = this.size_memory - parseFloat(str[1]);
-                        }*/
+                            this.sata_slots -= 1;
+                        }
                     }
                     else
                     {

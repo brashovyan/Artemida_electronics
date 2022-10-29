@@ -14,6 +14,7 @@ class Processor(models.Model):
     max_memory = models.FloatField(help_text="Введите максимальный объем ОЗУ.", verbose_name="Максимальный объём ОЗУ", null=False)
     tdp = models.IntegerField(default=0, help_text="Введите тепловыделение процессора (TDP)", verbose_name="Тепловыделение (TDP)", null=False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='processors/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -32,6 +33,7 @@ class Motherboard(models.Model):
     m2_slots =  models.IntegerField(default = 0, help_text="Введите кол-во разьемов М.2", verbose_name="Разьемы М.2", null=False)
     sata_slots = models.IntegerField(default = 0, help_text="Введите кол-во разьемов SATA", verbose_name="Разьемы SATA", null=False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='motherboards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -45,6 +47,7 @@ class RAM(models.Model):
     m_frequency = models.FloatField(help_text="Введите частоту ОЗУ", verbose_name="Частота ОЗУ", null=False)
     size = models.FloatField(help_text="Введите объём памяти в Гб.", verbose_name="Объём памяти", null=False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='RAM/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -56,6 +59,7 @@ class Cooler(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название кулера", help_text="Введите полное название кулера", null=False)
     power = models.IntegerField(verbose_name="Рассеиваемая мощность", help_text="Введите рассеиваемую мощность", null=False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Coolers/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
 
     objects = models.Manager()
@@ -69,6 +73,7 @@ class Videocard(models.Model):
     power = models.FloatField(default = 0, help_text="Введите рекомендуемый блок питания", verbose_name="Рекомендуемый блок питания", null=False)
     memory = models.CharField(max_length=20, help_text="Введите объём и тип памяти. Например 12гб GDDR6", verbose_name="Память", null=True)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Videocards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -80,6 +85,7 @@ class Power_block(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название блока питания", help_text="Введите полное название блока питания", null=False)
     power = models.FloatField(default = 0, help_text="Введите мощность в Вт", verbose_name="Мощность", null=False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Power_blocks/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -91,6 +97,7 @@ class SSD_M2(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название SSD M.2", help_text="Введите полное название SSD M.2", null=False)
     capacity = models.FloatField(verbose_name="Объём памяти", help_text="Введите объём памяти в Гб", null = False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='ssd_m2/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -102,6 +109,7 @@ class HDD(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название жесткого диска (HDD)", help_text="Введите полное название жесткого диска (HDD)", null=False)
     capacity = models.FloatField(verbose_name="Объём памяти", help_text="Введите объём памяти в Гб", null = False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='hdd/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -113,6 +121,7 @@ class SSD_sata(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название SSD Sata", help_text="Введите полное название SSD Sata", null=False)
     capacity = models.FloatField(verbose_name="Объём памяти", help_text="Введите объём памяти в Гб", null = False)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='ssd_sata/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
@@ -124,6 +133,7 @@ class Corpus(models.Model):
     title = models.CharField(max_length=100, verbose_name="Название SSD Sata", help_text="Введите полное название SSD Sata", null=False)
     form = models.CharField(max_length =25, verbose_name="Форм-фактор", help_text="Введите форм-фактор корпуса", null=True, blank=True)
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
+    stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='corpuses/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
     objects = models.Manager()
 
