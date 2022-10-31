@@ -1,5 +1,6 @@
 from concurrent.futures import process
-from .models import Processor, Motherboard, RAM, Cooler, Videocard, Power_block, SSD_M2, HDD, SSD_sata, Corpus
+import email
+from .models import Processor, Motherboard, RAM, Cooler, Videocard, Power_block, SSD_M2, HDD, SSD_sata, Corpus, Review
 import os
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -102,41 +103,88 @@ def aja(request):
         return HttpResponseRedirect("/")
 
 
-def info(request, product_id, product):
-    processor = ''
-    cooler = ''
-    motherboard = ''
-    ram = ''
-    ssd_m2 = ''
-    hdd = ''
-    ssd_sata = ''
-    videocard = ''
-    power_block = ''
-    corpus = ''
+def info(request, product_id, product): # пожалуйста простите за этот ужас)
+    if request.method == "POST":
+        try:
 
-    if product == 'Processor':
-        processor = Processor.objects.get(id = product_id)
-    elif product == 'Cooler':
-        cooler = Cooler.objects.get(id = product_id)
-    elif product == 'Motherboard':
-        motherboard = Motherboard.objects.get(id = product_id)
-    elif product == 'RAM':
-        ram = RAM.objects.get(id = product_id)
-    elif product == 'ssd_m2':
-        ssd_m2 = SSD_M2.objects.get(id = product_id)
-    elif product == 'HDD':
-        hdd = HDD.objects.get(id = product_id)
-    elif product == 'ssd_sata':
-        ssd_sata = SSD_sata.objects.get(id = product_id)
-    elif product == 'Videocard':
-        videocard = Videocard.objects.get(id = product_id)
-    elif product == 'Power_block':
-        power_block = Power_block.objects.get(id = product_id)
-    elif product == 'Corpus':
-        corpus = Corpus.objects.get(id = product_id)
+            review_content = request.POST.get('review_content')
 
-    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+            processor = ''
+            cooler = ''
+            motherboard = ''
+            ram = ''
+            ssd_m2 = ''
+            hdd = ''
+            ssd_sata = ''
+            videocard = ''
+            power_block = ''
+            corpus = ''
 
+            if product == 'Processor':
+                processor = Processor.objects.get(id = product_id)
+                user = User.objects.get(id=request.user.id)
+                review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                processor.review.add(review)
+                return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+
+            elif product == 'Cooler':
+                cooler = Cooler.objects.get(id = product_id)
+            elif product == 'Motherboard':
+                motherboard = Motherboard.objects.get(id = product_id)
+            elif product == 'RAM':
+                ram = RAM.objects.get(id = product_id)
+            elif product == 'ssd_m2':
+                ssd_m2 = SSD_M2.objects.get(id = product_id)
+            elif product == 'HDD':
+                hdd = HDD.objects.get(id = product_id)
+            elif product == 'ssd_sata':
+                ssd_sata = SSD_sata.objects.get(id = product_id)
+            elif product == 'Videocard':
+                videocard = Videocard.objects.get(id = product_id)
+            elif product == 'Power_block':
+                power_block = Power_block.objects.get(id = product_id)
+            elif product == 'Corpus':
+                corpus = Corpus.objects.get(id = product_id)
+        except:
+            return HttpResponseRedirect("/")
+
+    else:
+        try:
+            processor = ''
+            cooler = ''
+            motherboard = ''
+            ram = ''
+            ssd_m2 = ''
+            hdd = ''
+            ssd_sata = ''
+            videocard = ''
+            power_block = ''
+            corpus = ''
+
+            if product == 'Processor':
+                processor = Processor.objects.get(id = product_id)
+            elif product == 'Cooler':
+                cooler = Cooler.objects.get(id = product_id)
+            elif product == 'Motherboard':
+                motherboard = Motherboard.objects.get(id = product_id)
+            elif product == 'RAM':
+                ram = RAM.objects.get(id = product_id)
+            elif product == 'ssd_m2':
+                ssd_m2 = SSD_M2.objects.get(id = product_id)
+            elif product == 'HDD':
+                hdd = HDD.objects.get(id = product_id)
+            elif product == 'ssd_sata':
+                ssd_sata = SSD_sata.objects.get(id = product_id)
+            elif product == 'Videocard':
+                videocard = Videocard.objects.get(id = product_id)
+            elif product == 'Power_block':
+                power_block = Power_block.objects.get(id = product_id)
+            elif product == 'Corpus':
+                corpus = Corpus.objects.get(id = product_id)
+
+            return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+        except:
+            return HttpResponseRedirect("/")
 
 def register(request): # регистрация
     if request.method == "POST":
@@ -148,11 +196,20 @@ def register(request): # регистрация
             password2 = request.POST.get('password2')
             if password1 == password2:
                 try:
-                    user = User.objects.create_user(username, email, password1)
-                except:
-                    error = "Данный логин уже занят. Попробуйте другой."
+                    em = User.objects.get(email = email) # проверяем уникальность почты
+                    # если мы что то нашли и оказались тут, значит такая почта уже зарегана
+                    error = "Данная почта уже использовалась для регистрации."
                     form = RegForm()
                     return render(request, 'mainapp/register.html', {'form': form, 'error': error})
+                except:
+                    # если почта свободна, то регаем дальше
+                    try:
+                        user = User.objects.create_user(username, email, password1)
+                    except:
+                        error = "Данный логин уже занят. Попробуйте другой."
+                        form = RegForm()
+                        return render(request, 'mainapp/register.html', {'form': form, 'error': error})                     
+
                 if request.user.is_authenticated:
                     logout(request)
                 login(request, user)
@@ -169,6 +226,57 @@ def register(request): # регистрация
     else:
         form = RegForm()
         return render(request, 'mainapp/register.html', {'form': form})
+
+
+def logout1(request): #выход из учетной записи
+    if request.user.is_authenticated:
+
+        cart = Cart(request) # при выходе отчищаю корзину (с ней баги)
+        cart.clear() # если этот код копируется в другой проект, то это можно удалить
+
+        logout(request)
+        return HttpResponseRedirect("/")
+    else:
+        return HttpResponseRedirect("/")
+
+
+def login1(request): #авторизация
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password) # сначала пытаемся залогинить юзера по юзернейму
+        if user is not None:
+            login(request, user)
+
+            cart = Cart(request) # при логине отчищаю корзину (с ней баги)
+            cart.clear() # если этот код копируется в другой проект, то это можно удалить
+
+            return HttpResponseRedirect("/")
+
+            # если юзернейм правильный, но неправильный пароль, то дальше мы всё равно упремся в какую-то ошибку (не найдем почту)
+
+        else: # если не получилось, то пытаемся по эмейлу
+            try:
+                u = User.objects.get(email=username)
+                user = authenticate(request, username=u.username, password=password)
+                if user is not None:
+                    login(request, user)
+
+                    cart = Cart(request)
+                    cart.clear()
+
+                    return HttpResponseRedirect("/")
+                else: # если мы нашли эмейл, но неверный пароль
+                    error = "Неверный логин или пароль! Проверьте раскладку языка. Также напоминаем, что буквы верхнего и нижнего регистра (строчные и заглавные) отличаются между собой."
+                    return render(request, 'mainapp/login.html', {'error': error})
+            except: # если мы не нашли эмейл
+                error = "Неверный логин или пароль! Проверьте раскладку языка. Также напоминаем, что буквы верхнего и нижнего регистра (строчные и заглавные) отличаются между собой."
+                return render(request, 'mainapp/login.html', {'error': error})
+    else:
+        if request.user.is_authenticated:
+            logout(request)
+        return render(request, 'mainapp/login.html')
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

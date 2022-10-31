@@ -1,7 +1,5 @@
-from email.policy import default
-from tabnanny import verbose
-from unittest.util import _MAX_LENGTH
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Processor(models.Model):
@@ -16,6 +14,7 @@ class Processor(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='processors/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review')
     objects = models.Manager()
 
     def __str__(self):
@@ -140,6 +139,14 @@ class Corpus(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+
+class Review(models.Model):
+    content = models.TextField(verbose_name="Отзыв", help_text="Напишите отзыв", null=False)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=False)
+    date_review = models.DateTimeField(auto_now_add=True, null=False)
+
+    def __str__(self):
+        return f'{self.creator}'
 
 
 

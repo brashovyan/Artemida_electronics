@@ -9,4 +9,6 @@ urlpatterns = [
     path('aja/', views.aja, name='aja'),
     path('info/<int:product_id>/<str:product>/', views.info, name='info'),
     path('register/', views.register, name='register'),
+    path('logout/', views.logout1, name='logout'),
+    path('login/', views.login1, name='login'),
 ]

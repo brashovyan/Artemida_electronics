@@ -172,6 +172,10 @@ def clear(request):
 
 def success(request):
     cart = Cart(request)
+    
+    if cart.len() == 0:
+        return HttpResponse('Корзина пуста')
+
     receipt = 'Ваш чек:\n'
     for item in cart: # сначала проверяем всё ли ок, есть ли такие товары в наличии
         if (item['product'].stock - item['quantity']) < 0:

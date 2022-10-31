@@ -20,10 +20,13 @@
         </div>
         <div class="header__right">
             <a href="/cart" class="header__menu">Корзина</a>
-            
-            <a href="#" class="header__menu">Меню2</a>
-            <a href="#" class="header__menu">Меню3</a>
-
+            {% if user.is_authenticated %}
+                <a href="/user/{{user.id}}" class="header__menu">Личный кабинет</a>
+                <a href="/logout" class="header__menu">Выйти</a>
+            {% else %}
+                <a href="/login" class="header__menu">Войти</a>
+                <a href="/register" class="header__menu">Регистрация</a>
+            {% endif %}
         </div>
     </header>
 
@@ -34,8 +37,13 @@
     <footer class="footer">
         <div class="footer__top">
             <a href="/cart" class="footer__menu">Корзина</a>
-            <a href="#" class="footer__menu">Меню2</a>
-            <a href="#" class="footer__menu">Меню3</a>
+            {% if user.is_authenticated %}
+                <a href="/user/{{user.id}}" class="footer__menu">Личный кабинет</a>
+                <a href="/logout" class="footer__menu">Выйти</a>
+            {% else %}
+                <a href="/login" class="footer__menu">Войти</a>
+                <a href="/register" class="footer__menu">Регистрация</a>
+            {% endif %}
         </div>
         <hr class="footer__hr">
         <div class="footer__bot">

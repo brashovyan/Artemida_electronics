@@ -31,6 +31,24 @@
                  
         </div>
     </div>
+    <p>Отзывы:</p>
+    <br>
+    {% for review in processor.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif cooler != ''%}
     <div class = "card">
         <div class="card__in">
@@ -227,5 +245,9 @@
     </div>
 </div>
 {% endif %}
+
+
+
+
 
 {% endblock %}
