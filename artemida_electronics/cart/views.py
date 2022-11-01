@@ -1,17 +1,56 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from mainapp.models import Processor, Motherboard, Cooler, RAM, HDD, SSD_M2, SSD_sata, Videocard, Power_block, Corpus
+from mainapp.models import Processor, Motherboard, Cooler, RAM, HDD, SSD_M2, SSD_sata, Videocard, Power_block, Corpus, Review, History
 from .cart import Cart
 from .forms import CartAddProductForm
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.models import User, Group
 
 
-def cart_add(request, product_id):
-    """cart = Cart(request)
-    product = Motherboard.objects.get(id = 3)
-    cart.add(product=product, quantity=1, update_quantity=False)"""
+def cart_add(request, product_id, product):
+    cart = Cart(request)
+    
+    if('Processor' in str(product)):
+        pr = Processor.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
 
-    return HttpResponseRedirect("/cart")
+    elif('Cooler' in str(product)):
+        pr = Cooler.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('Motherboard' in str(product)):
+        pr = Motherboard.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('RAM' in str(product)):
+        pr = RAM.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('HDD' in str(product)):
+        pr = HDD.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('SSD_M2' in str(product)):
+        pr = SSD_M2.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('SSD_sata' in str(product)):
+        pr = SSD_sata.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('Videocard' in str(product)):
+        pr = Videocard.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('Power_block' in str(product)):
+        pr = Power_block.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    elif('Corpus' in str(product)):
+        pr = Corpus.objects.get(id=product_id)
+        cart.add(pr, quantity=1)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def cart_remove(request, product_id, product):
@@ -64,8 +103,6 @@ def cart_remove(request, product_id, product):
 
 def cart_detail(request):
     cart = Cart(request)
-    for item in cart:
-        print(item)
     return render(request, 'cart/detail.html', {'cart': cart})
 
 
@@ -182,10 +219,14 @@ def success(request):
             return HttpResponse('Во время оплаты заказа произошла ошибка! Возможно, какой-то товар отсутствует на складе. Попробуйте обновить страницу и повторить попытку.')
 
     for item in cart: # если всё ок, то сохраняем изменение кол-ва товара, проводим оплату и пишем чек
+        
         item['product'].stock -= item['quantity']
         item['product'].save()
         receipt += f"{item['product'].title} - {item['quantity']} шт => {item['price']*item['quantity']} руб.\n"
         
-    print(receipt)
+    if request.user.is_authenticated:
+            user = User.objects.get(id=request.user.id)
+            History.objects.create(buyer = user, content=receipt)
+
     cart.clear()
     return render(request, 'cart/success.html')

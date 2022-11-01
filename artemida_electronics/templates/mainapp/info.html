@@ -1,5 +1,5 @@
 {% extends 'mainapp/base.html' %}
-{% block title %}{{product.title}}{% endblock %}
+{% block title %}Данные о товаре{% endblock %}
 {% block site_content %}
 {% load static %}
 <link href= "{% static 'css/info.css' %}" rel="stylesheet">
@@ -26,7 +26,8 @@
                     <li>Максимальный объём ОЗУ: {{processor.max_memory}} Гб</li>
                     <li>Тепловыделение (TDP): {{processor.tdp}}Вт</li>
                     <li>Цена: {{processor.price}} руб.</li>
-                </ul>              
+                </ul>
+                <a href="/cart/cart_add/{{processor.id}}/Processor/">Добавить в корзину</a>              
             </div>
                  
         </div>
@@ -65,11 +66,31 @@
                 <ul class="main__ul">
                     <li>Рассеиваемая мощность: {{cooler.power}} Вт</li>
                     <li>Цена: {{cooler.price}} руб.</li>
-                </ul>              
+                </ul>
+                <a href="/cart/cart_add/{{cooler.id}}/Cooler/">Добавить в корзину</a>                 
             </div>
                 
         </div>
     </div>
+
+    <p>Отзывы:</p>
+    <br>
+    {% for review in cooler.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif motherboard != ''%}
 <div class = "card">
     <div class="card__in">
@@ -93,11 +114,30 @@
                 <li>Кол-во слотов M2: {{motherboard.m2_slots}}</li>
                 <li>Кол-во слотов SATA: {{motherboard.sata_slots}}</li>
                 <li>Цена: {{motherboard.price}} руб.</li>
+                <a href="/cart/cart_add/{{motherboard.id}}/Motherboard/">Добавить в корзину</a>   
             </ul>              
         </div>
              
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in motherboard.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif ram != '' %}
 <div class = "card">
     <div class="card__in">
@@ -117,11 +157,30 @@
                 <li>Объём памяти: {{ram.size}} Гб</li>
                 <li>Тайминги: Вещь важная, но лень в бд заносить</li>
                 <li>Цена: {{ram.price}} руб.</li>
-            </ul>              
+            </ul>
+            <a href="/cart/cart_add/{{ram.id}}/RAM/">Добавить в корзину</a>                 
         </div>
              
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in ram.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif ssd_m2 != ''%}
 <div class = "card">
     <div class="card__in">
@@ -138,10 +197,29 @@
             <ul class="main__ul">
                 <li>Объём: {{ssd_m2.capacity}} Гб</li>
                 <li>Цена: {{ssd_m2.price}} руб.</li>
-            </ul>              
+            </ul>
+            <a href="/cart/cart_add/{{ssd_m2.id}}/SSD_M2/">Добавить в корзину</a>                 
         </div>     
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in ssd_m2.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif hdd != '' %}
 <div class = "card">
     <div class="card__in">
@@ -158,10 +236,29 @@
             <ul class="main__ul">
                 <li>Объём: {{hdd.capacity}} Гб</li>
                 <li>Цена: {{hdd.price}} руб.</li>
-            </ul>              
+            </ul>
+            <a href="/cart/cart_add/{{hdd.id}}/HDD/">Добавить в корзину</a>                 
         </div>     
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in hdd.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif ssd_sata != '' %}
 <div class = "card">
     <div class="card__in">
@@ -178,10 +275,29 @@
             <ul class="main__ul">
                 <li>Объём: {{ssd_sata.capacity}} Гб</li>
                 <li>Цена: {{ssd_sata.price}} руб.</li>
-            </ul>              
+            </ul>
+            <a href="/cart/cart_add/{{ssd_sata.id}}/SSD_sata/">Добавить в корзину</a>                 
         </div>     
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in ssd_sata.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif videocard != '' %}
 <div class = "card">
     <div class="card__in">
@@ -199,11 +315,30 @@
                 <li>Видеопамять: {{videocard.memory}}</li>
                 <li>Рекоменуемый блок питания: {{videocard.power}} Вт</li>
                 <li>Цена: {{videocard.price}} руб.</li>
+                <a href="/cart/cart_add/{{videocard.id}}/Videocard/">Добавить в корзину</a>   
             </ul>              
         </div>
              
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in videocard.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif power_block != '' %}
 <div class = "card">
     <div class="card__in">
@@ -220,10 +355,29 @@
             <ul class="main__ul">
                 <li>Мощность: {{power_block.power}} Вт</li>
                 <li>Цена: {{power_block.price}} руб.</li>
-            </ul>              
+            </ul>
+            <a href="/cart/cart_add/{{power_block.id}}/Power_block/">Добавить в корзину</a>                
         </div>
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in power_block.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
+
 {% elif corpus != '' %}
 <div class = "card">
     <div class="card__in">
@@ -240,14 +394,27 @@
             <ul class="main__ul">
                 <li>Форм-фактор: {{corpus.form}} Вт</li>
                 <li>Цена: {{corpus.price}} руб.</li>
-            </ul>              
+            </ul>
+            <a href="/cart/cart_add/{{corpus.id}}/Corpus/">Добавить в корзину</a>                 
         </div>
     </div>
 </div>
+<p>Отзывы:</p>
+    <br>
+    {% for review in corpus.review.all %}
+        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <p>Написать отзыв:</p>
+
+        <form method="POST">
+            {% csrf_token %}
+                <input type="text" name="review_content">
+                <button type="submit">Отправить</button>
+        </form>
+    {% else %}
+        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+    {% endif %}
 {% endif %}
-
-
-
-
-
 {% endblock %}

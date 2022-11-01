@@ -1,6 +1,7 @@
+from ast import Pow
 from concurrent.futures import process
 import email
-from .models import Processor, Motherboard, RAM, Cooler, Videocard, Power_block, SSD_M2, HDD, SSD_sata, Corpus, Review
+from .models import Processor, Motherboard, RAM, Cooler, Videocard, Power_block, SSD_M2, HDD, SSD_sata, Corpus, Review, History
 import os
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -9,11 +10,16 @@ from django.dispatch import receiver
 from django.conf import settings
 from cart.cart import Cart
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegForm
+from .forms import RegForm, Change_profile
 from django.contrib.auth.models import User, Group
+from django.core.paginator import Paginator
 
 
 def index(request):
+    return render(request, 'mainapp/index.html')
+
+
+def constructor(request):
     processors = Processor.objects.all().order_by('price')
     motherboards = Motherboard.objects.all().order_by('price')
     rams = RAM.objects.all().order_by('price')
@@ -24,7 +30,7 @@ def index(request):
     hdd = HDD.objects.all().order_by('price')
     ssd_sata = SSD_sata.objects.all().order_by('price')
     corpuses = Corpus.objects.all().order_by('price')
-    return render(request, 'mainapp/index.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams, 'corpuses': corpuses,
+    return render(request, 'mainapp/constructor.html', {'processors': processors, 'motherboards': motherboards, 'rams': rams, 'corpuses': corpuses,
      'coolers':coolers, 'videocards': videocards, 'power_blocks':power_blocks, 'ssd_m2': ssd_m2, 'hdd': hdd, 'ssd_sata':ssd_sata})
     
 
@@ -42,6 +48,10 @@ def aja(request):
         corpus_id = request.GET.get('corpus')
 
         if(processor_id != "" and cooler_id != "" and motherboard_id != "" and ram != "" and videocard_id != "" and power_block_id != "" and (hdd != "" or ssd_sata != "" or ssd_m2 != "")):
+            cart2 = Cart(request)
+
+            cart2.clear()
+
             cart = Cart(request)
             
             product = Processor.objects.get(id = int(processor_id))
@@ -101,7 +111,7 @@ def aja(request):
             return JsonResponse(data)
     except:
         return HttpResponseRedirect("/")
-
+    
 
 def info(request, product_id, product): # пожалуйста простите за этот ужас)
     if request.method == "POST":
@@ -121,30 +131,76 @@ def info(request, product_id, product): # пожалуйста простите 
             corpus = ''
 
             if product == 'Processor':
-                processor = Processor.objects.get(id = product_id)
-                user = User.objects.get(id=request.user.id)
-                review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                processor.review.add(review)
-                return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                if request.user.is_authenticated:
+                    processor = Processor.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    processor.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
 
             elif product == 'Cooler':
-                cooler = Cooler.objects.get(id = product_id)
+                 if request.user.is_authenticated:
+                    cooler = Cooler.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    cooler.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
             elif product == 'Motherboard':
-                motherboard = Motherboard.objects.get(id = product_id)
+                 if request.user.is_authenticated:
+                    motherboard = Motherboard.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    motherboard.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
             elif product == 'RAM':
-                ram = RAM.objects.get(id = product_id)
-            elif product == 'ssd_m2':
-                ssd_m2 = SSD_M2.objects.get(id = product_id)
+                 if request.user.is_authenticated:
+                    ram = RAM.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    ram.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+            elif product == 'SSD_M2':
+                 if request.user.is_authenticated:
+                    ssd_m2 = SSD_M2.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    ssd_m2.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
             elif product == 'HDD':
-                hdd = HDD.objects.get(id = product_id)
-            elif product == 'ssd_sata':
-                ssd_sata = SSD_sata.objects.get(id = product_id)
+                 if request.user.is_authenticated:
+                    hdd = HDD.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    hdd.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+            elif product == 'SSD_sata':
+                 if request.user.is_authenticated:
+                    ssd_sata = SSD_sata.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    ssd_sata.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
             elif product == 'Videocard':
-                videocard = Videocard.objects.get(id = product_id)
+                 if request.user.is_authenticated:
+                    videocard = Videocard.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    videocard.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
             elif product == 'Power_block':
-                power_block = Power_block.objects.get(id = product_id)
+                 if request.user.is_authenticated:
+                    power_block = Power_block.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    power_block.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
             elif product == 'Corpus':
-                corpus = Corpus.objects.get(id = product_id)
+                 if request.user.is_authenticated:
+                    corpus = Corpus.objects.get(id = product_id)
+                    user = User.objects.get(id=request.user.id)
+                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                    corpus.review.add(review)
+                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
         except:
             return HttpResponseRedirect("/")
 
@@ -169,11 +225,11 @@ def info(request, product_id, product): # пожалуйста простите 
                 motherboard = Motherboard.objects.get(id = product_id)
             elif product == 'RAM':
                 ram = RAM.objects.get(id = product_id)
-            elif product == 'ssd_m2':
+            elif product == 'SSD_M2':
                 ssd_m2 = SSD_M2.objects.get(id = product_id)
             elif product == 'HDD':
                 hdd = HDD.objects.get(id = product_id)
-            elif product == 'ssd_sata':
+            elif product == 'SSD_sata':
                 ssd_sata = SSD_sata.objects.get(id = product_id)
             elif product == 'Videocard':
                 videocard = Videocard.objects.get(id = product_id)
@@ -185,6 +241,7 @@ def info(request, product_id, product): # пожалуйста простите 
             return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
         except:
             return HttpResponseRedirect("/")
+            
 
 def register(request): # регистрация
     if request.method == "POST":
@@ -277,6 +334,160 @@ def login1(request): #авторизация
         if request.user.is_authenticated:
             logout(request)
         return render(request, 'mainapp/login.html')
+
+
+def profile(request, id): #профиль пользователя
+    if request.user.is_authenticated:
+        user = User.objects.get(id=id)
+        if user == request.user:
+            history = History.objects.filter(buyer = user)
+            if request.method == 'POST':
+                form = Change_profile(request.POST)
+                if form.is_valid():
+                    first_name = request.POST.get('first_name')
+                    last_name = request.POST.get('last_name')
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    password1 = request.POST.get('password1')
+                    password2 = request.POST.get('password2')
+
+                    if password1 != "" and password2 != "":
+                        if password1 == password2:
+                            user.set_password(password1)
+                            user.save()
+                        else:
+                            error = 'Пароли не совпадают!'
+                            return render(request, 'mainapp/profile.html', {'form': form, 'error': error, 'user1':user, 'history':history})
+                    elif password1 != "" or password2 != "":
+                        error = 'Пароли не совпадают!'
+                        return render(request, 'mainapp/profile.html', {'form': form, 'error': error,  'user1': user, 'history':history})
+                    else:
+                        user.save()
+
+                    message = 'Изменения успешно сохранены!'
+                    return render(request, 'mainapp/profile.html', {'form':form, 'message':message, 'user1':user, 'history':history})
+                else:
+
+                    error = 'Вы ввели некорректные данные!'
+                    return render(request, 'mainapp/profile.html', {'form':form, 'error':error, 'user1':user, 'history':history})
+            else:
+
+                form = Change_profile(initial={'first_name': user.first_name, 'last_name': user.last_name, 'history':history})
+                return render(request, 'mainapp/profile.html', {'form':form, 'user1':user, 'history':history})
+        else:
+            return HttpResponseRedirect("/")
+    else:
+        return HttpResponseRedirect("/")
+
+
+def processors(request):
+    processors = Processor.objects.all()
+    paginator = Paginator(processors, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/processors.html', {'page_obj': page_obj})
+
+
+def coolers(request):
+    coolers = Cooler.objects.all()
+    paginator = Paginator(coolers, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/coolers.html', {'page_obj': page_obj})
+
+
+def motherboards(request):
+    motherboards = Motherboard.objects.all()
+    paginator = Paginator(motherboards, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/motherboards.html', {'page_obj': page_obj})
+
+
+def rams(request):
+    rams = RAM.objects.all()
+    paginator = Paginator(rams, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/rams.html', {'page_obj': page_obj})
+
+
+def ssd_m2s(request):
+    ssd_m2s = SSD_M2.objects.all()
+    paginator = Paginator(ssd_m2s, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/ssd_m2s.html', {'page_obj': page_obj})
+
+
+def hdds(request):
+    hdds = HDD.objects.all()
+    paginator = Paginator(hdds, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/hdds.html', {'page_obj': page_obj})
+
+
+def ssd_satas(request):
+    ssd_satas = SSD_sata.objects.all()
+    paginator = Paginator(ssd_satas, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/ssd_satas.html', {'page_obj': page_obj})
+
+
+def videocards(request):
+    videocards = Videocard.objects.all()
+    paginator = Paginator(videocards, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/videocards.html', {'page_obj': page_obj})
+
+
+def power_blocks(request):
+    power_blocks = Power_block.objects.all()
+    paginator = Paginator(power_blocks, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/power_blocks.html', {'page_obj': page_obj})
+
+
+def corpuses(request):
+    corpuses = Corpus.objects.all()
+    paginator = Paginator(corpuses, 10)
+
+    page_number = request.GET.get('page') 
+
+    page_obj = paginator.get_page(page_number) 
+        
+    return render(request, 'mainapp/corpuses.html', {'page_obj': page_obj})
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

@@ -60,4 +60,7 @@
     <div class="buy__button">
         <a class="buy" href="success/">Оплатить</a>
     </div>
+    {% if not user.is_authenticated %}
+        <p style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">Авторизуйтесь, чтобы сохранить этот заказ в истории покупок.</p>
+    {% endif %}
 {% endblock %}

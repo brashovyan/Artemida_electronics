@@ -19,9 +19,10 @@
             <a href="/" class="header__menu">Artemida Electronics</a>
         </div>
         <div class="header__right">
+            <a href="/constructor" class="header__menu">Конфигуратор ПК</a>
             <a href="/cart" class="header__menu">Корзина</a>
             {% if user.is_authenticated %}
-                <a href="/user/{{user.id}}" class="header__menu">Личный кабинет</a>
+                <a href="/profile/{{user.id}}" class="header__menu">Личный кабинет</a>
                 <a href="/logout" class="header__menu">Выйти</a>
             {% else %}
                 <a href="/login" class="header__menu">Войти</a>
@@ -36,6 +37,7 @@
 
     <footer class="footer">
         <div class="footer__top">
+            <a href="/constructor" class="footer__menu">Конфигуратор ПК</a>
             <a href="/cart" class="footer__menu">Корзина</a>
             {% if user.is_authenticated %}
                 <a href="/user/{{user.id}}" class="footer__menu">Личный кабинет</a>

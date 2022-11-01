@@ -14,7 +14,7 @@ class Processor(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='processors/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review')
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -34,6 +34,7 @@ class Motherboard(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='motherboards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -48,6 +49,7 @@ class RAM(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='RAM/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -60,6 +62,7 @@ class Cooler(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Coolers/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
 
     objects = models.Manager()
 
@@ -74,6 +77,7 @@ class Videocard(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Videocards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -86,6 +90,7 @@ class Power_block(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Power_blocks/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -98,6 +103,7 @@ class SSD_M2(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='ssd_m2/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -110,6 +116,7 @@ class HDD(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='hdd/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -122,6 +129,7 @@ class SSD_sata(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='ssd_sata/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -134,6 +142,7 @@ class Corpus(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='corpuses/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
+    review = models.ManyToManyField('Review', blank=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -144,9 +153,21 @@ class Review(models.Model):
     content = models.TextField(verbose_name="Отзыв", help_text="Напишите отзыв", null=False)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=False)
     date_review = models.DateTimeField(auto_now_add=True, null=False)
+    objects = models.Manager()
 
     def __str__(self):
         return f'{self.creator}'
+
+
+class History(models.Model):
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Покупатель', null=False)
+    date = models.DateTimeField(auto_now_add=True, null=False)
+    content = models.TextField(verbose_name="Чек", help_text="Введите содержимое чека")
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.buyer} - {self.date}'
+
 
 
 

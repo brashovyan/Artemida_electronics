@@ -1,0 +1,35 @@
+{% extends 'mainapp/base.html' %}
+{% block title %}Кулеры для процессоров{% endblock %}
+{% block site_content %}
+{% load static %}
+
+{% for cooler in page_obj %}
+    <a href="/info/{{cooler.id}}/Cooler"><p>{{cooler.title}}</p></a>
+{% endfor %}
+<br>
+    <div style="display: flex;">
+        {%if page_obj.has_previous %}
+
+        <h5><a href="?page={{ page_obj.previous_page_number }}">&lt</a></h5>
+
+    {% endif %}
+
+    {% for p in page_obj.paginator.page_range %}
+        {% if page_obj.number == p %}
+            <h5>{{ p }} из {{ page_obj.paginator.num_pages }}</h5>
+        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+
+            <h5><a href="?page={{ p }}">{{ p }}</a></h5>
+
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+
+        <h5><a href="?page={{ page_obj.next_page_number }}">&gt</a></h5>
+
+{% endif %}
+
+    </div>
+    
+{% endblock %}
