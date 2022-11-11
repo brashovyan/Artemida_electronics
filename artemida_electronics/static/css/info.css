@@ -9,16 +9,24 @@
 .card__in{
     width: 80%;
     height: auto;
-    background-color: bisque;
+    background-color: rgb(254, 244, 232);
     border-radius: 10px;
     padding: 10px;
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.card__img{
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
 }
 
 .info{
     width: 100%;
     flex-direction: column;
-    margin-left: 10px;
+    margin-left: 30px;
     margin-right: 10px;
     font-size: 18px;
 }
@@ -29,4 +37,106 @@
     align-items: center;
     font-size: 24px;
     font-weight: 800;
+}
+
+.cart{
+	font-weight: 700;
+	color: white;
+	text-decoration: none;
+	padding: .8em 1em calc(.8em + 3px);
+	border-radius: 3px;
+	background: rgb(64,199,129);
+	box-shadow: 0 -3px rgb(53,167,110) inset;
+	transition: 0.2s;
+    font-size: 15px;
+}
+
+.cart:hover { background: rgb(53, 167, 110); }
+.cart:active {
+  background: rgb(33,147,90);
+  box-shadow: 0 3px rgb(33,147,90) inset;
+}
+
+.cart__button{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.reviews{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.review{
+    background-color: rgb(200, 254, 255);
+    width: auto;
+    height: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.creator{
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    padding-top: 5px;
+    margin-bottom: 10px;
+}
+
+.content{
+    padding-left: 10px;
+    font-size: 18px;
+    padding-top: 5px;
+    margin-bottom: 10px;
+}
+
+.date{
+    text-align: right;
+    margin-right: 10px;
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.not__review{
+    margin-left: 20px;
+    font-size: 18px;
+}
+
+.write{
+    margin-left: 20px;
+}
+
+.write__logo{
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.text{
+    width: 50%;
+    font-size: 16px;
+    word-wrap: break-word;
+    word-break: break-all;
+    height: 80px;
+}
+
+.submit{
+    font-size: 16px;
+    margin-left: 15px;
+    background-color: rgb(248, 251, 167);
+    border: none;
+    padding: 10px;
+}
+
+.submit:hover{
+    cursor: pointer;
+    background-color: rgb(254, 255, 213);
 }

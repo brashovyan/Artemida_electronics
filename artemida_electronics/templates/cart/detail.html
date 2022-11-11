@@ -8,11 +8,11 @@
     <table class="cart">
         <thead>
         <tr>
-            <th>Картинка</th>
+            <th>Фото</th>
             <th>Товар</th>
-            <th style="padding-left: 34px;">Кол-во</th>
-            <th>Удаление</th>
-            <th>Цена за единицу товара</th>
+            <th>Кол-во</th>
+            <th>Убрать</th>
+            <th>Цена за единицу</th>
             <th>Всего</th>
         </tr>
         </thead>
@@ -21,16 +21,17 @@
             {% with product=item.product %}
                 <tr>
                     <td>
-                        <a href="{{ product.get_absolute_url }}">
+                        <a href="info/{{product.id}}/{{item}}/">    
                             <img src="
                                 {% if product.image %}
                                     {{ product.image.url }}
                                 {% else %}
                                     {% static 'img/no_image.png' %}
-                                {% endif %}" style="width: 100px; height: 100px; border-radius: 5px;">
-                        </a>
+                                {% endif %}"
+                            class="cart__img">
+                        </a>   
                     </td>
-                    <td>{{ product.title }}</td>
+                        <td><a href="info/{{product.id}}/{{item}}/" style="text-decoration: none; color: black;">{{ product.title }}</a></td>
                     <td>
                         <div class="number_quantity">
                             <a class="number_minus_quantity" href="quantity_minus/{{product.id}}/{{item}}/">-</a>
@@ -38,7 +39,7 @@
                             <a class="number_plus_quantity" href="quantity_plus/{{product.id}}/{{item}}/">+</a>
                         </div>
                     </td>
-                    <td style="padding-left:13px"><a href="remove/{{product.id}}/{{item}}/">Удалить</a></td>
+                    <td><a href="remove/{{product.id}}/{{item}}/"><img class="delete__img" src="{% static 'img/del.png' %}"></a></td>
                     <td class="num">{{ item.price }} руб.</td>
                     <td class="num">{{ item.total_price }} руб.</td>
                 </tr>
@@ -61,6 +62,6 @@
         <a class="buy" href="success/">Оплатить</a>
     </div>
     {% if not user.is_authenticated %}
-        <p style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">Авторизуйтесь, чтобы сохранить этот заказ в истории покупок.</p>
+        <p class="auth">Авторизуйтесь, чтобы сохранить этот заказ в истории покупок.</p>
     {% endif %}
 {% endblock %}

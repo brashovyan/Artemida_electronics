@@ -10,7 +10,7 @@
 	margin-bottom: 20px;
 	border: 15px solid #F2F8F8;
 	border-top: 5px solid #F2F8F8;
-	border-collapse: collapse; 
+	border-collapse: collapse;
 }
 .cart th {
     font-size: 18px;
@@ -19,19 +19,21 @@
 	background: #F2F8F8;
 	border: none;
 	border-bottom: 5px solid #F2F8F8;
+	text-align: center;
 }
 .cart td {
 	padding: 5px;
 	border: none;
 	border-bottom: 5px solid #F2F8F8;
+	text-align: center;
 }
 
 .number_quantity {
 	display: inline-block;
 	position: relative;
-	width: 100px;
-    margin-left: 10px;
-    margin-right: 10px;
+	width: 70px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .number_quantity input[type="number"] {
@@ -155,4 +157,120 @@
 	margin-right: 20px;
 	margin-top: 10px;
 	margin-bottom: 20px;
+}
+
+.cart__img{
+	width: 100px; 
+	height: 100px; 
+	border-radius: 5px;
+}
+
+.delete__img{
+	width: 35px; 
+	height: 35px; 
+}
+
+.auth{
+	display: flex; 
+	justify-content: center; 
+	align-items: center; 
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+
+@media (max-width: 1000px) {
+
+	.cart__img{
+		width: 75px; 
+		height: 75px; 
+		border-radius: 3px;
+	}
+
+	.cart th {
+		font-size: 14px;
+		padding: 3px;
+	}
+
+	.cart td {
+		padding: 3px;
+		font-size: 12px;
+	}
+
+	.number_quantity {
+		margin-left: 0px;
+		margin-right: 0px;
+		width: 60px;
+	}
+
+	.delete__img{
+		width: 15px; 
+		height: 15px; 
+	}
+
+	.cart {
+		border: 5px solid #F2F8F8;
+	}
+
+	.clear__button{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-right: 0px;
+	}
+
+	.total{
+		margin-left: 5px;
+		font-size: 24px;
+	}
+	
+	.total__result{
+		margin-left: 5px;
+		font-size: 24px;
+	}
+}
+
+
+@media (max-width: 500px){
+	.cart__img{
+		width: 25px; 
+		height: 25px; 
+		border-radius: 2px;
+	}
+	
+	.cart th {
+		font-size: 13px;
+		padding: 1px;
+	}
+
+	.cart td {
+		font-size: 12px;
+		padding: 1px;
+	}
+	.cart {
+		border: 1px solid #F2F8F8;
+	}
+
+	.number_quantity {
+		margin-left: 0px;
+		margin-right: 0px;
+		width: 60px;
+	}
+
+	.clear__button{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-right: 0px;
+	}
+
+	.total{
+		margin-left: 5px;
+		font-size: 18px;
+	}
+	
+	.total__result{
+		margin-left: 5px;
+		font-size: 18px;
+	}
 }

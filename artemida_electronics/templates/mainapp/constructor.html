@@ -2,19 +2,29 @@
 {% block title %}Конфигуратор{% endblock %}
 {% block site_content %}
 {% load static %}
+<link href= "{% static 'css/constructor.css' %}" rel="stylesheet">
+
     <main class="main">
         <div class="main__left">
             <p class="main__logo">Комплектующие</p>
+            <div class="hint">
+                <img src="{% static 'img/znak.png' %}" width="100" height="100">
+                <p class="hint__text">Подсказка: сначала выберите процессор. Далее вам откроется выбор кулера и матиринской платы, подходящей к выбранному процессору. После выбора материнской
+                    платы вам станет доступен выбор оперативной памяти и накопителей. Оперативной памяти и накопителей можно взять столько, сколько позволяет материнская плата
+                    и процессор. Весь представленный ассортимент есть в наличии.
+                </p>
+            </div>
+           
             <div class="products">
 
                 <ul class="main__ul"><li><p class="main__product__logo">Процессоры</p></li></ul>
 
                 <div class="filter__proc">
-                    <p>Фильтры: </p>
+                    <p style="margin-bottom: 5px;">Фильтры: </p>
                     <input type="checkbox" value="amd" v-model="filter_proc">
-                    <label>AMD</label>
-                    <input type="checkbox" value="INTEL" v-model="filter_proc">
-                    <label>Intel</label>
+                    <label style="padding-left: 5px;">AMD</label>
+                    <input type="checkbox" value="INTEL" v-model="filter_proc" style="margin-left: 10px;">
+                    <label style="padding-left: 5px;">Intel</label>
                 </div>
 
                     {% for processor in processors %}
@@ -24,15 +34,19 @@
                                 <template v-if="'{{processor.title}}'.toLowerCase().indexOf(filter.toLowerCase()) != -1">
                                     <div class="product">
                                         <input type="radio" name="processor" value="{{processor.title}}%%{{processor.id}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.tdp}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}', '{{processor.id}}')">
-                                        <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} -> {{processor.price}} руб</a>
+                                        <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - <span class="price">{{processor.price}}</span> руб</a>
                                         <div class="main__img" id="{{processor.title}}{{processor.id}}">
                                             <div class="img__div">
                                                 {% if processor.image.url != "" or processor.image.url != Null %}
-                                                    <a href="/info/{{processor.id}}/Processor"> <img src="{{ processor.image.url }}" width="100" height="100" alt="{{processor.title}}"></a>
+                                                    <a href="/info/{{processor.id}}/Processor"> <img src="{{ processor.image.url }}" width="100" height="100"></a>
                                                 {% else %}
-                                                    <a href="/info/{{processor.id}}/Processor"> <img src="" width="100" height="100" alt="{{processor.title}}"></a>
+                                                    <a href="/info/{{processor.id}}/Processor"> <img src="" width="100" height="100"></a>
                                                 {% endif %}
-                                                    <a href="/info/{{processor.id}}/Processor" class="main__img__href__block">В наличии: {{processor.stock}}</a>
+                                                <a href="/info/{{processor.id}}/Processor" class="main__img__href__block">
+                                                    <p>Ядра/потоки: {{processor.cores}}</p>
+                                                    <p>Базовая частота: {{processor.frequency}} ГГц</p>
+                                                    <p>В наличии: {{processor.stock}} шт.</p>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -42,13 +56,13 @@
                         <template v-else>
                             <div class="product">
                                 <input type="radio" name="processor" value="{{processor.title}}%%{{processor.id}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.tdp}}%%{{processor.price}}"  @change="select_processor('{{processor.title}}', '{{processor.id}}')">
-                                <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} -> {{processor.price}} руб</a>
+                                <a class="main__img__href" onclick="showImg('{{processor.title}}{{processor.id}}')">{{processor.title}} - <span class="price">{{processor.price}}</span> руб</a>
                                 <div class="main__img" id="{{processor.title}}{{processor.id}}">
                                     <div class="img__div">
                                         {% if processor.image.url != "" or processor.image.url != Null %}
-                                            <a href="/info/{{processor.id}}/Processor"> <img src="{{ processor.image.url }}" width="100" height="100" alt="{{processor.title}}"></a>
+                                            <a href="/info/{{processor.id}}/Processor"> <img src="{{ processor.image.url }}" width="100" height="100"></a>
                                         {% else %}
-                                            <a href="/info/{{processor.id}}/Processor"> <img src="" width="100" height="100" alt="{{processor.title}}"></a>
+                                            <a href="/info/{{processor.id}}/Processor"> <img src="" width="100" height="100"></a>
                                         {% endif %}
                                             <a href="/info/{{processor.id}}/Processor" class="main__img__href__block">
                                                 <p>Ядра/потоки: {{processor.cores}}</p>
@@ -68,13 +82,13 @@
                         <template v-if="parseFloat(tdp) <= '{{cooler.power|floatformat}}' && parseFloat(tdp) != 0">
                             <div class="product">
                                 <input name="cooler" value="{{cooler.title}}%%{{cooler.id}}%%{{cooler.power}}%%{{cooler.price}}" type="radio" @change="select_cooler('{{cooler.title}}', '{{cooler.id}}')">
-                                <a class="main__img__href" onclick="showImg('{{cooler.title}}{{cooler.id}}')">{{cooler.title}} -> {{cooler.price}} руб</a>
+                                <a class="main__img__href" onclick="showImg('{{cooler.title}}{{cooler.id}}')">{{cooler.title}} - <span class="price">{{cooler.price}}</span> руб</a>
                                 <div class="main__img" id="{{cooler.title}}{{cooler.id}}">
                                     <div class="img__div">
                                     {% if cooler.image.url != "" or cooler.image.url != Null %}
-                                            <a href="/info/{{cooler.id}}/Cooler"> <img src="{{ cooler.image.url }}" width="100" height="100" alt="{{cooler.title}}"></a>
+                                            <a href="/info/{{cooler.id}}/Cooler"> <img src="{{ cooler.image.url }}" width="100" height="100"></a>
                                         {% else %}
-                                            <a href="/info/{{cooler.id}}/Cooler"> <img src="" width="100" height="100" alt="{{cooler.title}}"></a>
+                                            <a href="/info/{{cooler.id}}/Cooler"> <img src="" width="100" height="100"></a>
                                         {% endif %}
                                             <a href="/info/{{cooler.id}}/Cooler" class="main__img__href__block">
                                                 <p>Рассеиваемая мощность: {{cooler.power}} Вт</p>
@@ -95,13 +109,13 @@
                     <template v-if="socket == '{{motherboard.socket}}'">
                         <div class="product">
                             <input name="motherboard" value="{{motherboard.title}}%%{{motherboard.id}}%%{{motherboard.socket}}%%{{motherboard.chipset}}%%{{motherboard.m_slots}}%%{{motherboard.m_frequency}}%%{{motherboard.max_memory}}%%{{motherboard.type_memory}}%%{{motherboard.m2_slots}}%%{{motherboard.sata_slots}}%%{{motherboard.price}}" type="radio" @change="select_motherboard('{{motherboard.title}}', '{{motherboard.id}}')">
-                            <a class="main__img__href" onclick="showImg('{{motherboard.title}}{{motherboard.id}}')">{{motherboard.title}} -> {{motherboard.price}} руб</a>
+                            <a class="main__img__href" onclick="showImg('{{motherboard.title}}{{motherboard.id}}')">{{motherboard.title}} - <span class="price">{{motherboard.price}}</span> руб</a>
                             <div class="main__img" id="{{motherboard.title}}{{motherboard.id}}">
                                 <div class="img__div">
                                    {% if motherboard.image.url != "" or motherboard.image.url != Null %}
-                                        <a href="/info/{{motherboard.id}}/Motherboard"> <img src="{{ motherboard.image.url }}" width="100" height="100" alt="{{motherboard.title}}"></a>
+                                        <a href="/info/{{motherboard.id}}/Motherboard"> <img src="{{ motherboard.image.url }}" width="100" height="100"></a>
                                     {% else %}
-                                        <a href="/info/{{motherboard.id}}/Motherboard"> <img src="" width="100" height="100" alt="{{motherboard.title}}"></a>
+                                        <a href="/info/{{motherboard.id}}/Motherboard"> <img src="" width="100" height="100"></a>
                                     {% endif %}
                                         <a href="/info/{{motherboard.id}}/Motherboard" class="main__img__href__block">
                                             <p>Сокет: {{motherboard.socket}}</p>
@@ -121,23 +135,40 @@
 
                <ul class="main__ul"><li><p class="main__product__logo">Оперативная память</p></li></ul>
                     <template v-if="motherboard != ''">
-                        <p>Кол-во слотов в материнке: [[m_slots]]</p>
-                        <p>Максимальный объём памяти: [[max_memory]]</p>
-                        <p>Максимальная частота памяти: [[m_frequency]]</p>
-                        <p>Занято слотов: [[slots]]</p>
-                        <p>Текущий объём ОЗУ: [[ size_memory ]]</p>
+                        <div class="ram__info">
+                            <p>Кол-во слотов в мат. плате: [[m_slots]]</p>
+                            <p>Макс. объём памяти: [[max_memory]] Гб</p>
+                            <p>Макс. частота памяти: [[m_frequency]] МГц</p>
+                            <br>
+                            <p>Занято слотов: [[slots]]</p>
+                            <p>Текущий объём ОЗУ: [[ size_memory ]] Гб</p>
+                            <br>
+                            <p style="margin-bottom: 5px;">Объём одной плашки: </p>
+                        </div>
+                        
                         <div class="filter__ram">
-                            <p>Объём одной плашки: </p>
-                            <input type="checkbox" value="2" v-model="filter_ram">
-                            <label>2</label>
-                            <input type="checkbox" value="4" v-model="filter_ram">
-                            <label>4</label>
-                            <input type="checkbox" value="8" v-model="filter_ram">
-                            <label>8</label>
-                            <input type="checkbox" value="16" v-model="filter_ram">
-                            <label>16</label>
-                            <input type="checkbox" value="32" v-model="filter_ram">
-                            <label>32</label>
+                            <div>
+                                <input type="checkbox" value="2" v-model="filter_ram">
+                                <label style="padding-left: 5px;">2</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" value="4" v-model="filter_ram" style="margin-left: 10px;">
+                                <label style="padding-left: 5px;">4</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" value="8" v-model="filter_ram" style="margin-left: 10px;">
+                                <label style="padding-left: 5px;">8</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" value="16" v-model="filter_ram" style="margin-left: 10px;">
+                                <label style="padding-left: 5px;">16</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" value="32" v-model="filter_ram" style="margin-left: 10px;">
+                                <label style="padding-left: 5px;">32</label>
+                            </div>
+                            
+                            
                         </div>
                     </template>
                     
@@ -157,18 +188,18 @@
                                         </div>
                                     </div>
                                     
-                                    <a class="main__img__href" onclick="showImg('{{ram.title}}{{ram.id}}')">{{ram.title}} {{ram.size}} Гб ->  {{ram.price}} руб</a>
+                                    <a class="main__img__href" onclick="showImg('{{ram.title}}{{ram.id}}')">{{ram.title}} {{ram.size}} Гб -  <span class="price">{{ram.price}}</span> руб</a>
                                     <div class="main__img" id="{{ram.title}}{{ram.id}}" style="width: 100%;">
                                         <div class="img__div">
                                             {% if ram.image.url != "" or ram.image.url != Null %}
-                                                <a href="/info/{{ram.id}}/RAM"> <img src="{{ ram.image.url }}" width="100" height="100" alt="{{ram.title}}"></a>
+                                                <a href="/info/{{ram.id}}/RAM"> <img src="{{ ram.image.url }}" width="100" height="100"></a>
                                             {% else %}
-                                                 <a href="/info/{{ram.id}}/RAM"> <img src="" width="100" height="100" alt="{{ram.title}}"></a>
+                                                 <a href="/info/{{ram.id}}/RAM"> <img src="" width="100" height="100"></a>
                                             {% endif %}
                                             <a href="/info/{{ram.id}}/RAM" class="main__img__href__block">
                                                 <p>Объём памяти: {{ram.size}} Гб</p>
                                                 <p>Тип памяти: {{ram.type_memory}}</p>
-                                                <p>Частота: {{ram.m_frequency}}</p>
+                                                <p>Частота: {{ram.m_frequency}} МГц</p>
                                                 <p>В наличии: {{ram.stock}}</p>
                                             </a>
                                         </div>
@@ -190,18 +221,18 @@
                                         </div>
                                     </div>
                                     
-                                    <a class="main__img__href" onclick="showImg('{{ram.title}}{{ram.id}}')">{{ram.title}} {{ram.size}} Гб ->  {{ram.price}} руб</a>
+                                    <a class="main__img__href" onclick="showImg('{{ram.title}}{{ram.id}}')">{{ram.title}} {{ram.size}} Гб -  <span class="price">{{ram.price}}</span> руб</a>
                                     <div class="main__img" id="{{ram.title}}{{ram.id}}" style="width: 100%;">
                                         <div class="img__div">
                                             {% if ram.image.url != "" or ram.image.url != Null %}
-                                                <a href="/info/{{ram.id}}/RAM"> <img src="{{ ram.image.url }}" width="100" height="100" alt="{{ram.title}}"></a>
+                                                <a href="/info/{{ram.id}}/RAM"> <img src="{{ ram.image.url }}" width="100" height="100"></a>
                                             {% else %}
-                                                 <a href="/info/{{ram.id}}/RAM"> <img src="" width="100" height="100" alt="{{ram.title}}"></a>
+                                                 <a href="/info/{{ram.id}}/RAM"> <img src="" width="100" height="100"></a>
                                             {% endif %}
                                             <a href="/info/{{ram.id}}/RAM" class="main__img__href__block">
                                                 <p>Объём памяти: {{ram.size}} Гб</p>
                                                 <p>Тип памяти: {{ram.type_memory}}</p>
-                                                <p>Частота: {{ram.m_frequency}}</p>
+                                                <p>Частота: {{ram.m_frequency}} МГц</p>
                                                 <p>В наличии: {{ram.stock}}</p>
                                             </a>
                                         </div>
@@ -221,8 +252,11 @@
                 <ul class="main__ul"><li><p class="main__product__logo">Твердотельные накопители (SSD) M.2</p></li></ul>
                     <template v-if="motherboard != ''">
                         <template v-if="m2_slots_mother > 0">
-                        <p>Кол-во разъёмов M.2: [[m2_slots_mother]]</p>
-                        <p>Занято разъёмов: [[m2_slots]]</p>                       
+                            <div class="ram__info">
+                                <p>Кол-во разъёмов M.2: [[m2_slots_mother]]</p>
+                                <p>Занято разъёмов: [[m2_slots]]</p>
+                            </div>
+                                               
                     
                        {% for ssd in ssd_m2 %}
                             {% if ssd.stock > 0 %}
@@ -237,13 +271,13 @@
                                         </div>
                                     </div>
                                     
-                                    <a class="main__img__href" onclick="showImg('{{ssd.title}}{{ssd.id}}')">{{ssd.title}} {{ssd.capacity}} Гб -> {{ssd.price}} руб</a>
+                                    <a class="main__img__href" onclick="showImg('{{ssd.title}}{{ssd.id}}')">{{ssd.title}} {{ssd.capacity}} Гб - <span class="price">{{ssd.price}}</span> руб</a>
                                     <div class="main__img" id="{{ssd.title}}{{ssd.id}}" style="width: 100%;">
                                         <div class="img__div">
                                             {% if ssd.image.url != "" or ssd.image.url != Null %}
-                                                <a href="/info/{{ssd.id}}/SSD_M2"> <img src="{{ ssd.image.url }}" width="100" height="100" alt="{{ssd.title}}"></a>
+                                                <a href="/info/{{ssd.id}}/SSD_M2"> <img src="{{ ssd.image.url }}" width="100" height="100"></a>
                                             {% else %}
-                                                 <a href="/info/{{ssd.id}}/SSD_M2"> <img src="" width="100" height="100" alt="{{ssd.title}}"></a>
+                                                 <a href="/info/{{ssd.id}}/SSD_M2"> <img src="" width="100" height="100"></a>
                                             {% endif %}
                                             <a href="/info/{{ssd.id}}/SSD_M2" class="main__img__href__block">
                                                 <p>Объём: {{ssd.capacity}} Гб</p>
@@ -258,7 +292,10 @@
                     </template>
 
                     <template v-if="motherboard != '' && m2_slots_mother === 0">
-                        <p>У вашей мат. платы нет слотов для M.2</p>
+                        <div class="ram__info">
+                            <p>У вашей мат. платы нет слотов для M.2</p>
+                        </div>
+                        
                     </template>
 
 
@@ -266,8 +303,11 @@
                 <ul class="main__ul"><li><p class="main__product__logo">Жёские диски (HDD)</p></li></ul>
                     <template v-if="motherboard != ''">
                         <template v-if="sata_slots_mother > 0">
-                        <p>Кол-во разъёмов SATA: [[sata_slots_mother]]</p> 
-                        <p>Занято разъёмов: [[sata_slots]]</p>                      
+                            <div class="ram__info">
+                                <p>Кол-во разъёмов SATA: [[sata_slots_mother]]</p> 
+                                <p>Занято разъёмов: [[sata_slots]]</p> 
+                            </div>
+                                             
                     
                        {% for hd in hdd %}
                            {% if hd.stock > 0%}
@@ -281,13 +321,13 @@
                                         </div>
                                     </div>
                                     
-                                    <a class="main__img__href" onclick="showImg('{{hd.title}}{{hd.id}}')">{{hd.title}} {{hd.capacity}} Гб -> {{hd.price}} руб</a>
+                                    <a class="main__img__href" onclick="showImg('{{hd.title}}{{hd.id}}')">{{hd.title}} {{hd.capacity}} Гб - <span class="price">{{hd.price}}</span> руб</a>
                                     <div class="main__img" id="{{hd.title}}{{hd.id}}" style="width: 100%;">
                                         <div class="img__div">
                                             {% if hd.image.url != "" or hd.image.url != Null %}
-                                                <a href="/info/{{hd.id}}/HDD"> <img src="{{ hd.image.url }}" width="100" height="100" alt="{{hd.title}}"></a>
+                                                <a href="/info/{{hd.id}}/HDD"> <img src="{{ hd.image.url }}" width="100" height="100"></a>
                                             {% else %}
-                                                 <a href="/info/{{hd.id}}/HDD"> <img src="" width="100" height="100" alt="{{hd.title}}"></a>
+                                                 <a href="/info/{{hd.id}}/HDD"> <img src="" width="100" height="100"></a>
                                             {% endif %}
                                             <a href="/info/{{hd.id}}/HDD" class="main__img__href__block">
                                                 <p>Объём: {{hd.capacity}} Гб</p>
@@ -302,14 +342,20 @@
                     </template>
 
                     <template v-if="motherboard != '' && sata_slots_mother === 0">
-                        <p>У вашей мат. платы нет слотов для SATA</p>
+                        <div class="ram__info">
+                            <p>У вашей мат. платы нет слотов для SATA</p>
+                        </div>
+                        
                     </template>
 
                 <ul class="main__ul"><li><p class="main__product__logo">Твердотельные накопители (SSD) SATA</p></li></ul>
                     <template v-if="motherboard != ''">
                         <template v-if="sata_slots_mother > 0">
-                        <p>Кол-во разъёмов SATA: [[sata_slots_mother]]</p>
-                        <p>Занято разъёмов: [[sata_slots]]</p>                           
+                            <div class="ram__info">
+                                <p>Кол-во разъёмов SATA: [[sata_slots_mother]]</p>
+                                <p>Занято разъёмов: [[sata_slots]]</p> 
+                            </div>
+                                                  
                     
                        {% for sd in ssd_sata %}
                            {% if sd.stock > 0 %}
@@ -323,13 +369,13 @@
                                         </div>
                                     </div>
                                     
-                                    <a class="main__img__href" onclick="showImg('{{sd.title}}{{sd.id}}')">{{sd.title}} {{sd.capacity}} Гб -> {{sd.price}} руб</a>
+                                    <a class="main__img__href" onclick="showImg('{{sd.title}}{{sd.id}}')">{{sd.title}} {{sd.capacity}} Гб - <span class="price">{{sd.price}}</span> руб</a>
                                     <div class="main__img" id="{{sd.title}}{{sd.id}}" style="width: 100%;">
                                         <div class="img__div">
                                             {% if sd.image.url != "" or sd.image.url != Null %}
-                                                <a href="/info/{{sd.id}}/SSD_sata"> <img src="{{ sd.image.url }}" width="100" height="100" alt="{{sd.title}}"></a>
+                                                <a href="/info/{{sd.id}}/SSD_sata"> <img src="{{ sd.image.url }}" width="100" height="100"></a>
                                             {% else %}
-                                                 <a href="/info/{{sd.id}}/SSD_sata"> <img src="" width="100" height="100" alt="{{sd.title}}"></a>
+                                                 <a href="/info/{{sd.id}}/SSD_sata"> <img src="" width="100" height="100"></a>
                                             {% endif %}
                                             <a href="/info/{{sd.id}}/SSD_sata" class="main__img__href__block">
                                                 <p>Объём: {{sd.capacity}} Гб</p>
@@ -344,7 +390,9 @@
                     </template>
 
                     <template v-if="motherboard != '' && sata_slots_mother === 0">
-                        <p>У вашей мат. платы нет слотов для SATA</p>
+                        <div class="ram__info">
+                            <p>У вашей мат. платы нет слотов для SATA</p>
+                        </div>         
                     </template>
 
                 <ul class="main__ul"><li><p class="main__product__logo">Видеокарты</p></li></ul>
@@ -352,13 +400,13 @@
                     {% if videocard.stock > 0 %}
                         <div class="product">
                             <input name="videocard" value="{{videocard.title}}%%{{videocard.id}}%%{{videocard.power}}%%{{videocard.price}}" type="radio" @change="select_videocard('{{videocard.title}}', '{{videocard.id}}')">
-                            <a class="main__img__href" onclick="showImg('{{videocard.title}}{{videocard.id}}')">{{videocard.title}} -> {{videocard.price}} руб</a>
+                            <a class="main__img__href" onclick="showImg('{{videocard.title}}{{videocard.id}}')">{{videocard.title}} - <span class="price">{{videocard.price}}</span> руб</a>
                             <div class="main__img" id="{{videocard.title}}{{videocard.id}}">
                                 <div class="img__div">
                                 {% if videocard.image.url != "" or videocard.image.url != Null %}
-                                        <a href="/info/{{videocard.id}}/Videocard"> <img src="{{ videocard.image.url }}" width="100" height="100" alt="{{videocard.title}}"></a>
+                                        <a href="/info/{{videocard.id}}/Videocard"> <img src="{{ videocard.image.url }}" width="100" height="100"></a>
                                     {% else %}
-                                        <a href="/info/{{videocard.id}}/Videocard"> <img src="" width="100" height="100" alt="{{videocard.title}}"></a>
+                                        <a href="/info/{{videocard.id}}/Videocard"> <img src="" width="100" height="100"></a>
                                     {% endif %}
                                         <a href="/info/{{videocard.id}}/Videocard" class="main__img__href__block">
                                             <p>Видеопамять: {{videocard.memory}}</p>
@@ -379,13 +427,13 @@
                         <template v-if="{{power_block.power|floatformat}} >= parseFloat(v_power) && parseFloat(v_power) != 0">
                             <div class="product">
                                 <input name="power_block" value="{{power_block.title}}%%{{power_block.id}}%%{{power_block.power}}%%{{power_block.price}}" type="radio" @change="select_power_block('{{power_block.title}}', '{{power_block.id}}')">
-                                <a class="main__img__href" onclick="showImg('{{power_block.title}}{{power_block.id}}')">{{power_block.title}} {{power_block.power}} Вт -> {{power_block.price}} руб</a>
+                                <a class="main__img__href" onclick="showImg('{{power_block.title}}{{power_block.id}}')">{{power_block.title}} {{power_block.power}} Вт - <span class="price">{{power_block.price}}</span> руб</a>
                                 <div class="main__img" id="{{power_block.title}}{{power_block.id}}">
                                     <div class="img__div">
                                     {% if power_block.image.url != "" or power_block.image.url != Null %}
-                                            <a href="/info/{{power_block.id}}/Power_block"> <img src="{{ power_block.image.url }}" width="100" height="100" alt="{{power_block.title}}"></a>
+                                            <a href="/info/{{power_block.id}}/Power_block"> <img src="{{ power_block.image.url }}" width="100" height="100"></a>
                                         {% else %}
-                                            <a href="/info/{{power_block.id}}/Power_block"> <img src="" width="100" height="100" alt="{{power_block.title}}"></a>
+                                            <a href="/info/{{power_block.id}}/Power_block"> <img src="" width="100" height="100"></a>
                                         {% endif %}
                                             <a href="/info/{{power_block.id}}/Power_block" class="main__img__href__block">
                                                 <P>Мощность: {{power_block.power}} Вт</P>
@@ -405,13 +453,13 @@
                     {% if corpus.stock > 0 %}
                         <div class="product">
                             <input name="corpus" value="{{corpus.title}}%%{{corpus.id}}%%{{corpus.form}}%%{{corpus.price}}" type="radio" @change="select_corpus('{{corpus.title}}', '{{corpus.id}}')">
-                            <a class="main__img__href" onclick="showImg('{{corpus.title}}{{corpus.id}}')">{{corpus.title}} -> {{corpus.price}} руб</a>
+                            <a class="main__img__href" onclick="showImg('{{corpus.title}}{{corpus.id}}')">{{corpus.title}} - <span class="price">{{corpus.price}}</span> руб</a>
                             <div class="main__img" id="{{corpus.title}}{{corpus.id}}">
                                 <div class="img__div">
                                 {% if corpus.image.url != "" or corpus.image.url != Null %}
-                                        <a href="/info/{{corpus.id}}/Corpus"> <img src="{{ corpus.image.url }}" width="100" height="100" alt="{{corpus.title}}"></a>
+                                        <a href="/info/{{corpus.id}}/Corpus"> <img src="{{ corpus.image.url }}" width="100" height="100"></a>
                                     {% else %}
-                                        <a href="/info/{{corpus.id}}/Corpus"> <img src="" width="100" height="100" alt="{{corpus.title}}"></a>
+                                        <a href="/info/{{corpus.id}}/Corpus"> <img src="" width="100" height="100"></a>
                                     {% endif %}
                                         <a href="/info/{{corpus.id}}/Corpus" class="main__img__href__block">
                                             <p>Форм-фактор: {{corpus.form}}</p>
@@ -434,28 +482,28 @@
                     <p class="not__select">Процессор:</p>
                 </template>
                 <template v-else>
-                    <p>Процессор: [[ processor ]]</p>
+                    <p class="select">Процессор: [[ processor ]]</p>
                 </template>
 
                 <template v-if="cooler == ''">
                     <p class="not__select">Кулер для процессора:</p>
                 </template>
                 <template v-else>
-                    <p>Кулер для процессора: [[ cooler ]]</p>
+                    <p class="select">Кулер для процессора: [[ cooler ]]</p>
                 </template>
 
                 <template v-if="motherboard == ''">
                     <p class="not__select">Мат. плата:</p>
                 </template>
                 <template v-else>
-                    <p>Мат. плата: [[ motherboard ]]</p>
+                    <p class="select">Мат. плата: [[ motherboard ]]</p>
                 </template>
 
                 <template v-if="ram == ''">
                     <p class="not__select">ОЗУ:</p>
                 </template>
                 <template v-for="r in ram">
-                    <p>ОЗУ: [[r]]</p>
+                    <p class="select">ОЗУ: [[r]]</p>
                 </template>
 
                 <template v-if="ssd_m2 == '' && hdd == '' && ssd_sata == ''">
@@ -463,39 +511,47 @@
                 </template>
 
                 <template v-for="ssd in ssd_m2">
-                    <p>SSD M.2: [[ssd]]</p>
+                    <p class="select">SSD M.2: [[ssd]]</p>
                 </template>
 
                 <template v-for="hd in hdd">
-                    <p>HDD: [[hd]]</p>
+                    <p class="select">HDD: [[hd]]</p>
                 </template>
 
                 <template v-for="sd in ssd_sata">
-                    <p>SSD SATA: [[sd]]</p>
+                    <p class="select">SSD SATA: [[sd]]</p>
                 </template>
 
                 <template v-if="videocard == ''">
                     <p class="not__select">Видеокарта:</p>
                 </template>
                 <template v-else>
-                    <p>Видеокарта: [[ videocard ]]</p>
+                    <p class="select">Видеокарта: [[ videocard ]]</p>
                 </template>
                 
                 <template v-if="power_block == ''">
                     <p class="not__select">Блок питания:</p>
                 </template>
                 <template v-else>
-                    <p>Блок питания: [[ power_block ]]</p>
+                    <p class="select">Блок питания: [[ power_block ]]</p>
                 </template>
                 
-                <p>Корпус: [[ corpus ]]</p>
+                <p class="select">Корпус: [[ corpus ]]</p>
                 <br>
-                <p>Статус: [[ result ]]</p>
+                <p class="select">Статус: [[ result ]]</p>
                 <br>
-                <p>Цена: <span class="result__price">0</span> руб.</p>
+                <p class="select">Цена: <span class="result__price">0</span> руб.</p>
+                <br>
+                <button @click="clear" class="clear">Сбросить всё</button>
+                <template v-if="result == 'Сборка не завершена! Выберите недостающие комплектующие.'">        
+                    <button class="buy__dis">Оформить заказ</button>
+                </template>
+                <template v-else>
+                    <button @click="order" class="buy">Оформить заказ</button>
+                </template>
+                
             </div>
-            <button @click="clear">Сбросить всё</button>
-            <button @click="order">Оформить заказ</button>
+            
         </div>
 
         

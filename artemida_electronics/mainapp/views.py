@@ -129,78 +129,81 @@ def info(request, product_id, product): # пожалуйста простите 
             videocard = ''
             power_block = ''
             corpus = ''
+            print(review_content)
+            if (review_content):
+                if product == 'Processor':
+                    if request.user.is_authenticated:
+                        processor = Processor.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        processor.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
 
-            if product == 'Processor':
-                if request.user.is_authenticated:
-                    processor = Processor.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    processor.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-
-            elif product == 'Cooler':
-                 if request.user.is_authenticated:
-                    cooler = Cooler.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    cooler.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'Motherboard':
-                 if request.user.is_authenticated:
-                    motherboard = Motherboard.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    motherboard.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'RAM':
-                 if request.user.is_authenticated:
-                    ram = RAM.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    ram.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'SSD_M2':
-                 if request.user.is_authenticated:
-                    ssd_m2 = SSD_M2.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    ssd_m2.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'HDD':
-                 if request.user.is_authenticated:
-                    hdd = HDD.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    hdd.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'SSD_sata':
-                 if request.user.is_authenticated:
-                    ssd_sata = SSD_sata.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    ssd_sata.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'Videocard':
-                 if request.user.is_authenticated:
-                    videocard = Videocard.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    videocard.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'Power_block':
-                 if request.user.is_authenticated:
-                    power_block = Power_block.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    power_block.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
-            elif product == 'Corpus':
-                 if request.user.is_authenticated:
-                    corpus = Corpus.objects.get(id = product_id)
-                    user = User.objects.get(id=request.user.id)
-                    review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
-                    corpus.review.add(review)
-                    return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'Cooler':
+                    if request.user.is_authenticated:
+                        cooler = Cooler.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        cooler.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'Motherboard':
+                    if request.user.is_authenticated:
+                        motherboard = Motherboard.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        motherboard.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'RAM':
+                    if request.user.is_authenticated:
+                        ram = RAM.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        ram.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'SSD_M2':
+                    if request.user.is_authenticated:
+                        ssd_m2 = SSD_M2.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        ssd_m2.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'HDD':
+                    if request.user.is_authenticated:
+                        hdd = HDD.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        hdd.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'SSD_sata':
+                    if request.user.is_authenticated:
+                        ssd_sata = SSD_sata.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        ssd_sata.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'Videocard':
+                    if request.user.is_authenticated:
+                        videocard = Videocard.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        videocard.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'Power_block':
+                    if request.user.is_authenticated:
+                        power_block = Power_block.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        power_block.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+                elif product == 'Corpus':
+                    if request.user.is_authenticated:
+                        corpus = Corpus.objects.get(id = product_id)
+                        user = User.objects.get(id=request.user.id)
+                        review = Review.objects.create(creator = user, content = review_content) # создаю отзыв
+                        corpus.review.add(review)
+                        return render(request, 'mainapp/info.html', {'processor': processor, 'cooler': cooler, 'motherboard':motherboard, 'ram':ram, 'ssd_m2':ssd_m2, 'hdd':hdd, 'ssd_sata':ssd_sata, 'videocard':videocard, 'power_block':power_block, 'corpus':corpus})
+            else:
+                return HttpResponseRedirect(request.path)
         except:
             return HttpResponseRedirect("/")
 

@@ -101,6 +101,51 @@ def cart_remove(request, product_id, product):
     return HttpResponseRedirect("/cart")
 
 
+def cart_info(request, product_id, product):
+
+    if('Processor' in str(product)):
+        pr = Processor.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/Processor")
+
+    elif('Cooler' in str(product)):
+        pr = Cooler.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/Cooler")
+
+    elif('Motherboard' in str(product)):
+        pr = Motherboard.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/Motherboard")
+
+    elif('RAM' in str(product)):
+        pr = RAM.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/RAM")
+
+    elif('HDD' in str(product)):
+        pr = HDD.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/HDD")
+
+    elif('SSD_M2' in str(product)):
+        pr = SSD_M2.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/SSD_M2")
+
+    elif('SSD_sata' in str(product)):
+        pr = SSD_sata.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/SSD_sata")
+
+    elif('Videocard' in str(product)):
+        pr = Videocard.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/Videocard")
+
+    elif('Power_block' in str(product)):
+        pr = Power_block.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/Power_block")
+
+    elif('Corpus' in str(product)):
+        pr = Corpus.objects.get(id=product_id)
+        return HttpResponseRedirect(f"/info/{pr.id}/Corpus")
+
+    return HttpResponseRedirect("/cart")
+
+
 def cart_detail(request):
     cart = Cart(request)
     return render(request, 'cart/detail.html', {'cart': cart})

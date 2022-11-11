@@ -9,9 +9,9 @@
         <div class="card__in">
             <div class="product__img">
                 {% if processor.image.url != "" or processor.image.url != Null %}
-                    <img src="{{ processor.image.url }}" width="200" height="200" alt="{{processor.title}}">
+                    <img src="{{ processor.image.url }}" class="card__img">
                 {% else %}
-                    <img src="" width="200" height="200"></a>
+                    <img src="" class="card__img"></a>
                 {% endif %}
                 <p>В налачии: {{processor.stock}} шт.</p>
             </div>
@@ -27,28 +27,43 @@
                     <li>Тепловыделение (TDP): {{processor.tdp}}Вт</li>
                     <li>Цена: {{processor.price}} руб.</li>
                 </ul>
-                <a href="/cart/cart_add/{{processor.id}}/Processor/">Добавить в корзину</a>              
+                <div class="cart__button">
+                    <a class="cart" href="/cart/cart_add/{{processor.id}}/Processor/">Добавить в корзину</a>
+                </div>          
             </div>
                  
         </div>
     </div>
-    <p>Отзывы:</p>
-    <br>
-    {% for review in processor.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
+    <p class="reviews">Отзывы:</p>
+    <br>
+
+    {% if user.is_authenticated %}
+    
+    <form method="POST" action="">
+        {% csrf_token %}
+            <div class="write">
+                <p class="write__logo">Написать отзыв:</p>
+                <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+                <button type="submit" class="submit">Отправить</button>
+            </div>
+    </form>
     {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+        <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
     {% endif %}
+    <br>
+
+    {% for review in processor.review.all %}
+    <div class="review">
+        <p class="creator">{{review.creator}}</p>
+        <div class="content">
+            <p>{{review.content|safe|linebreaks}}</p>
+        </div>
+        <p class="date">{{review.date_review}}</p>
+    </div>
+    {% endfor %}
+    
+   
 
 {% elif cooler != ''%}
     <div class = "card">
