@@ -1,0 +1,78 @@
+.products__filter__left {
+    width: 30%;
+    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+}
+
+.products__filter__rigth {
+    width: 70%;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+
+.products{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.filter__logo {
+    width: 100%;
+    font-size: 20px;
+}
+
+.hide__checkbox {
+    display: none;
+}
+
+.card__img{
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.box__logo {
+    text-align: center;
+}
+
+.box__description{
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.show__button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box__card {
+    margin: 10px;
+    width: auto;
+    height: auto;
+    background-color: aqua;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.filter__logo {
+    text-align: center;
+    font-size: 26px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.filter__data {
+    margin-left: 10px;
+}
+

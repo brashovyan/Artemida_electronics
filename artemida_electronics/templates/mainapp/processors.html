@@ -2,34 +2,183 @@
 {% block title %}Процессоры{% endblock %}
 {% block site_content %}
 {% load static %}
+<link href="{% static 'css/products.css' %}" rel="stylesheet">
+<script src="{% static 'js/vue.js' %}"></script> <!-- Подключаем вью файликом -->
 
-{% for processor in page_obj %}
-    <a href="/info/{{processor.id}}/Processor"><p>{{processor.title}}</p></a>
-{% endfor %}
-<br>
-    <div style="display: flex;">
-        {%if page_obj.has_previous %}
+<div class="products">
+    <div class="products__filter__left">
+        <p class="filter__logo">Фильтры</p>
+        <div class="filter__data">
+            {% if filter == 'price_up' %}
+            <div>
+                <input type="radio" name="pr" @change="price_up()" checked="true">
+                <label>По возрастанию цены</label>
+            </div>
+            <div>
+                <input type="radio" name="pr" @change="price_down()" value="2">
+                <label>По убыванию цены</label>
+            </div>
 
-        <h5><a href="?page={{ page_obj.previous_page_number }}">&lt</a></h5>
+            {% elif filter == 'price_down' %}
+            <div>
+                <input type="radio" name="pr" @change="price_up()">
+                <label>По возрастанию цены</label>
+            </div>
+            <div>
+                <input type="radio" name="pr" @change="price_down()" value="2" checked="true">
+                <label>По убыванию цены</label>
+            </div>
 
-    {% endif %}
+            {% else %}
+            <div>
+                <input type="radio" name="pr" @change="price_up()" checked="true">
+                <label>По возрастанию цены</label>
+            </div>
+            <div>
+                <input type="radio" name="pr" @change="price_down()" value="2">
+                <label>По убыванию цены</label>
+            </div>
 
-    {% for p in page_obj.paginator.page_range %}
-        {% if page_obj.number == p %}
-            <h5>{{ p }} из {{ page_obj.paginator.num_pages }}</h5>
-        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+            {% endif %}
+        </div>
 
-            <h5><a href="?page={{ p }}">{{ p }}</a></h5>
+        <p>По производителю</p>
+        <div class="filter__data">
+            <div>
+                <input type="checkbox" value="AMD" v-model="manufacturer">
+                <label>AMD</label>
+            </div>
+            <div>
+                <input type="checkbox" value="intel" v-model="manufacturer">
+                <label>Intel</label>
+            </div>
+        </div>
 
-        {% endif %}
-    {% endfor %}
+        <p>По кол-ву ядер</p>
+        <div class="filter__data">
+            <div>
+                <input type="checkbox" value="2" v-model="cores">
+                <label>2 core</label>
+            </div>
+            <div>
+                <input type="checkbox" value="4" v-model="cores">
+                <label>4 core</label>
+            </div>
+            <div>
+                <input type="checkbox" value="6" v-model="cores">
+                <label>6 core</label>
+            </div>
+            <div>
+                <input type="checkbox" value="8" v-model="cores">
+                <label>8 core</label>
+            </div>
+        </div>
 
-    {% if page_obj.has_next %}
+        <p>По сокету</p>
+        <div class="filter__data">
+            <div>
+                <input type="checkbox" value="AM4" v-model="sockets">
+                <label>AM4</label>
+            </div>
+            <div>
+                <input type="checkbox" value="LGA 1700" v-model="sockets">
+                <label>LGA 1700</label>
+            </div>
+        </div>
 
-        <h5><a href="?page={{ page_obj.next_page_number }}">&gt</a></h5>
+        <p>По цене</p>
+        <div class="filter__data">
+            <div>
+                <input type="checkbox" value="0-10000" v-model="price">
+                <label>До 10000 руб.</label>
+            </div>
+            <div>
+                <input type="checkbox" value="10000-20000" v-model="price">
+                <label>10000 руб. - 20000 руб.</label>
+            </div>
+            <div>
+                <input type="checkbox" value="20000-1000000" v-model="price">
+                <label>от 20000 руб.</label>
+            </div>
+        </div>
+        <button @click="filter()">Применить</button>
+    </div>
 
-{% endif %}
-
+   
+    <div class="products__filter__rigth">
+       
+           
+            <template v-if="proc_filter != '' ">
+                {% for processor in processors %}
+                    <template v-for="id in proc_filter">
+                        <template v-if="'{{processor.id}}' == id">
+    
+                            <div class="box">
+                                <a href="/info/{{processor.id}}/Processor">
+                                    <div class="box__card">
+                                        {% if processor.image.url != "" or processor.image.url != Null %}
+                                        <img src="{{ processor.image.url }}" class="card__img">
+                                        {% else %}
+                                        <img src="" class="card__img">
+                                        {% endif %}
+                                        <div class="box__description">
+                                            <p class="box__logo">{{processor.title}}</p>
+                                            <p>Ядра/потоки: {{processor.cores}}</p>
+                                            <p>Базовая частота (Ггц): {{processor.frequency}}</p>
+                                            <p>Сокет: {{processor.socket}}</p>
+                                            <p>Цена: {{processor.price}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </template>
+                    </template>
+                {% endfor %}
+            </template>
+        
+            
+       
+    
+            <template v-else>
+                <!-- hide__checbox - костыль, чтобы js передать все товары из бд -->
+                {% for processor in processors %}
+                    <div class="box">
+                        <a href="/info/{{processor.id}}/Processor">
+                            <div class="box__card">
+                                {% if processor.image.url != "" or processor.image.url != Null %}
+                                <img src="{{ processor.image.url }}" class="card__img">
+                                {% else %}
+                                <img src="" class="card__img">
+                                {% endif %}
+                                <div class="box__description">
+                                    <p class="box__logo">{{processor.title}}</p>
+                                    <p>Ядра/потоки: {{processor.cores}}</p>
+                                    <p>Базовая частота (Ггц): {{processor.frequency}}</p>
+                                    <p>Сокет: {{processor.socket}}</p>
+                                    <p>Цена: {{processor.price}}</p>
+                                </div>
+    
+                                <div class="hide__checkbox">
+                                    <input type="checkbox"
+                                        value="{{processor.title}}%%{{processor.id}}%%{{processor.socket}}%%{{processor.cores}}%%{{processor.frequency}}%%{{processor.m_frequency}}%%{{processor.type_memory}}%%{{processor.max_memory}}%%{{processor.tdp}}%%{{processor.price}}"></input>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </template>
     </div>
     
+</div>
+
+
+
+
+
+
+</div>
+<script src="{% static 'js/jquery-3.6.1.js' %}"></script>
+<script src="{% static 'js/products.js' %}"></script>
+
+
 {% endblock %}

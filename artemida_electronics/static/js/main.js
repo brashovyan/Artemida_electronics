@@ -27,10 +27,12 @@ function showImg(elemId) // по нажатию на продукт появля
     var elem = document.getElementById(elemId);
     if(elem.style.display === "none" || elem.style.display == "")
     {
-        elem.style.display = "block";
+        $(elem).fadeIn(400);
+        //elem.style.display = "block";
     }
     else
     {
-        elem.style.display = "none";
+        $(elem).fadeOut(300);
+        //elem.style.display = "none"; 
     }
 }

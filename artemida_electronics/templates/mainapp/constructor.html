@@ -3,6 +3,7 @@
 {% block site_content %}
 {% load static %}
 <link href= "{% static 'css/constructor.css' %}" rel="stylesheet">
+<script src="{% static 'js/vue.js' %}"></script> <!-- Подключаем вью файликом -->
 
     <main class="main">
         <div class="main__left">
@@ -26,7 +27,6 @@
                     <input type="checkbox" value="INTEL" v-model="filter_proc" style="margin-left: 10px;">
                     <label style="padding-left: 5px;">Intel</label>
                 </div>
-
                     {% for processor in processors %}
                         {% if processor.stock > 0 %}
                         <template v-if="filter_proc != ''">
@@ -128,8 +128,10 @@
                             </div>
                         </div>
                     </template>
+                    
                     {% endif %}
                 {% endfor %}
+                
 
 
 

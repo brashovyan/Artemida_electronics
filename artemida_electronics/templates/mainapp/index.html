@@ -2,18 +2,81 @@
 {% block title %}Artemida Electronics{% endblock %}
 {% block site_content %}
 {% load static %}
-<p>Главная страница сайта</p>
-<div style="display: flex; flex-direction:column;">
-    <a href="/processors">Процессоры</a>
-    <a href="/coolers">Кулеры для процессоров</a>
-    <a href="/motherboards">Материнские платы</a>
-    <a href="/rams">Оперативная память</a>
-    <a href="/ssd_m2s">Твердотельные накопители M.2 (SSD M.2)</a>
-    <a href="/hdds">Жесткие диски (HDD)</a>
-    <a href="/ssd_satas">Твердотельные накопители SATA (SSD SATA)</a>
-    <a href="/videocards">Видеокарты</a>
-    <a href="/power_blocks">Блоки питания</a>
-    <a href="/corpuses">Корпуса</a>
+<link href= "{% static 'css/index.css' %}" rel="stylesheet">
+
+<p class="index__logo">Категории</p>
+
+<div class="cards">
+    <a href="/processors">
+        <div class="category">
+            <img src="{% static 'img/processor.jpg' %}" class="index__img">
+            <p class="category__logo">Процессоры</p>
+        </div>
+    </a>
+
+    <a href="/coolers">
+        <div class="category">
+            <img src="{% static 'img/cooler.jpg' %}" class="index__img">
+            <p class="category__logo">Кулеры</p>
+        </div>
+    </a>
+
+    <a href="/motherboards">
+        <div class="category">
+            <img src="{% static 'img/motherboard.jpg' %}" class="index__img">
+            <p class="category__logo">Материнские платы</p>
+        </div>
+    </a>
+
+    <a href="/rams">
+        <div class="category">
+            <img src="{% static 'img/ram.jpg' %}" class="index__img">
+            <p class="category__logo">Оперативная память</p>
+        </div>
+    </a>
+
+    <a href="/ssd_m2s">
+        <div class="category">
+            <img src="{% static 'img/ssd_m2.jpg' %}" class="index__img">
+            <p class="category__logo">SSD M.2</p>
+        </div>
+    </a>
+
+
+    <a href="/hdds">
+        <div class="category">
+            <img src="{% static 'img/hdd.jpg' %}" class="index__img">
+            <p class="category__logo">Жесткие диски</p>
+        </div>
+    </a>
+
+    <a href="/ssd_satas">
+        <div class="category">
+            <img src="{% static 'img/ssd_sata.jpg' %}" class="index__img">
+            <p class="category__logo">SSD SATA</p>
+        </div>
+    </a>
+
+    <a href="/videocards">
+        <div class="category">
+            <img src="{% static 'img/videocard.jpg' %}" class="index__img">
+            <p class="category__logo">Видеокарты</p>
+        </div>
+    </a>
+
+    <a href="/power_blocks">
+        <div class="category">
+            <img src="{% static 'img/power_block.jpg' %}" class="index__img">
+            <p class="category__logo">Блоки питания</p>
+        </div>
+    </a>
+
+    <a href="/corpuses">
+        <div class="category">
+            <img src="{% static 'img/corpus.jpg' %}" class="index__img">
+            <p class="category__logo">Корпуса</p>
+        </div>
+    </a>
 </div>
 
 

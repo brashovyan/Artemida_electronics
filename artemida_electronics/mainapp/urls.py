@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile/<int:id>/', views.profile, name='profile'),
     
     path('processors/', views.processors, name='processors'),
+    path('processors/<str:filter>/', views.processors),
     path('coolers/', views.coolers, name='coolers'),
     path('motherboards/', views.motherboards, name='motherboards'),
     path('rams/', views.rams, name='rams'),

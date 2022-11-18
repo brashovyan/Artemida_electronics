@@ -66,13 +66,14 @@
    
 
 {% elif cooler != ''%}
+
     <div class = "card">
         <div class="card__in">
             <div class="product__img">
                 {% if cooler.image.url != "" or cooler.image.url != Null %}
-                    <img src="{{ cooler.image.url }}" width="200" height="200" alt="{{cooler.title}}">
+                    <img src="{{ cooler.image.url }}" class="card__img">
                 {% else %}
-                    <img src="" width="200" height="200"></a>
+                    <img src="" class="card__img"></a>
                 {% endif %}
                 <p>В налачии: {{cooler.stock}} шт.</p>
             </div>
@@ -82,85 +83,113 @@
                     <li>Рассеиваемая мощность: {{cooler.power}} Вт</li>
                     <li>Цена: {{cooler.price}} руб.</li>
                 </ul>
-                <a href="/cart/cart_add/{{cooler.id}}/Cooler/">Добавить в корзину</a>                 
+                <div class="cart__button">
+                    <a class="cart" href="/cart/cart_add/{{cooler.id}}/Cooler/">Добавить в корзину</a>
+                </div>          
             </div>
                 
         </div>
     </div>
 
-    <p>Отзывы:</p>
+    <p class="reviews">Отзывы:</p>
     <br>
-    {% for review in cooler.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
+    {% if user.is_authenticated %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+            <div class="write">
+                <p class="write__logo">Написать отзыв:</p>
+                <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+                <button type="submit" class="submit">Отправить</button>
+            </div>
+    </form>
     {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+        <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
     {% endif %}
+    <br>
+
+    {% for review in cooler.review.all %}
+    <div class="review">
+        <p class="creator">{{review.creator}}</p>
+        <div class="content">
+            <p>{{review.content|safe|linebreaks}}</p>
+        </div>
+        <p class="date">{{review.date_review}}</p>
+    </div>
+    {% endfor %}
 
 {% elif motherboard != ''%}
-<div class = "card">
-    <div class="card__in">
-        <div class="product__img">
-            {% if motherboard.image.url != "" or motherboard.image.url != Null %}
-                <img src="{{ motherboard.image.url }}" width="200" height="200" alt="{{motherboard.title}}">
-            {% else %}
-                <img src="" width="200" height="200"></a>
-            {% endif %}
-            <p>В налачии: {{motherboard.stock}} шт.</p>
-        </div>
-        <div class="info">
-            <p class="title">{{motherboard.title}}</p>
-            <ul class="main__ul">
-                <li>Сокет: {{motherboard.socket}}</li>
-                <li>Чипсет: {{motherboard.chipset}}</li>
-                <li>Кол-во слотов ОЗУ: {{motherboard.m_slots}}</li>
-                <li>Макс. Частота ОЗУ: {{motherboard.m_frequency}} МГц</li>
-                <li>Тип памяти: {{motherboard.type_memory}}</li>
-                <li>Максимальный объём ОЗУ: {{motherboard.max_memory}} Гб</li>
-                <li>Кол-во слотов M2: {{motherboard.m2_slots}}</li>
-                <li>Кол-во слотов SATA: {{motherboard.sata_slots}}</li>
-                <li>Цена: {{motherboard.price}} руб.</li>
-                <a href="/cart/cart_add/{{motherboard.id}}/Motherboard/">Добавить в корзину</a>   
-            </ul>              
-        </div>
-             
-    </div>
-</div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in motherboard.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
+    <div class = "card">
+        <div class="card__in">
+            <div class="product__img">
+                {% if motherboard.image.url != "" or motherboard.image.url != Null %}
+                    <img src="{{ motherboard.image.url }}" class="card__img">
+                {% else %}
+                    <img src="" class="card__img"></a>
+                {% endif %}
+                <p>В налачии: {{motherboard.stock}} шт.</p>
+            </div>
+            <div class="info">
+                <p class="title">{{motherboard.title}}</p>
+                <ul class="main__ul">
+                    <li>Сокет: {{motherboard.socket}}</li>
+                    <li>Чипсет: {{motherboard.chipset}}</li>
+                    <li>Кол-во слотов ОЗУ: {{motherboard.m_slots}}</li>
+                    <li>Макс. Частота ОЗУ: {{motherboard.m_frequency}} МГц</li>
+                    <li>Тип памяти: {{motherboard.type_memory}}</li>
+                    <li>Максимальный объём ОЗУ: {{motherboard.max_memory}} Гб</li>
+                    <li>Кол-во слотов M2: {{motherboard.m2_slots}}</li>
+                    <li>Кол-во слотов SATA: {{motherboard.sata_slots}}</li>
+                    <li>Цена: {{motherboard.price}} руб.</li>
+                </ul>
+                <div class="cart__button">
+                    <a class="cart" href="/cart/cart_add/{{motherboard.id}}/Motherboard/">Добавить в корзину</a>
+                </div>          
+            </div>
+                
+        </div>
+    </div>
+
+    <p class="reviews">Отзывы:</p>
+    <br>
+
+    {% if user.is_authenticated %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+            <div class="write">
+                <p class="write__logo">Написать отзыв:</p>
+                <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+                <button type="submit" class="submit">Отправить</button>
+            </div>
+    </form>
     {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
+        <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
     {% endif %}
+    <br>
+
+    {% for review in motherboard.review.all %}
+    <div class="review">
+        <p class="creator">{{review.creator}}</p>
+        <div class="content">
+            <p>{{review.content|safe|linebreaks}}</p>
+        </div>
+        <p class="date">{{review.date_review}}</p>
+    </div>
+    {% endfor %}
 
 {% elif ram != '' %}
+
+
 <div class = "card">
     <div class="card__in">
         <div class="product__img">
             {% if ram.image.url != "" or ram.image.url != Null %}
-                <img src="{{ ram.image.url }}" width="200" height="200" alt="{{ram.title}}">
+                <img src="{{ ram.image.url }}" class="card__img">
             {% else %}
-                <img src="" width="200" height="200"></a>
+                <img src="" class="card__img"></a>
             {% endif %}
             <p>В налачии: {{ram.stock}} шт.</p>
         </div>
@@ -173,37 +202,51 @@
                 <li>Тайминги: Вещь важная, но лень в бд заносить</li>
                 <li>Цена: {{ram.price}} руб.</li>
             </ul>
-            <a href="/cart/cart_add/{{ram.id}}/RAM/">Добавить в корзину</a>                 
+            <div class="cart__button">
+                <a class="cart" href="/cart/cart_add/{{ram.id}}/RAM/">Добавить в корзину</a>
+            </div>          
         </div>
              
     </div>
 </div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in ram.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
-    {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
-    {% endif %}
+<p class="reviews">Отзывы:</p>
+<br>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+        <div class="write">
+            <p class="write__logo">Написать отзыв:</p>
+            <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+            <button type="submit" class="submit">Отправить</button>
+        </div>
+</form>
+{% else %}
+    <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
+{% endif %}
+<br>
+
+{% for review in ram.review.all %}
+<div class="review">
+    <p class="creator">{{review.creator}}</p>
+    <div class="content">
+        <p>{{review.content|safe|linebreaks}}</p>
+    </div>
+    <p class="date">{{review.date_review}}</p>
+</div>
+{% endfor %}
 
 {% elif ssd_m2 != ''%}
+
 <div class = "card">
     <div class="card__in">
         <div class="product__img">
             {% if ssd_m2.image.url != "" or ssd_m2.image.url != Null %}
-                <img src="{{ ssd_m2.image.url }}" width="200" height="200" alt="{{ssd_m2.title}}">
+                <img src="{{ ssd_m2.image.url }}" class="card__img">
             {% else %}
-                <img src="" width="200" height="200"></a>
+                <img src="" class="card__img"></a>
             {% endif %}
             <p>В налачии: {{ssd_m2.stock}} шт.</p>
         </div>
@@ -213,36 +256,51 @@
                 <li>Объём: {{ssd_m2.capacity}} Гб</li>
                 <li>Цена: {{ssd_m2.price}} руб.</li>
             </ul>
-            <a href="/cart/cart_add/{{ssd_m2.id}}/SSD_M2/">Добавить в корзину</a>                 
-        </div>     
+            <div class="cart__button">
+                <a class="cart" href="/cart/cart_add/{{ssd_m2.id}}/SSD_M2/">Добавить в корзину</a>
+            </div>          
+        </div>
+             
     </div>
 </div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in ssd_m2.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
-    {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
-    {% endif %}
+<p class="reviews">Отзывы:</p>
+<br>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+        <div class="write">
+            <p class="write__logo">Написать отзыв:</p>
+            <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+            <button type="submit" class="submit">Отправить</button>
+        </div>
+</form>
+{% else %}
+    <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
+{% endif %}
+<br>
+
+{% for review in ssd_m2.review.all %}
+<div class="review">
+    <p class="creator">{{review.creator}}</p>
+    <div class="content">
+        <p>{{review.content|safe|linebreaks}}</p>
+    </div>
+    <p class="date">{{review.date_review}}</p>
+</div>
+{% endfor %}
 
 {% elif hdd != '' %}
+
 <div class = "card">
     <div class="card__in">
         <div class="product__img">
             {% if hdd.image.url != "" or hdd.image.url != Null %}
-                <img src="{{ hdd.image.url }}" width="200" height="200" alt="{{hdd.title}}">
+                <img src="{{ hdd.image.url }}" class="card__img">
             {% else %}
-                <img src="" width="200" height="200"></a>
+                <img src="" class="card__img"></a>
             {% endif %}
             <p>В налачии: {{hdd.stock}} шт.</p>
         </div>
@@ -252,36 +310,52 @@
                 <li>Объём: {{hdd.capacity}} Гб</li>
                 <li>Цена: {{hdd.price}} руб.</li>
             </ul>
-            <a href="/cart/cart_add/{{hdd.id}}/HDD/">Добавить в корзину</a>                 
-        </div>     
+            <div class="cart__button">
+                <a class="cart" href="/cart/cart_add/{{hdd.id}}/HDD/">Добавить в корзину</a>
+            </div>          
+        </div>
     </div>
 </div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in hdd.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
-    {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
-    {% endif %}
+<p class="reviews">Отзывы:</p>
+<br>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+        <div class="write">
+            <p class="write__logo">Написать отзыв:</p>
+            <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+            <button type="submit" class="submit">Отправить</button>
+        </div>
+</form>
+{% else %}
+    <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
+{% endif %}
+<br>
+
+{% for review in hdd.review.all %}
+<div class="review">
+    <p class="creator">{{review.creator}}</p>
+    <div class="content">
+        <p>{{review.content|safe|linebreaks}}</p>
+    </div>
+    <p class="date">{{review.date_review}}</p>
+</div>
+{% endfor %}
+
+
 
 {% elif ssd_sata != '' %}
+
 <div class = "card">
     <div class="card__in">
         <div class="product__img">
             {% if ssd_sata.image.url != "" or ssd_sata.image.url != Null %}
-                <img src="{{ ssd_sata.image.url }}" width="200" height="200" alt="{{ssd_sata.title}}">
+                <img src="{{ ssd_sata.image.url }}" class="card__img">
             {% else %}
-                <img src="" width="200" height="200"></a>
+                <img src="" class="card__img"></a>
             {% endif %}
             <p>В налачии: {{ssd_sata.stock}} шт.</p>
         </div>
@@ -291,36 +365,52 @@
                 <li>Объём: {{ssd_sata.capacity}} Гб</li>
                 <li>Цена: {{ssd_sata.price}} руб.</li>
             </ul>
-            <a href="/cart/cart_add/{{ssd_sata.id}}/SSD_sata/">Добавить в корзину</a>                 
-        </div>     
+            <div class="cart__button">
+                <a class="cart" href="/cart/cart_add/{{ssd_sata.id}}/SSD_sata/">Добавить в корзину</a>
+            </div>          
+        </div>
+             
     </div>
 </div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in ssd_sata.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
-    {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
-    {% endif %}
+<p class="reviews">Отзывы:</p>
+<br>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+        <div class="write">
+            <p class="write__logo">Написать отзыв:</p>
+            <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+            <button type="submit" class="submit">Отправить</button>
+        </div>
+</form>
+{% else %}
+    <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
+{% endif %}
+<br>
+
+{% for review in ssd_sata.review.all %}
+<div class="review">
+    <p class="creator">{{review.creator}}</p>
+    <div class="content">
+        <p>{{review.content|safe|linebreaks}}</p>
+    </div>
+    <p class="date">{{review.date_review}}</p>
+</div>
+{% endfor %}
+
 
 {% elif videocard != '' %}
+
 <div class = "card">
     <div class="card__in">
         <div class="product__img">
             {% if videocard.image.url != "" or videocard.image.url != Null %}
-                <img src="{{ videocard.image.url }}" width="200" height="200" alt="{{videocard.title}}">
+                <img src="{{ videocard.image.url }}" class="card__img">
             {% else %}
-                <img src="" width="200" height="200"></a>
+                <img src="" class="card__img"></a>
             {% endif %}
             <p>В налачии: {{videocard.stock}} шт.</p>
         </div>
@@ -330,38 +420,53 @@
                 <li>Видеопамять: {{videocard.memory}}</li>
                 <li>Рекоменуемый блок питания: {{videocard.power}} Вт</li>
                 <li>Цена: {{videocard.price}} руб.</li>
-                <a href="/cart/cart_add/{{videocard.id}}/Videocard/">Добавить в корзину</a>   
-            </ul>              
+            </ul>
+            <div class="cart__button">
+                <a class="cart" href="/cart/cart_add/{{videocard.id}}/Videocard/">Добавить в корзину</a>
+            </div>          
         </div>
              
     </div>
 </div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in videocard.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
-    {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
-    {% endif %}
+<p class="reviews">Отзывы:</p>
+<br>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+        <div class="write">
+            <p class="write__logo">Написать отзыв:</p>
+            <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+            <button type="submit" class="submit">Отправить</button>
+        </div>
+</form>
+{% else %}
+    <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
+{% endif %}
+<br>
+
+{% for review in videocard.review.all %}
+<div class="review">
+    <p class="creator">{{review.creator}}</p>
+    <div class="content">
+        <p>{{review.content|safe|linebreaks}}</p>
+    </div>
+    <p class="date">{{review.date_review}}</p>
+</div>
+{% endfor %}
+
 
 {% elif power_block != '' %}
+
 <div class = "card">
     <div class="card__in">
         <div class="product__img">
             {% if power_block.image.url != "" or power_block.image.url != Null %}
-                <img src="{{ power_block.image.url }}" width="200" height="200" alt="{{power_block.title}}">
+                <img src="{{ power_block.image.url }}" class="card__img">
             {% else %}
-                <img src="" width="200" height="200"></a>
+                <img src="" class="card__img"></a>
             {% endif %}
             <p>В налачии: {{power_block.stock}} шт.</p>
         </div>
@@ -371,36 +476,51 @@
                 <li>Мощность: {{power_block.power}} Вт</li>
                 <li>Цена: {{power_block.price}} руб.</li>
             </ul>
-            <a href="/cart/cart_add/{{power_block.id}}/Power_block/">Добавить в корзину</a>                
+            <div class="cart__button">
+                <a class="cart" href="/cart/cart_add/{{power_block.id}}/Power_block/">Добавить в корзину</a>
+            </div>          
         </div>
+             
     </div>
 </div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in power_block.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
-    {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
-    {% endif %}
+<p class="reviews">Отзывы:</p>
+<br>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+        <div class="write">
+            <p class="write__logo">Написать отзыв:</p>
+            <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+            <button type="submit" class="submit">Отправить</button>
+        </div>
+</form>
+{% else %}
+    <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
+{% endif %}
+<br>
+
+{% for review in power_block.review.all %}
+<div class="review">
+    <p class="creator">{{review.creator}}</p>
+    <div class="content">
+        <p>{{review.content|safe|linebreaks}}</p>
+    </div>
+    <p class="date">{{review.date_review}}</p>
+</div>
+{% endfor %}
 
 {% elif corpus != '' %}
+
 <div class = "card">
     <div class="card__in">
         <div class="product__img">
             {% if corpus.image.url != "" or corpus.image.url != Null %}
-                <img src="{{ corpus.image.url }}" width="200" height="200" alt="{{corpus.title}}">
+                <img src="{{ corpus.image.url }}" class="card__img">
             {% else %}
-                <img src="" width="200" height="200"></a>
+                <img src="" class="card__img"></a>
             {% endif %}
             <p>В налачии: {{corpus.stock}} шт.</p>
         </div>
@@ -410,26 +530,44 @@
                 <li>Форм-фактор: {{corpus.form}} Вт</li>
                 <li>Цена: {{corpus.price}} руб.</li>
             </ul>
-            <a href="/cart/cart_add/{{corpus.id}}/Corpus/">Добавить в корзину</a>                 
+            <div class="cart__button">
+                <a class="cart" href="/cart/cart_add/{{corpus.id}}/Corpus/">Добавить в корзину</a>
+            </div>          
         </div>
+             
     </div>
 </div>
-<p>Отзывы:</p>
-    <br>
-    {% for review in corpus.review.all %}
-        <p>{{review.content}} ({{review.creator}}) - {{review.date_review}}</p>
-    {% endfor %}
-    <br>
-    {% if user.is_authenticated %}
-        <p>Написать отзыв:</p>
 
-        <form method="POST">
-            {% csrf_token %}
-                <input type="text" name="review_content">
-                <button type="submit">Отправить</button>
-        </form>
-    {% else %}
-        <p>Отзывы могут оставлять только авторизованные пользователи</p>
-    {% endif %}
+<p class="reviews">Отзывы:</p>
+<br>
+
+{% if user.is_authenticated %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+        <div class="write">
+            <p class="write__logo">Написать отзыв:</p>
+            <textarea id="story" name="review_content"rows="3" cols="33" class="text" minlength="1"></textarea>
+            <button type="submit" class="submit">Отправить</button>
+        </div>
+</form>
+{% else %}
+    <p class="not__review">Отзывы могут оставлять только авторизованные пользователи!</p>
+{% endif %}
+<br>
+
+{% for review in corpus.review.all %}
+<div class="review">
+    <p class="creator">{{review.creator}}</p>
+    <div class="content">
+        <p>{{review.content|safe|linebreaks}}</p>
+    </div>
+    <p class="date">{{review.date_review}}</p>
+</div>
+{% endfor %}
+
+
+
+
 {% endif %}
 {% endblock %}

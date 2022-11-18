@@ -17,6 +17,10 @@
     align-items: center;
 }
 
+.product__img{
+    margin-left: 10px;
+}
+
 .card__img{
     width: 200px;
     height: 200px;
@@ -37,6 +41,8 @@
     align-items: center;
     font-size: 24px;
     font-weight: 800;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .cart{
@@ -113,6 +119,7 @@
 
 .write{
     margin-left: 20px;
+    margin-right: 20px;
 }
 
 .write__logo{
@@ -121,7 +128,7 @@
 }
 
 .text{
-    width: 50%;
+    width: 60%;
     font-size: 16px;
     word-wrap: break-word;
     word-break: break-all;
@@ -139,4 +146,32 @@
 .submit:hover{
     cursor: pointer;
     background-color: rgb(254, 255, 213);
+}
+
+@media (max-width: 750px) {
+    .card__in{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product__img{
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    .cart__button{
+        justify-content: center;
+    }
+
+    .info{
+        margin-left: 0px;
+        margin-right: 0px;
+        font-size: 18px;
+    }
+    
+    .main__ul{
+        margin-left: 30px;
+        margin-bottom: 20px;
+    }
 }

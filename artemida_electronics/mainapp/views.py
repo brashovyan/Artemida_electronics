@@ -383,15 +383,24 @@ def profile(request, id): #профиль пользователя
         return HttpResponseRedirect("/")
 
 
+
 def processors(request):
-    processors = Processor.objects.all()
-    paginator = Paginator(processors, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/processors.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        processors = Processor.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        processors = Processor.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        processors = Processor.objects.all().order_by('price')
+
+    print(selected_filter)
+
+    #processors = Processor.objects.all()
+    return render(request, 'mainapp/processors.html', {'processors':processors, 'filter':selected_filter})
 
 
 def coolers(request):
