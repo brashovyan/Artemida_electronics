@@ -397,109 +397,151 @@ def processors(request):
     else:  # если что то пошло не так
         processors = Processor.objects.all().order_by('price')
 
-    print(selected_filter)
-
-    #processors = Processor.objects.all()
     return render(request, 'mainapp/processors.html', {'processors':processors, 'filter':selected_filter})
 
 
 def coolers(request):
-    coolers = Cooler.objects.all()
-    paginator = Paginator(coolers, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/coolers.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        coolers = Cooler.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        coolers = Cooler.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        coolers = Cooler.objects.all().order_by('price')
+
+    return render(request, 'mainapp/coolers.html', {'coolers':coolers, 'filter':selected_filter})
 
 
 def motherboards(request):
-    motherboards = Motherboard.objects.all()
-    paginator = Paginator(motherboards, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/motherboards.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        motherboards = Motherboard.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        motherboards = Motherboard.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        motherboards = Motherboard.objects.all().order_by('price')
+
+    return render(request, 'mainapp/motherboards.html', {'motherboards':motherboards, 'filter':selected_filter})
 
 
 def rams(request):
-    rams = RAM.objects.all()
-    paginator = Paginator(rams, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/rams.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        rams = RAM.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        rams = RAM.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        rams = RAM.objects.all().order_by('price')
+
+    return render(request, 'mainapp/rams.html', {'rams':rams, 'filter':selected_filter})
 
 
 def ssd_m2s(request):
-    ssd_m2s = SSD_M2.objects.all()
-    paginator = Paginator(ssd_m2s, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/ssd_m2s.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        ssd_m2s = SSD_M2.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        ssd_m2s = SSD_M2.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        ssd_m2s = SSD_M2.objects.all().order_by('price')
+
+    return render(request, 'mainapp/ssd_m2s.html', {'ssd_m2s':ssd_m2s, 'filter':selected_filter})
 
 
 def hdds(request):
-    hdds = HDD.objects.all()
-    paginator = Paginator(hdds, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/hdds.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        hdds = HDD.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        hdds = HDD.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        hdds = HDD.objects.all().order_by('price')
+
+    return render(request, 'mainapp/hdds.html', {'hdds':hdds, 'filter':selected_filter})
 
 
 def ssd_satas(request):
-    ssd_satas = SSD_sata.objects.all()
-    paginator = Paginator(ssd_satas, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/ssd_satas.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        ssd_satas = SSD_sata.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        ssd_satas = SSD_sata.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        ssd_satas = SSD_sata.objects.all().order_by('price')
+
+    return render(request, 'mainapp/ssd_satas.html', {'ssd_satas':ssd_satas, 'filter':selected_filter})
 
 
 def videocards(request):
-    videocards = Videocard.objects.all()
-    paginator = Paginator(videocards, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/videocards.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        videocards = Videocard.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        videocards = Videocard.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        videocards = Videocard.objects.all().order_by('price')
+
+    return render(request, 'mainapp/videocards.html', {'videocards':videocards, 'filter':selected_filter})
 
 
 def power_blocks(request):
-    power_blocks = Power_block.objects.all()
-    paginator = Paginator(power_blocks, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/power_blocks.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        power_blocks = Power_block.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        power_blocks = Power_block.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        power_blocks = Power_block.objects.all().order_by('price')
+
+    return render(request, 'mainapp/power_blocks.html', {'power_blocks':power_blocks, 'filter':selected_filter})
 
 
 def corpuses(request):
-    corpuses = Corpus.objects.all()
-    paginator = Paginator(corpuses, 10)
+    selected_filter = request.GET.get('filter')
 
-    page_number = request.GET.get('page') 
+    if selected_filter == None:
+        selected_filter = 'price_up'
 
-    page_obj = paginator.get_page(page_number) 
-        
-    return render(request, 'mainapp/corpuses.html', {'page_obj': page_obj})
+    if selected_filter == "price_up":  # по возсрастанию цены
+        corpuses = Corpus.objects.all().order_by('price')
+    elif selected_filter == "price_down":  # по убыванию цены
+        corpuses = Corpus.objects.all().order_by('-price')
+    else:  # если что то пошло не так
+        corpuses = Corpus.objects.all().order_by('price')
+
+    return render(request, 'mainapp/corpuses.html', {'corpuses':corpuses, 'filter':selected_filter})
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

@@ -2,9 +2,8 @@ var filter_vue = new Vue({
     el: '.products',
     delimiters: ['[[', ']]'],
     data: {
-        manufacturer: [], 
-        cores: [],
-        sockets: [],
+        type: [], 
+        size: [],
         price: [],
         products: [], // список все х товаров
         products_filter: [], // список товаров, удовлетворяющих фильтрам
@@ -14,7 +13,22 @@ var filter_vue = new Vue({
         
     },
 
-    
+    watch: {
+        type: function(){ // при смене фильтра
+            console.log("Ya tut");
+            this.filter();
+        },
+
+        size: function(){
+            this.filter();
+        },
+
+        price: function(){
+            this.filter();
+        },
+    },
+
+
 
     mounted:function(){
         this.load() //этот метод вызывается при загрузке страницы
@@ -34,12 +48,12 @@ var filter_vue = new Vue({
 
         price_up()
         {     
-            window.location.href = `/processors?filter=price_up`; 
+            window.location.href = `/rams?filter=price_up`; 
         },
 
         price_down()
         {       
-            window.location.href = `/processors?filter=price_down`;
+            window.location.href = `/rams?filter=price_down`;
         },
 
         filter()
@@ -50,14 +64,14 @@ var filter_vue = new Vue({
             this.result = true;
             
 
-            if(this.manufacturer != '') // выбран ли этот фильтр
+            if(this.type != '') // выбран ли этот фильтр
             {
                 for(product of this.products) // самый первый фильтр проверяет тупо все продукты
                 {
                     pr = product.split('%%');
-                    for(manuf of this.manufacturer)
+                    for(typ of this.type)
                     {
-                        if(pr[0].toLowerCase().indexOf(manuf.toLowerCase()) != -1)
+                        if(pr[4].toLowerCase().indexOf(typ.toLowerCase()) != -1)
                         {
                             this.products_filter.push(product);
                         }
@@ -75,7 +89,7 @@ var filter_vue = new Vue({
 
             if(this.result == true)
             {
-                if(this.cores != '') // проверка есть ли фильтр
+                if(this.size != '') // проверка есть ли фильтр
                 {
                     this.products_filter2 = [];
                     if(this.products_filter != '') // есть ли в списке продуктов фильтра что то
@@ -84,12 +98,10 @@ var filter_vue = new Vue({
                         {
                             
                             pr = product.split('%%'); 
-                            for(core of this.cores)
+                            for(si of this.size)
                             {
                                 
-                                cr = pr[3].split('/');
-                                console.log(Number(core));
-                                if(Number(cr[0]) === Number(core))
+                                if(parseFloat(pr[2].replace(',', '.')) === parseFloat(si))
                                 {
                                     
                                     this.products_filter2.push(product);
@@ -104,11 +116,11 @@ var filter_vue = new Vue({
                         for(product of this.products) 
                         {
                             pr = product.split('%%'); 
-                            for(core of this.cores)
+                            for(si of this.size)
                             {
                             
-                                cr = pr[3].split('/');
-                                if(Number(cr[0]) === Number(core))
+                      
+                                if(parseFloat(pr[2].replace(',', '.')) === parseFloat(si))
                                 {
                                     this.products_filter2.push(product);
                                 }
@@ -132,53 +144,7 @@ var filter_vue = new Vue({
             }
             
             
-            if(this.result == true)
-            {
-                if(this.sockets != '') // проверка есть ли фильтр
-                {
-                    this.products_filter2 = [];
-                    if(this.products_filter != '') // есть ли в списке продуктов фильтра что то
-                    {                              // если есть, то дальше работаю с ним
-                        for(product of this.products_filter) 
-                        {
-                            pr = product.split('%%'); 
-                            for(socket of this.sockets)
-                            {
-                            
-                                if(pr[2] == socket)
-                                {
-                                    this.products_filter2.push(product);
-                                }
-                            }
-                        }
-                        
-                    }
-                    else // если нет, то работаю со всеми продуктами
-                    {
-                        for(product of this.products) 
-                        {
-                            pr = product.split('%%'); 
-                            for(socket of this.sockets)
-                            {
-                                if(pr[2] == socket)
-                                {
-                                    this.products_filter2.push(product);
-                                }
-                            }
-                        }
-                    }
-         
-                    if(this.products_filter2 != '')
-                    {
-                        this.products_filter = [];
-                        this.products_filter = this.products_filter2;
-                    }
-                    else
-                    {
-                        this.result = false;
-                    }
-                }
-            }
+           
             
 
             if(this.result == true)
@@ -195,7 +161,7 @@ var filter_vue = new Vue({
                             {
                                 pric = pric.split('-');
     
-                                if(parseFloat(pr[9].replace(',', '.')) >= parseFloat(pric[0]) && parseFloat(pr[9].replace(',', '.')) <= parseFloat(pric[1]))
+                                if(parseFloat(pr[5].replace(',', '.')) >= parseFloat(pric[0]) && parseFloat(pr[5].replace(',', '.')) <= parseFloat(pric[1]))
                                 {
                                     this.products_filter2.push(product);
                                 }
@@ -212,7 +178,7 @@ var filter_vue = new Vue({
                             {
                                 pric = pric.split('-');
     
-                                if(parseFloat(pr[9].replace(',', '.')) >= parseFloat(pric[0]) && parseFloat(pr[9].replace(',', '.')) <= parseFloat(pric[1]))
+                                if(parseFloat(pr[5].replace(',', '.')) >= parseFloat(pric[0]) && parseFloat(pr[5].replace(',', '.')) <= parseFloat(pric[1]))
                                 {
                                     this.products_filter2.push(product);
                                 }
@@ -244,7 +210,8 @@ var filter_vue = new Vue({
             }
             else
             {
-                alert("По таким фильтрам ничего не найдено(");
+                //alert("По таким фильтрам ничего не найдено(");
+                this.proc_filter = ['not_found'];
             }
             
        

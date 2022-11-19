@@ -2,34 +2,155 @@
 {% block title %}Жесткие диски{% endblock %}
 {% block site_content %}
 {% load static %}
+<link href="{% static 'css/products.css' %}" rel="stylesheet">
+<script src="{% static 'js/vue.js' %}"></script> <!-- Подключаем вью файликом -->
 
-{% for hdd in page_obj %}
-    <a href="/info/{{hdd.id}}/HDD"><p>{{hdd.title}}</p></a>
-{% endfor %}
-<br>
-    <div style="display: flex;">
-        {%if page_obj.has_previous %}
+<div class="products">
+    <div class="products__filter__left">
+        <p class="filter__logo">Фильтры</p>
+        <div class="filter__data">
+            {% if filter == 'price_up' %}
+            <div>
+                <input type="radio" name="pr" @change="price_up()" checked="true">
+                <label>По возрастанию цены</label>
+            </div>
+            <div>
+                <input type="radio" name="pr" @change="price_down()" value="2">
+                <label>По убыванию цены</label>
+            </div>
 
-        <h5><a href="?page={{ page_obj.previous_page_number }}">&lt</a></h5>
+            {% elif filter == 'price_down' %}
+            <div>
+                <input type="radio" name="pr" @change="price_up()">
+                <label>По возрастанию цены</label>
+            </div>
+            <div>
+                <input type="radio" name="pr" @change="price_down()" value="2" checked="true">
+                <label>По убыванию цены</label>
+            </div>
 
-    {% endif %}
+            {% else %}
+            <div>
+                <input type="radio" name="pr" @change="price_up()" checked="true">
+                <label>По возрастанию цены</label>
+            </div>
+            <div>
+                <input type="radio" name="pr" @change="price_down()" value="2">
+                <label>По убыванию цены</label>
+            </div>
 
-    {% for p in page_obj.paginator.page_range %}
-        {% if page_obj.number == p %}
-            <h5>{{ p }} из {{ page_obj.paginator.num_pages }}</h5>
-        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+            {% endif %}
+        </div>
 
-            <h5><a href="?page={{ p }}">{{ p }}</a></h5>
+        <p class="filter__name">Объём</p>
+        <div class="filter__data">
+            <div>
+                <input type="checkbox" value="500" v-model="size">
+                <label>500 Гб</label>
+            </div>
+            <div>
+                <input type="checkbox" value="1000" v-model="size">
+                <label>1000 Гб</label>
+            </div>
+            <div>
+                <input type="checkbox" value="2000" v-model="size">
+                <label>2000 Гб</label>
+            </div>
+        </div>
 
-        {% endif %}
-    {% endfor %}
+        <p class="filter__name">По цене</p>
+        <div class="filter__data">
+            <div>
+                <input type="checkbox" value="0-1999.99" v-model="price">
+                <label>До 2000 руб.</label>
+            </div>
+            <div>
+                <input type="checkbox" value="2000-3999.99" v-model="price">
+                <label>2000 руб. - 4000 руб.</label>
+            </div>
+            <div>
+                <input type="checkbox" value="4000-1000000" v-model="price">
+                <label>от 4000 руб.</label>
+            </div>
+        </div>
+        <!-- <button @click="filter()">Применить</button> -->
+    </div>
 
-    {% if page_obj.has_next %}
-
-        <h5><a href="?page={{ page_obj.next_page_number }}">&gt</a></h5>
-
-{% endif %}
-
+    <div class="products__filter__rigth">
+            
+           
+            <template v-if="proc_filter != '' ">
+                <template v-if="result == true">
+                    {% for hdd in hdds %}
+                    <template v-for="id in proc_filter">
+                        <template v-if="'{{hdd.id}}' == id">
+    
+                            <div class="box">
+                                <a href="/info/{{hdd.id}}/HDD" class="box__card__a">
+                                    <div class="box__card">
+                                        {% if hdd.image.url != "" or hdd.image.url != Null %}
+                                        <img src="{{ hdd.image.url }}" class="card__img">
+                                        {% else %}
+                                        <img src="" class="card__img">
+                                        {% endif %}
+                                        <div class="box__description">
+                                            <p class="box__logo">{{hdd.title}}</p>
+                                            <p>Объём: {{hdd.capacity}} Гб</p>
+                                            <p>В наличии: {{hdd.stock}}</p>
+                                            <p>Цена: <span class=price>{{hdd.price}}</span></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </template>
+                    </template>
+                {% endfor %}
+                </template>
+                <template v-else>
+                    <p class="not__found">Не найдено</p>
+                </template>
+            </template>
+        
+            
+       
+    
+            <template v-else>
+                <!-- hide__checbox - костыль, чтобы js передать все товары из бд -->
+                {% for hdd in hdds %}
+                    <div class="box">
+                        <a href="/info/{{hdd.id}}/HDD" class="box__card__a">
+                            <div class="box__card">
+                                {% if hdd.image.url != "" or hdd.image.url != Null %}
+                                <img src="{{ hdd.image.url }}" class="card__img">
+                                {% else %}
+                                <img src="" class="card__img">
+                                {% endif %}
+                                <div class="box__description">
+                                    <p class="box__logo">{{hdd.title}}</p>
+                                    <p>Объём: {{hdd.capacity}} Гб</p>
+                                    <p>В наличии: {{hdd.stock}}</p>
+                                    <p>Цена: <span class=price>{{hdd.price}}</span></p>
+                                </div>
+    
+                                <div class="hide__checkbox">
+                                    <input type="checkbox" value="{{hdd.title}}%%{{hdd.id}}%%{{hdd.capacity}}%%{{hdd.stock}}%%{{hdd.price}}"></input>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </template>
     </div>
     
+</div>
+
+
+
+
+
+
+</div>
+<script src="{% static 'js/hdd_filters.js' %}"></script>
+
+
 {% endblock %}

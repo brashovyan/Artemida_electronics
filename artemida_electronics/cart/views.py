@@ -263,11 +263,13 @@ def success(request):
         if (item['product'].stock - item['quantity']) < 0:
             return HttpResponse('Во время оплаты заказа произошла ошибка! Возможно, какой-то товар отсутствует на складе. Попробуйте обновить страницу и повторить попытку.')
 
+    s = 0
     for item in cart: # если всё ок, то сохраняем изменение кол-ва товара, проводим оплату и пишем чек
-        
+        s += item['price']
         item['product'].stock -= item['quantity']
         item['product'].save()
         receipt += f"{item['product'].title} - {item['quantity']} шт => {item['price']*item['quantity']} руб.\n"
+    receipt += f"Итого: {s} рублей"    
         
     if request.user.is_authenticated:
             user = User.objects.get(id=request.user.id)

@@ -42,7 +42,7 @@
             {% endif %}
         </div>
 
-        <p>По производителю</p>
+        <p class="filter__name">По производителю</p>
         <div class="filter__data">
             <div>
                 <input type="checkbox" value="AMD" v-model="manufacturer">
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <p>По кол-ву ядер</p>
+        <p class="filter__name">По кол-ву ядер</p>
         <div class="filter__data">
             <div>
                 <input type="checkbox" value="2" v-model="cores">
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <p>По сокету</p>
+        <p class="filter__name">По сокету</p>
         <div class="filter__data">
             <div>
                 <input type="checkbox" value="AM4" v-model="sockets">
@@ -86,14 +86,14 @@
             </div>
         </div>
 
-        <p>По цене</p>
+        <p class="filter__name">По цене</p>
         <div class="filter__data">
             <div>
-                <input type="checkbox" value="0-10000" v-model="price">
+                <input type="checkbox" value="0-9999.99" v-model="price">
                 <label>До 10000 руб.</label>
             </div>
             <div>
-                <input type="checkbox" value="10000-20000" v-model="price">
+                <input type="checkbox" value="10000-19999.99" v-model="price">
                 <label>10000 руб. - 20000 руб.</label>
             </div>
             <div>
@@ -101,20 +101,20 @@
                 <label>от 20000 руб.</label>
             </div>
         </div>
-        <button @click="filter()">Применить</button>
+        <!-- <button @click="filter()">Применить</button> -->
     </div>
 
-   
     <div class="products__filter__rigth">
-       
+            
            
             <template v-if="proc_filter != '' ">
-                {% for processor in processors %}
+                <template v-if="result == true">
+                    {% for processor in processors %}
                     <template v-for="id in proc_filter">
                         <template v-if="'{{processor.id}}' == id">
     
                             <div class="box">
-                                <a href="/info/{{processor.id}}/Processor">
+                                <a href="/info/{{processor.id}}/Processor" class="box__card__a">
                                     <div class="box__card">
                                         {% if processor.image.url != "" or processor.image.url != Null %}
                                         <img src="{{ processor.image.url }}" class="card__img">
@@ -126,7 +126,8 @@
                                             <p>Ядра/потоки: {{processor.cores}}</p>
                                             <p>Базовая частота (Ггц): {{processor.frequency}}</p>
                                             <p>Сокет: {{processor.socket}}</p>
-                                            <p>Цена: {{processor.price}}</p>
+                                            <p>В наличии: {{processor.stock}} шт.</p>
+                                            <p>Цена: <span class=price>{{processor.price}}</span></p>
                                         </div>
                                     </div>
                                 </a>
@@ -134,6 +135,10 @@
                         </template>
                     </template>
                 {% endfor %}
+                </template>
+                <template v-else>
+                    <p class="not__found">Не найдено</p>
+                </template>
             </template>
         
             
@@ -143,7 +148,7 @@
                 <!-- hide__checbox - костыль, чтобы js передать все товары из бд -->
                 {% for processor in processors %}
                     <div class="box">
-                        <a href="/info/{{processor.id}}/Processor">
+                        <a href="/info/{{processor.id}}/Processor" class="box__card__a">
                             <div class="box__card">
                                 {% if processor.image.url != "" or processor.image.url != Null %}
                                 <img src="{{ processor.image.url }}" class="card__img">
@@ -155,7 +160,8 @@
                                     <p>Ядра/потоки: {{processor.cores}}</p>
                                     <p>Базовая частота (Ггц): {{processor.frequency}}</p>
                                     <p>Сокет: {{processor.socket}}</p>
-                                    <p>Цена: {{processor.price}}</p>
+                                    <p>В наличии: {{processor.stock}} шт.</p>
+                                    <p>Цена: <span class=price>{{processor.price}}</span></p>
                                 </div>
     
                                 <div class="hide__checkbox">
@@ -177,8 +183,7 @@
 
 
 </div>
-<script src="{% static 'js/jquery-3.6.1.js' %}"></script>
-<script src="{% static 'js/products.js' %}"></script>
+<script src="{% static 'js/proc_filters.js' %}"></script>
 
 
 {% endblock %}

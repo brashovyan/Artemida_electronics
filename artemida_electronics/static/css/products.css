@@ -1,8 +1,8 @@
 .products__filter__left {
     width: 30%;
-    flex-wrap: wrap;
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
 }
 
 .products__filter__rigth {
@@ -11,6 +11,8 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     flex-direction: row;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 
@@ -18,6 +20,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+    flex-direction: row;
 }
 
 .filter__logo {
@@ -57,12 +60,29 @@
 
 .box__card {
     margin: 10px;
-    width: auto;
-    height: auto;
-    background-color: aqua;
+    width: 350px;
+    height: 215px;
+    background-color: rgb(254, 244, 232);
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    align-items: center;
+    padding: 5px;
+}
+
+.box__card__a {
+    text-decoration: none;
+    color: black;
+}
+
+.price {
+    font-weight: 600;
+    color:rgb(0, 42, 255)
+}
+
+.box__logo {
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .filter__logo {
@@ -74,5 +94,75 @@
 
 .filter__data {
     margin-left: 10px;
+    font-size: 18px;
 }
 
+.filter__name {
+    font-weight: 600;
+    font-size: 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.not__found {
+    color: red;
+    font-size: 20px;
+    margin-top: 15px;
+}
+
+input[type=radio] {
+	width: 18px;
+	height: 18px;
+}
+
+input[type=checkbox]{
+	width: 18px;
+	height: 18px;
+}
+
+@media (max-width: 550px) {
+
+    .products{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .products__filter__left {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .products__filter__rigth {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: row;
+        margin-left: 0px;
+    }
+
+    input[type=radio] {
+		width: 35px;
+		height: 35px;
+	}
+	
+	input[type=checkbox]{
+		width: 35px;
+		height: 35px;
+	}
+
+    .card__img{
+        width: 75px;
+        height: 75px;
+        border-radius: 5px;
+        margin: 3px;
+    }
+
+    .box__card {
+        margin: 0px;
+        margin-bottom: 20px;
+    }
+}
