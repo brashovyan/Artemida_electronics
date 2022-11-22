@@ -3,35 +3,48 @@
 {% block site_content %}
 {% load static %}
 
-<link href= '{% static "css/create.css" %}' rel="stylesheet">
+<link href= '{% static "css/profile.css" %}' rel="stylesheet">
 
-<form method="post">
-    <h3>Профиль: {{user1.username}}</h3>
-    <h3>Электронная почта: {{user1.email}}</h3>
-    <br>
-    {% csrf_token %}
-    <div class="form-group">
-        <table>
-            {{ form }}
-        </table>
-    </div>
-    <h6 style="color:#000000">Подсказка: пароль должен состоять из строчных и прописных букв, содержать в себе цифры и специальные знаки (!@#$%^&*).</h6>
-    <br>
-    <div class="col-md-10 mx-auto col-lg-1">
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Изменить</button>
-        <ul class="nav nav-pills">
-            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Назад</a></li>
-        </ul>
-    </div>
+<div class="profile__card">
+    <form method="post" class="profile__form">
+        <h3>Профиль: {{user1.username}}</h3>
+        <h3>Электронная почта: {{user1.email}}</h3>
+        <br>
+        {% csrf_token %}
+        <div class="form-group">
+            <table>
+                {{ form }}
+            </table>
+        </div>
+        <div class="tip">
+            <h6>Подсказка: пароль должен состоять из строчных и прописных букв, содержать в себе цифры и специальные знаки (!@#$%^&*).</h6>
+        </div>
+        <div class="button">
+            <button class="buy">Изменить</button>
+        </div>
+        
+    
+        {{ message }}
+        {{ error }}
+    </form>
+</div>
 
-    {{ message }}
-    {{ error }}
-</form>
-<h2>История покупок</h2>
-{% for purchase in history %}
-    <p>{{purchase.date}}</p>
-    <p>{{purchase.content|safe|linebreaks}}</p>
-    <br>
-{% endfor %}
+<div class="history">
+    <h2 class="history__logo">История покупок</h2>
+    <div class="history__content">
+    {% for purchase in history %}
+    
+        <p>{{purchase.date}}</p>
+        <p>{{purchase.content|safe|linebreaks}}</p>
+        <br>
+        {% endfor %}
+    </div>
+    
+    
+    
+</div>
+
+
+
 
 {% endblock %}

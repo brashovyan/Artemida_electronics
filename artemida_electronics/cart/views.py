@@ -256,7 +256,7 @@ def success(request):
     cart = Cart(request)
     
     if cart.len() == 0:
-        return HttpResponse('Корзина пуста')
+        return HttpResponseRedirect("/cart")
 
     receipt = 'Ваш чек:\n'
     for item in cart: # сначала проверяем всё ли ок, есть ли такие товары в наличии

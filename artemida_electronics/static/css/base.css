@@ -24,7 +24,25 @@ body{
     height: auto;
     flex-wrap: wrap;
     background-color: #96e5ff;
-    padding: 15px;
+    padding: 10px;
+}
+
+.header__right{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+}
+
+.input__search {
+    height: 30px;
+    width: 200px;
+    font-size: 20px;
 }
 
 .footer{
@@ -55,7 +73,7 @@ body{
 }
 
 .header__menu{
-    margin: 20px;
+    margin: 10px;
     font-size: 30px;
     color: white;
     text-decoration: none;

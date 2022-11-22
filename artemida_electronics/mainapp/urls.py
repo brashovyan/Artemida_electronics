@@ -33,5 +33,5 @@ urlpatterns = [
     path('power_blocks/', views.power_blocks, name='power_blocks'),
     path('power_blocks/<str:filter>/', views.power_blocks),
     path('corpuses/', views.corpuses, name='corpuses'),
-    path('corpuses/<str:filter>/', views.corpuses),
+    path('corpuses/<str:filter>/', views.corpuses), 
 ]

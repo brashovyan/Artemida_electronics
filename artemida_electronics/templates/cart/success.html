@@ -2,7 +2,12 @@
 {% block title %}Artemida Electronics{% endblock %}
 {% block site_content %}
 {% load static %}
-    <p>Оплата прошла успешно!</p>
-    <img src="https://s00.yaplakal.com/pics/pics_preview/6/4/6/14753646.jpg">
-    <a href="/">На главную</a>
+<link href="{% static 'css/success.css' %}" rel="stylesheet">
+
+    <p class="suc__logo">Оплата прошла успешно!</p>
+    <div class="suc__div">
+        <img src="{% static 'img/sber.jpg' %}" class="suc__img">
+    </div>
+    
+    <a href="/" class="on__main">На главную</a>
 {% endblock %}

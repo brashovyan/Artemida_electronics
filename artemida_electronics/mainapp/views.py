@@ -34,7 +34,7 @@ def constructor(request):
      'coolers':coolers, 'videocards': videocards, 'power_blocks':power_blocks, 'ssd_m2': ssd_m2, 'hdd': hdd, 'ssd_sata':ssd_sata})
     
 
-def aja(request):
+def aja(request): #данные с конструктора и добавление соответствующих товаров в корзину
     try:
         processor_id = request.GET.get('processor')
         cooler_id = request.GET.get('cooler')
@@ -113,7 +113,7 @@ def aja(request):
         return HttpResponseRedirect("/")
     
 
-def info(request, product_id, product): # пожалуйста простите за этот ужас)
+def info(request, product_id, product): # пожалуйста простите за этот ужас) карточка товара и отправка отзывов
     if request.method == "POST":
         try:
 
@@ -129,7 +129,6 @@ def info(request, product_id, product): # пожалуйста простите 
             videocard = ''
             power_block = ''
             corpus = ''
-            print(review_content)
             if (review_content):
                 if product == 'Processor':
                     if request.user.is_authenticated:
@@ -542,6 +541,78 @@ def corpuses(request):
         corpuses = Corpus.objects.all().order_by('price')
 
     return render(request, 'mainapp/corpuses.html', {'corpuses':corpuses, 'filter':selected_filter})
+
+
+def search(request):
+    ser = request.GET.get('search_str')
+
+    if ser == None or ser == '':
+        return HttpResponseRedirect("/")
+
+    proc = []
+    processors = Processor.objects.all()
+    for pr in processors:
+        if ser.lower() in pr.title.lower():
+            proc.append(pr)
+
+    col = []
+    coolers = Cooler.objects.all()
+    for cl in coolers:
+        if ser.lower() in cl.title.lower():
+            col.append(cl)
+
+    mother = []
+    mothers = Motherboard.objects.all()
+    for mot in mothers:
+        if ser.lower() in mot.title.lower():
+            mother.append(mot)
+
+    ram = []
+    rams = RAM.objects.all()
+    for r in rams:
+       if ser.lower() in r.title.lower():
+            ram.append(r)
+
+    ssd_m2 = []
+    ssd_m2s = SSD_M2.objects.all()
+    for s in ssd_m2s:
+        if ser.lower() in s.title.lower():
+            ssd_m2.append(s)
+
+    hdd = []
+    hdds = HDD.objects.all()
+    for h in hdds:
+        if ser.lower() in h.title.lower():
+            hdd.append(h)
+
+    ssd_sata = []
+    ssd_satas = SSD_sata.objects.all()
+    for s in ssd_satas:
+        if ser.lower() in s.title.lower():
+            ssd_sata.append(s)
+
+    videocard = []
+    videocards = Videocard.objects.all()
+    for video in videocards:
+        if ser.lower() in video.title.lower():
+            videocard.append(video)
+
+    power_block = []
+    power_blocks = Power_block.objects.all()
+    for pow in power_blocks:
+        if ser.lower() in pow.title.lower():
+            power_block.append(pow)
+
+    corpus = []
+    corpuses = Corpus.objects.all()
+    for cor in corpuses:
+        if ser.lower() in cor.title.lower():
+            corpus.append(cor)
+
+    return render(request, 'mainapp/search.html', {'processors':proc, 'coolers':col, 'motherboards':mother, 'rams':ram, 'ssd_m2s':ssd_m2,
+     'hdds':hdd, 'ssd_satas':ssd_sata, 'videocards':videocard, 'power_blocks':power_block, 'corpuses':corpus})
+            
+    
 
 
 @receiver(post_delete, sender=Processor) # админ удалил процессор

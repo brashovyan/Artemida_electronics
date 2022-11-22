@@ -14,11 +14,15 @@ class Processor(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='processors/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Процессор" # как будет отображаться в админке (в единственном числе)
+        verbose_name_plural = "Процессоры" # во множественном
 
 
 class Motherboard(models.Model):
@@ -34,11 +38,15 @@ class Motherboard(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='motherboards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}, сокет {self.socket}'
+
+    class Meta:
+        verbose_name = "Материнская плата"
+        verbose_name_plural = "Материнские платы"
 
 
 class RAM(models.Model):
@@ -49,11 +57,15 @@ class RAM(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='RAM/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}, {self.type_memory}, {self.size}'
+
+    class Meta:
+        verbose_name = "Оперативная память"
+        verbose_name_plural = "Оперативная память"
 
 
 class Cooler(models.Model):
@@ -62,12 +74,16 @@ class Cooler(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Coolers/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
 
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Кулер"
+        verbose_name_plural = "Кулеры"
 
 
 class Videocard(models.Model):
@@ -77,11 +93,15 @@ class Videocard(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Videocards/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Видеокарта"
+        verbose_name_plural = "Видеокарты"
 
 
 class Power_block(models.Model):
@@ -90,11 +110,15 @@ class Power_block(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='Power_blocks/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Блок питания"
+        verbose_name_plural = "Блоки питания"
 
 
 class SSD_M2(models.Model):
@@ -103,11 +127,15 @@ class SSD_M2(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='ssd_m2/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Твердотельный накопитель М.2"
+        verbose_name_plural = "Твердотельные накопители М.2"
 
 
 class HDD(models.Model):
@@ -116,11 +144,15 @@ class HDD(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='hdd/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Жесткий диск"
+        verbose_name_plural = "Жесткие диски"
 
 
 class SSD_sata(models.Model):
@@ -129,11 +161,15 @@ class SSD_sata(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='ssd_sata/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Твердотельный накопитель SATA"
+        verbose_name_plural = "Твердотельные накопители SATA"
 
 
 class Corpus(models.Model):
@@ -142,11 +178,15 @@ class Corpus(models.Model):
     price = models.FloatField(default=0, help_text="Введите цену", verbose_name="цена", null=False)
     stock = models.IntegerField(default=10, help_text="Введите кол-во товара на складе (доступного к покупке)", verbose_name='Кол-во товара', null=False)
     image = models.ImageField(upload_to='corpuses/', help_text='Загрузите одно изображение', verbose_name='Изображение', null=True, blank=True)
-    review = models.ManyToManyField('Review', blank=True)
+    review = models.ManyToManyField('Review', blank=True, verbose_name='Отзывы')
     objects = models.Manager()
 
     def __str__(self):
         return f'{self.title}'
+
+    class Meta:
+        verbose_name = "Корпус"
+        verbose_name_plural = "Корпуса"
 
 
 class Review(models.Model):
@@ -158,6 +198,10 @@ class Review(models.Model):
     def __str__(self):
         return f'{self.creator}'
 
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
+
 
 class History(models.Model):
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Покупатель', null=False)
@@ -167,6 +211,10 @@ class History(models.Model):
 
     def __str__(self):
         return f'{self.buyer} - {self.date}'
+
+    class Meta:
+        verbose_name = "История заказов"
+        verbose_name_plural = "История заказов"
 
 
 

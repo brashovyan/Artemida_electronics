@@ -1,0 +1,90 @@
+.profile__form {
+    text-align: left;
+    margin: 10px;
+    font-size: 20px;
+    width: 550px;
+}
+
+.form-group input{
+    margin-bottom: 20px;
+    width: 200px;
+    margin-top: 5px;
+    height: 30px;
+    border-radius:5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile__card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buy{
+	font-weight: 700;
+	color: white;
+	text-decoration: none;
+	padding: .8em 1em calc(.8em + 3px);
+	border-radius: 3px;
+	background: rgb(64,199,129);
+	box-shadow: 0 -3px rgb(53,167,110) inset;
+	transition: 0.2s;
+	border: none;
+    width: 200px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+
+.buy:hover {
+    background: rgb(53, 167, 110);
+    cursor: pointer;
+}
+.buy:active {
+ background: rgb(33,147,90);
+ box-shadow: 0 3px rgb(33,147,90) inset;
+}
+
+.tip {
+    text-align: center;
+    font-size: 22px;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.history {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.history__logo {
+    margin-bottom: 10px;
+}
+
+.history__content {
+    font-size: 20px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+@media (max-width: 700px) {
+    .profile__form {
+        width: 300px;
+    }
+    .form-group input{
+        width: 200px;
+    }
+
+    .history__content {
+        font-size: 16px;
+    }
+}

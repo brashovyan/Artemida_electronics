@@ -1,0 +1,71 @@
+.form-group input{
+    margin-bottom: 20px;
+    width: 200px;
+    margin-top: 5px;
+    height: 30px;
+    border-radius:5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.register__card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.register__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(254, 244, 232);
+    padding: 50px;
+    font-size: 22px;
+    width: 30%;
+    height: auto;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.buy{
+	font-weight: 700;
+	color: white;
+	text-decoration: none;
+	padding: .8em 1em calc(.8em + 3px);
+	border-radius: 3px;
+	background: rgb(64,199,129);
+	box-shadow: 0 -3px rgb(53,167,110) inset;
+	transition: 0.2s;
+	border: none;
+    width: 200px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.buy:hover {
+	 background: rgb(53, 167, 110);
+	 cursor: pointer;
+}
+.buy:active {
+  background: rgb(33,147,90);
+  box-shadow: 0 3px rgb(33,147,90) inset;
+}
+
+.register__logo {
+    margin-bottom: 20px;
+    font-size: 30px;
+}
+
+.tip {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 700px) {
+    .register__form {
+        width: 80%;
+    }
+
+}

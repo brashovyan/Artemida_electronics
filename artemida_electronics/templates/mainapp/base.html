@@ -18,6 +18,13 @@
             <a href="/" class="header__menu logo">Artemida Electronics</a>
         </div>
         <div class="header__right">
+            <div class="search">
+                <form action="{% url 'search' %}" method="get"> 
+                    <input name="search_str" type="search" placeholder="Поиск..." class="input__search">                    
+                </form>
+            </div>
+            
+
             <a href="/constructor" class="header__menu">Конфигуратор ПК</a>
             <a href="/cart" class="header__menu">Корзина</a>
             {% if user.is_authenticated %}
