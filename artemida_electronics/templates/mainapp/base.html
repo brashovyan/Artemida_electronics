@@ -46,7 +46,7 @@
             <a href="/constructor" class="footer__menu">Конфигуратор ПК</a>
             <a href="/cart" class="footer__menu">Корзина</a>
             {% if user.is_authenticated %}
-                <a href="/user/{{user.id}}" class="footer__menu">Личный кабинет</a>
+                <a href="/profile/{{user.id}}" class="footer__menu">Личный кабинет</a>
                 <a href="/logout" class="footer__menu">Выйти</a>
             {% else %}
                 <a href="/login" class="footer__menu">Войти</a>
