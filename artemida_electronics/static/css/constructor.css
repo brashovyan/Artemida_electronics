@@ -95,6 +95,11 @@
 	color: red;
 	font-size: 18px;
 	margin-bottom: 5px;
+	text-decoration: none;
+}
+
+.not__select:hover{
+	color: rgb(244, 122, 122);
 }
 
 .select{
@@ -167,6 +172,8 @@
 	padding: 10px;
 	border-radius: 10px;
 	position: fixed;
+	display: flex;
+	flex-direction: column;
 }
 
 .hint__text{

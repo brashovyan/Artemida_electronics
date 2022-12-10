@@ -12,43 +12,49 @@ def cart_add(request, product_id, product):
     
     if('Processor' in str(product)):
         pr = Processor.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        product_id = product_id # получаем его айдишник
+        product_type = str(pr.__class__.__name__) # и его тип (Это видеокарта или процессор и т.д. )
+        product_info = f'{product_type}*{product_id}'
+        print(product_info)
+        print(cart)
+
+        cart.add(pr, update_quantity='Plus')
 
     elif('Cooler' in str(product)):
         pr = Cooler.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('Motherboard' in str(product)):
         pr = Motherboard.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('RAM' in str(product)):
         pr = RAM.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('HDD' in str(product)):
         pr = HDD.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('SSD_M2' in str(product)):
         pr = SSD_M2.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('SSD_sata' in str(product)):
         pr = SSD_sata.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('Videocard' in str(product)):
         pr = Videocard.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('Power_block' in str(product)):
         pr = Power_block.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     elif('Corpus' in str(product)):
         pr = Corpus.objects.get(id=product_id)
-        cart.add(pr, quantity=1)
+        cart.add(pr, update_quantity='Plus')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

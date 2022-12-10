@@ -17,8 +17,9 @@
             </div>
            
             <div class="products">
-
+                <p><a name="processor"></a></p>
                 <ul class="main__ul"><li><p class="main__product__logo">Процессоры</p></li></ul>
+                
 
                 <div class="filter__proc">
                     <p style="margin-bottom: 5px;">Фильтры: </p>
@@ -76,7 +77,9 @@
                         {% endif %}        
                     {% endfor %}
 
+                <p><a name="cooler"></a></p>
                 <ul class="main__ul"><li><p class="main__product__logo">Кулеры для процессора</p></li></ul>
+                
                     {% for cooler in coolers %}
                         {% if cooler.stock > 0%}
                         <template v-if="parseFloat(tdp) <= '{{cooler.power|floatformat}}' && parseFloat(tdp) != 0">
@@ -102,8 +105,9 @@
                     {% endfor %}
 
 
-
+                <p><a name="motherboard"></a></p>
                 <ul class="main__ul"><li><p class="main__product__logo">Материнские платы</p></li></ul>
+                
                 {% for motherboard in motherboards %}
                     {% if motherboard.stock > 0 %}
                     <template v-if="socket == '{{motherboard.socket}}'">
@@ -134,8 +138,9 @@
                 
 
 
-
+               <p><a name="ram"></a></p>
                <ul class="main__ul"><li><p class="main__product__logo">Оперативная память</p></li></ul>
+               
                     <template v-if="motherboard != ''">
                         <div class="ram__info">
                             <p>Кол-во слотов в мат. плате: [[m_slots]]</p>
@@ -301,8 +306,9 @@
                     </template>
 
 
-
+                <p><a name="hdd"></a></p>
                 <ul class="main__ul"><li><p class="main__product__logo">Жёские диски (HDD)</p></li></ul>
+                
                     <template v-if="motherboard != ''">
                         <template v-if="sata_slots_mother > 0">
                             <div class="ram__info">
@@ -397,7 +403,10 @@
                         </div>         
                     </template>
 
+
+                <p><a name="videocard"></a></p>
                 <ul class="main__ul"><li><p class="main__product__logo">Видеокарты</p></li></ul>
+                
                 {% for videocard in videocards %}
                     {% if videocard.stock > 0 %}
                         <div class="product">
@@ -422,8 +431,9 @@
                 {% endfor %}
 
 
-
+                <p><a name="power_block"></a></p>
                 <ul class="main__ul"><li><p class="main__product__logo">Блоки питания</p></li></ul>
+                
                     {% for power_block in power_blocks %}
                     {% if power_block.stock %}
                         <template v-if="{{power_block.power|floatformat}} >= parseFloat(v_power) && parseFloat(v_power) != 0">
@@ -481,35 +491,35 @@
             <div class="result">
 
                 <template v-if="processor == ''">
-                    <p class="not__select">Процессор:</p>
+                    <a href="#processor" class="not__select">Процессор:</a>
                 </template>
                 <template v-else>
                     <p class="select">Процессор: [[ processor ]]</p>
                 </template>
 
                 <template v-if="cooler == ''">
-                    <p class="not__select">Кулер для процессора:</p>
+                    <a href="#cooler" class="not__select">Кулер для процессора:</a>
                 </template>
                 <template v-else>
                     <p class="select">Кулер для процессора: [[ cooler ]]</p>
                 </template>
 
                 <template v-if="motherboard == ''">
-                    <p class="not__select">Мат. плата:</p>
+                    <a href="#motherboard" class="not__select">Мат. плата:</#>
                 </template>
                 <template v-else>
                     <p class="select">Мат. плата: [[ motherboard ]]</p>
                 </template>
 
                 <template v-if="ram == ''">
-                    <p class="not__select">ОЗУ:</p>
+                    <a href="#ram" class="not__select">ОЗУ:</a>
                 </template>
                 <template v-for="r in ram">
                     <p class="select">ОЗУ: [[r]]</p>
                 </template>
 
                 <template v-if="ssd_m2 == '' && hdd == '' && ssd_sata == ''">
-                    <p class="not__select">Накопитель:</p>
+                    <a href="#hdd" class="not__select">Накопитель:</a>
                 </template>
 
                 <template v-for="ssd in ssd_m2">
@@ -525,14 +535,14 @@
                 </template>
 
                 <template v-if="videocard == ''">
-                    <p class="not__select">Видеокарта:</p>
+                    <a href="#videocard" class="not__select">Видеокарта:</a>
                 </template>
                 <template v-else>
                     <p class="select">Видеокарта: [[ videocard ]]</p>
                 </template>
                 
                 <template v-if="power_block == ''">
-                    <p class="not__select">Блок питания:</p>
+                    <a href="#power_block" class="not__select">Блок питания:</a>
                 </template>
                 <template v-else>
                     <p class="select">Блок питания: [[ power_block ]]</p>
@@ -544,13 +554,16 @@
                 <br>
                 <p class="select">Цена: <span class="result__price">0</span> руб.</p>
                 <br>
-                <button @click="clear" class="clear">Сбросить всё</button>
-                <template v-if="result == 'Сборка не завершена! Выберите недостающие комплектующие.'">        
-                    <button class="buy__dis">Оформить заказ</button>
-                </template>
-                <template v-else>
-                    <button @click="order" class="buy">Оформить заказ</button>
-                </template>
+                <div class="buttons">
+                    <button @click="clear" class="clear">Сбросить всё</button>
+                    <template v-if="result == 'Сборка не завершена! Выберите недостающие комплектующие.'">        
+                        <button class="buy__dis">Оформить заказ</button>
+                    </template>
+                    <template v-else>
+                        <button @click="order" class="buy">Оформить заказ</button>
+                    </template>
+                </div>
+                
                 
             </div>
             
